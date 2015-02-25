@@ -30,23 +30,13 @@ class WurmDecoder extends ReplayingDecoder<DecoderState> {
                 ByteBuf frame = byteBuf.readBytes(size - 1)
                 switch (type) {
                     case Protocol.PACKET_LOGIN:
-                        def protocol = frame.readInt()
-                        def username = readString(frame)
-                        def data = readString(frame).split(',')
-                        packet = new LoginPacket(
-                                protocol: protocol,
-                                username: username,
-                                developer: data[1])
+                        packet = LoginPacket.decode(frame)
                         break;
                     default:
                         packet = new UnknownPacket(type: type, frame: frame)
                 }
                 out.add(packet)
         }
-    }
-
-    static String readString(ByteBuf byteBuf) {
-        new String(byteBuf.readBytes(byteBuf.readByte()).array())
     }
 
     enum DecoderState {

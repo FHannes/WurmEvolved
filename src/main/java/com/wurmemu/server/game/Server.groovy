@@ -2,6 +2,7 @@ package com.wurmemu.server.game
 
 import com.wurmemu.server.game.net.ServerHandler
 import com.wurmemu.server.game.net.WurmDecoder
+import com.wurmemu.server.game.net.WurmEncoder
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelInitializer
 import io.netty.channel.group.ChannelGroup
@@ -32,7 +33,7 @@ class Server {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     def pipeline = ch.pipeline()
-                    //pipeline.addLast("encoder", Encoder.getInstance())
+                    pipeline.addLast("encoder", new WurmEncoder())
                     pipeline.addLast("decoder", new WurmDecoder())
                     pipeline.addLast("handler", new ServerHandler(channelGroup: channelGroup))
                 }
