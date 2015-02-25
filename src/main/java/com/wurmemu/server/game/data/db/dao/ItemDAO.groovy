@@ -13,12 +13,12 @@ class ItemDAO {
     @PersistenceContext
     private EntityManager em
 
-    Player save(Item item) {
+    Item save(Item item) {
         em.merge(item)
         item
     }
 
-    List<Player> list() {
+    List<Item> list() {
         em.createQuery("SELECT i FROM Item i", Item.class).getResultList()
     }
 
