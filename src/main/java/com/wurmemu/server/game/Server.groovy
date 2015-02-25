@@ -1,0 +1,58 @@
+package com.wurmemu.server.game
+
+import com.wurmemu.server.game.net.ServerHandler
+import com.wurmemu.server.game.net.WurmDecoder
+import io.netty.bootstrap.ServerBootstrap
+import io.netty.channel.ChannelInitializer
+import io.netty.channel.group.ChannelGroup
+import io.netty.channel.group.DefaultChannelGroup
+import io.netty.channel.nio.NioEventLoopGroup
+import io.netty.channel.socket.SocketChannel
+import io.netty.channel.socket.nio.NioServerSocketChannel
+import io.netty.util.concurrent.GlobalEventExecutor
+
+class Server {
+
+    String hostname
+    int port
+
+    ChannelGroup channelGroup
+
+    boolean start() {
+        def bossGroup = new NioEventLoopGroup()
+        def workerGroup = new NioEventLoopGroup()
+
+        channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE)
+
+        try {
+            def bootstrap = new ServerBootstrap()
+                    .group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                protected void initChannel(SocketChannel ch) throws Exception {
+                    def pipeline = ch.pipeline()
+                    //pipeline.addLast("encoder", Encoder.getInstance())
+                    pipeline.addLast("decoder", new WurmDecoder())
+                    pipeline.addLast("handler", new ServerHandler(channelGroup: channelGroup))
+                }
+            })
+
+            def channel = bootstrap.bind(hostname, port).sync().channel()
+            channel.closeFuture().sync()
+
+            channelGroup.add(channel)
+        } finally {
+            bossGroup.shutdownGracefully()
+            workerGroup.shutdownGracefully()
+        }
+        true
+    }
+
+    void stop() {
+        if (channelGroup != null) {
+            channelGroup.close()
+        }
+    }
+
+}
