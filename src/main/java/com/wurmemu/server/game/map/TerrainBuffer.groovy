@@ -21,4 +21,12 @@ class TerrainBuffer {
         chunks[chunkY][chunkX].getTile(x % Chunk.CHUNK_SIZE, y % Chunk.CHUNK_SIZE)
     }
 
+    void save() {
+        (1..CHUNK_COUNT - 1). each {
+            y -> (1..CHUNK_COUNT - 1). each {
+                x -> chunks[y][x].save()
+            }
+        }
+    }
+
 }

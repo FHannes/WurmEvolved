@@ -34,8 +34,8 @@ class Chunk {
             tile -> tiles[tile.pos.y - yOffset][tile.pos.x - xOffset] = tile
         }
 
-        (0..CHUNK_SIZE).each {
-            y -> (0..CHUNK_SIZE).each {
+        (0..CHUNK_SIZE - 1).each {
+            y -> (0..CHUNK_SIZE - 1).each {
                 x -> if (tiles[y][x] == null) {
                     tiles[y][x] = new Tile(
                             pos: new TilePos(x: xOffset + x, y: yOffset + y),
