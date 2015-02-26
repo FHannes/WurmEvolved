@@ -1,5 +1,6 @@
 package com.wurmemu.server.game.net
 
+import com.wurmemu.server.game.World
 import com.wurmemu.server.game.net.packets.LoginPacket
 import com.wurmemu.server.game.net.packets.LoginResponsePacket
 import com.wurmemu.server.game.net.packets.UnknownPacket
@@ -10,6 +11,7 @@ import io.netty.channel.group.ChannelGroup
 class ServerHandler extends SimpleChannelInboundHandler<Packet> {
 
     ChannelGroup channelGroup
+    World world
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Packet msg) throws Exception {

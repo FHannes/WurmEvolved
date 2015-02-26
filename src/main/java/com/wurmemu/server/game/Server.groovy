@@ -19,7 +19,11 @@ class Server {
 
     ChannelGroup channelGroup
 
+    World world
+
     boolean start() {
+        world = new World()
+
         def bossGroup = new NioEventLoopGroup()
         def workerGroup = new NioEventLoopGroup()
 
@@ -35,7 +39,7 @@ class Server {
                     def pipeline = ch.pipeline()
                     pipeline.addLast("encoder", new WurmEncoder())
                     pipeline.addLast("decoder", new WurmDecoder())
-                    pipeline.addLast("handler", new ServerHandler(channelGroup: channelGroup))
+                    pipeline.addLast("handler", new ServerHandler(channelGroup: channelGroup, world: world))
                 }
             })
 

@@ -13,6 +13,7 @@
 
     <bean id="itemDAO" class="com.wurmemu.server.game.data.db.dao.ItemDAO" />
     <bean id="playerDAO" class="com.wurmemu.server.game.data.db.dao.PlayerDAO" />
+    <bean id="tileDAO" class="com.wurmemu.server.game.data.db.dao.TileDAO" />
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">

@@ -1,7 +1,6 @@
 package com.wurmemu.server.game.data.db.dao
 
 import com.wurmemu.server.game.data.Item
-import com.wurmemu.server.game.data.Player
 import org.springframework.transaction.annotation.Transactional
 
 import javax.persistence.EntityManager
