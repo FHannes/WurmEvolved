@@ -33,7 +33,7 @@ class WurmDecoder extends ReplayingDecoder<DecoderState> {
                     case Protocol.PACKET_LOGIN:
                         packet = LoginPacket.decode(frame)
                         break
-                    case Protocol.PACKET_CLIENT_MESSAGE:
+                    case Protocol.PACKET_MESSAGE:
                         packet = ClientMessagePacket.decode(frame)
                         break
                     default:

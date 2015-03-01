@@ -5,9 +5,12 @@ import com.wurmemu.server.game.net.packets.client.ClientMessagePacket
 import com.wurmemu.server.game.net.packets.client.LoginPacket
 import com.wurmemu.server.game.net.packets.server.LoginResponsePacket
 import com.wurmemu.server.game.net.packets.UnknownPacket
+import com.wurmemu.server.game.net.packets.server.ServerMessagePacket
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.channel.group.ChannelGroup
+
+import java.awt.Color
 
 class ServerHandler extends SimpleChannelInboundHandler<Packet> {
 
@@ -21,6 +24,8 @@ class ServerHandler extends SimpleChannelInboundHandler<Packet> {
                     allowLogin: true, reason: "Test", layer: 0, developer: false))
         } else if (msg instanceof ClientMessagePacket) {
             println("Message from client to channel '${msg.channel}': ${msg.message}")
+            ctx.channel().write(new ServerMessagePacket(
+                    channel: msg.channel, message: "Echo: ${msg.message}", color: Color.WHITE))
         } else if (msg instanceof UnknownPacket) {
             println "Unknown packet with ID ${msg.type}"
         }
