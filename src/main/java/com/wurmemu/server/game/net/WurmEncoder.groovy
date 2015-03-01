@@ -8,7 +8,9 @@ class WurmEncoder extends MessageToByteEncoder<Packet> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Packet msg, ByteBuf out) throws Exception {
+        out.writeShort(0)
         msg.encode(out)
+        out.setShort(0, out.readableBytes() - 2)
     }
 
 }

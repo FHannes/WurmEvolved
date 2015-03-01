@@ -1,7 +1,8 @@
 package com.wurmemu.server.game.net
 
 import com.wurmemu.common.protocol.Protocol
-import com.wurmemu.server.game.net.packets.LoginPacket
+import com.wurmemu.server.game.net.packets.client.ClientMessagePacket
+import com.wurmemu.server.game.net.packets.client.LoginPacket
 import com.wurmemu.server.game.net.packets.UnknownPacket
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
@@ -31,12 +32,20 @@ class WurmDecoder extends ReplayingDecoder<DecoderState> {
                 switch (type) {
                     case Protocol.PACKET_LOGIN:
                         packet = LoginPacket.decode(frame)
-                        break;
+                        break
+                    case Protocol.PACKET_CLIENT_MESSAGE:
+                        packet = ClientMessagePacket.decode(frame)
+                        break
                     default:
                         packet = new UnknownPacket(type: type, frame: frame)
                 }
                 out.add(packet)
+                reset()
         }
+    }
+
+    void reset() {
+        state(DecoderState.PAYLOAD_LENGTH)
     }
 
     enum DecoderState {

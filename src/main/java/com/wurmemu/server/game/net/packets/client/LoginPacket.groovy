@@ -1,4 +1,4 @@
-package com.wurmemu.server.game.net.packets
+package com.wurmemu.server.game.net.packets.client
 
 import com.wurmemu.common.protocol.Protocol
 import com.wurmemu.server.game.net.Packet

@@ -7,10 +7,10 @@ class Main {
 
     static void main(String[] args) {
         PlayerDAO playerDAO = DB.instance.getDAO("playerDAO")
-        print "${playerDAO.list().size()}"
-        DB.instance.close()
 
         new Server(hostname: "localhost", port: 48001).start()
+
+        DB.instance.close()
     }
 
 }
