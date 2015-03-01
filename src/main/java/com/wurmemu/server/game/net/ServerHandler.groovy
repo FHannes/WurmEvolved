@@ -1,5 +1,6 @@
 package com.wurmemu.server.game.net
 
+import com.wurmemu.common.constants.ChatColor
 import com.wurmemu.server.game.World
 import com.wurmemu.server.game.net.packets.client.ClientMessagePacket
 import com.wurmemu.server.game.net.packets.client.LoginPacket
@@ -25,7 +26,7 @@ class ServerHandler extends SimpleChannelInboundHandler<Packet> {
         } else if (msg instanceof ClientMessagePacket) {
             println("Message from client to channel '${msg.channel}': ${msg.message}")
             ctx.channel().write(new ServerMessagePacket(
-                    channel: msg.channel, message: "Echo: ${msg.message}", color: Color.WHITE))
+                    channel: msg.channel, message: "Echo: ${msg.message}", color: ChatColor.WHITE))
         } else if (msg instanceof UnknownPacket) {
             println "Unknown packet with ID ${msg.type}"
         }
