@@ -17,7 +17,7 @@ class ServerMessagePacket extends MessagePacket {
         out.writeByte(color.red)
         out.writeByte(color.green)
         out.writeByte(color.blue)
-        writeString(out, message)
+        writeLongString(out, message)
     }
 
     static ServerMessagePacket decode(ByteBuf frame) {
@@ -25,7 +25,7 @@ class ServerMessagePacket extends MessagePacket {
         def r = frame.readByte()
         def g = frame.readByte()
         def b = frame.readByte()
-        def message = readString(frame)
+        def message = readLongString(frame)
         new ServerMessagePacket(channel: channel, message: message, color: new Color(r, g, b))
     }
 

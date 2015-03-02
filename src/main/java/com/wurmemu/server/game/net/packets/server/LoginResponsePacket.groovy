@@ -15,7 +15,7 @@ class LoginResponsePacket extends Packet {
     void encode(ByteBuf out) {
         out.writeByte(Protocol.PACKET_LOGIN_RESPONSE)
         out.writeBoolean(allowLogin)
-        writeString(out, reason)
+        writeLongString(out, reason)
         out.writeByte(layer)
         out.writeLong((long) System.currentTimeMillis() / 8)
         out.writeLong((long) System.currentTimeMillis() / 8)
@@ -23,7 +23,7 @@ class LoginResponsePacket extends Packet {
         out.writeFloat(0)
         out.writeFloat(0)
         out.writeFloat(0)
-        writeString(out, "model.creature.humanoid.human.player.male.free")
+        writeLongString(out, "model.creature.humanoid.human.player.male.free")
         out.writeBoolean(developer)
         out.writeBoolean(false)
         out.writeShort(0)
