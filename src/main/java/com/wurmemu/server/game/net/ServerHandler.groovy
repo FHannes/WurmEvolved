@@ -22,10 +22,8 @@ class ServerHandler extends SimpleChannelInboundHandler<Packet> {
     protected void channelRead0(ChannelHandlerContext ctx, Packet msg) throws Exception {
         if (player == null) {
             if (msg instanceof LoginPacket) {
-                player = new PlayerHandler(ctx.channel(), msg.username, msg.developer)
-                player.send(new LoginResponsePacket(
-                        allowLogin: true, reason: "Welcome to WurmEvolved", layer: 0, developer: player.developer))
-                world.addPlayer(player)
+                world.addPlayer(player = new PlayerHandler(ctx.channel(), msg.username, msg.developer))
+                player.login()
             }
         } else {
             if (msg instanceof ClientMessagePacket) {

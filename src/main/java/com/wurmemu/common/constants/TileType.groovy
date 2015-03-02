@@ -82,7 +82,7 @@ enum TileType {
     }
 
     static TileType get(byte type) {
-        types[((int) type + 256) % 256]
+        types[((int) type + 256) % 256] ?: DIRT
     }
 
     static {

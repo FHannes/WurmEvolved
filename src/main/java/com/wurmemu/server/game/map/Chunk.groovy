@@ -5,6 +5,7 @@ import com.wurmemu.server.game.data.Tile
 import com.wurmemu.server.game.data.TilePos
 import com.wurmemu.server.game.data.db.DB
 import com.wurmemu.server.game.data.db.dao.TileDAO
+import org.springframework.transaction.annotation.Transactional
 
 import java.util.logging.Logger
 
@@ -45,6 +46,7 @@ class Chunk {
         }
     }
 
+    @Transactional
     void save() {
         TileDAO dao = DB.instance.getDAO("tileDAO")
 

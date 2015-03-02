@@ -1,5 +1,6 @@
 package com.wurmemu.server.game
 
+import com.wurmemu.server.game.map.LegacyLoader
 import com.wurmemu.server.game.net.ServerHandler
 import com.wurmemu.server.game.net.WurmDecoder
 import com.wurmemu.server.game.net.WurmEncoder
@@ -13,6 +14,8 @@ import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.util.concurrent.GlobalEventExecutor
 
+import java.nio.file.Paths
+
 class Server {
 
     String hostname
@@ -24,6 +27,10 @@ class Server {
 
     boolean start() {
         world = new World()
+
+        URL mapResource = Server.class.getResource("/surface.map")
+        File mapFile = Paths.get(mapResource.toURI()).toFile()
+        new LegacyLoader(mapFile: mapFile, size: 1024).load(world.terrainBuffer)
 
         def bossGroup = new NioEventLoopGroup()
         def workerGroup = new NioEventLoopGroup()

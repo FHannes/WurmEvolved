@@ -22,9 +22,11 @@ class World {
 
     void addPlayer(PlayerHandler player) {
         players.add(player)
+        player.world = this
     }
 
     void removePlayer(PlayerHandler player) {
+        player.world = null
         players.remove(player)
     }
 

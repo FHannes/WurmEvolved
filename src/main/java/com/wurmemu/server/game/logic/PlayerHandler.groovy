@@ -1,10 +1,12 @@
 package com.wurmemu.server.game.logic
 
+import com.wurmemu.server.game.World
 import com.wurmemu.server.game.data.Player
 import com.wurmemu.server.game.data.db.DB
 import com.wurmemu.server.game.data.db.dao.PlayerDAO
 import com.wurmemu.server.game.data.factory.PlayerFactory
 import com.wurmemu.server.game.net.Packet
+import com.wurmemu.server.game.net.packets.server.LoginResponsePacket
 import io.netty.channel.Channel
 
 class PlayerHandler {
@@ -13,13 +15,18 @@ class PlayerHandler {
 
     Channel channel
     Player player
+    World world
     boolean developer
+    boolean newPlayer
 
     PlayerHandler(Channel channel, String username, boolean developer) {
         PlayerDAO dao = DB.instance.getDAO("playerDAO")
         player = dao.load(username)
         if (player == null) {
             player = playerFactory.makePlayer(username)
+            newPlayer = true
+        } else {
+            newPlayer = false
         }
         this.channel = channel
         this.developer = developer
@@ -27,6 +34,23 @@ class PlayerHandler {
 
     void send(Packet packet) {
         channel.writeAndFlush(packet)
+    }
+
+    void login() {
+        if (world != null) {
+            if (newPlayer) {
+                player.x = 512
+                player.y = 512
+                player.z = world.terrainBuffer.getTile(512, 512).height / 10
+            }
+            send(new LoginResponsePacket(
+                    allowLogin: true, reason: "Welcome to WurmEvolved",
+                    layer: 0,
+                    x: player.x * 4, y: player.y * 4, z: player.z,
+                    developer: developer))
+        } else {
+            // TODO: Prevent login, server-side error
+        }
     }
 
 }

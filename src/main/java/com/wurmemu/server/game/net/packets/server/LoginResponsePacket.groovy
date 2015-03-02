@@ -9,6 +9,9 @@ class LoginResponsePacket extends Packet {
     boolean allowLogin
     String reason
     byte layer
+    float x
+    float y
+    float z
     boolean developer
 
     @Override
@@ -20,9 +23,9 @@ class LoginResponsePacket extends Packet {
         out.writeLong((long) System.currentTimeMillis() / 8)
         out.writeLong((long) System.currentTimeMillis() / 8)
         out.writeFloat(0)
-        out.writeFloat(0)
-        out.writeFloat(0)
-        out.writeFloat(0)
+        out.writeFloat(x)
+        out.writeFloat(y)
+        out.writeFloat(z)
         writeLongString(out, "model.creature.humanoid.human.player.male.free")
         out.writeBoolean(developer)
         out.writeBoolean(false)
