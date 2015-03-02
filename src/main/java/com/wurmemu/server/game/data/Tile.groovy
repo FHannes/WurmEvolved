@@ -1,7 +1,6 @@
 package com.wurmemu.server.game.data
 
 import com.wurmemu.common.constants.TileType
-import com.wurmemu.server.game.data.db.convert.TileTypeConverter
 
 import javax.persistence.*
 
@@ -13,7 +12,6 @@ class Tile {
     TilePos pos
 
     @Column(name = "type", nullable = false)
-    @Convert(converter = TileTypeConverter.class)
     TileType type
 
     @Column(name = "subtype", nullable = false)

@@ -11,6 +11,7 @@
     <tx:annotation-driven />
     <context:annotation-config />
 
+    <bean id="idBaseDAO" class="com.wurmemu.server.game.data.db.dao.IDBaseDAO" />
     <bean id="itemDAO" class="com.wurmemu.server.game.data.db.dao.ItemDAO" />
     <bean id="playerDAO" class="com.wurmemu.server.game.data.db.dao.PlayerDAO" />
     <bean id="tileDAO" class="com.wurmemu.server.game.data.db.dao.TileDAO" />
