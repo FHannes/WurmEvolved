@@ -5,8 +5,10 @@ import com.wurmemu.server.game.data.Player
 import com.wurmemu.server.game.data.db.DB
 import com.wurmemu.server.game.data.db.dao.PlayerDAO
 import com.wurmemu.server.game.data.factory.PlayerFactory
+import com.wurmemu.server.game.map.Chunk
 import com.wurmemu.server.game.net.Packet
 import com.wurmemu.server.game.net.packets.server.LoginResponsePacket
+import com.wurmemu.server.game.net.packets.server.TerrainPacket
 import io.netty.channel.Channel
 
 class PlayerHandler {
@@ -18,6 +20,7 @@ class PlayerHandler {
     World world
     boolean developer
     boolean newPlayer
+    Set<Chunk> chunks = new HashSet<>()
 
     PlayerHandler(Channel channel, String username, boolean developer) {
         PlayerDAO dao = DB.instance.getDAO("playerDAO")
@@ -48,9 +51,25 @@ class PlayerHandler {
                     layer: 0,
                     x: player.x * 4, y: player.y * 4, z: player.z,
                     developer: developer))
+            updateChunks()
         } else {
             // TODO: Prevent login, server-side error
         }
+    }
+
+    void updateChunks() {
+        def chunks = world.terrainBuffer.getChunksFromCoords(
+                (int) Math.floor(player.x), (int) Math.floor(player.y), 8)
+        chunks.each { chunk ->
+            if (!this.chunks.contains(chunk)) {
+                sendChunk(chunk)
+            }
+        }
+        this.chunks = new HashSet<>(chunks)
+    }
+
+    void sendChunk(Chunk chunk) {
+        send(new TerrainPacket(tiles: chunk.toArray()))
     }
 
 }

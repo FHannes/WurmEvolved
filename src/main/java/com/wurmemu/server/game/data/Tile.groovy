@@ -29,9 +29,9 @@ class Tile {
 class TilePos implements Serializable {
 
     @Column(name = "x", nullable = false)
-    int x
+    short x
 
     @Column(name = "y", nullable = false)
-    int y
+    short y
 
 }

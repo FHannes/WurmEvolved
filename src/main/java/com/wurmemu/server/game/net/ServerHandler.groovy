@@ -3,6 +3,7 @@ package com.wurmemu.server.game.net
 import com.wurmemu.common.constants.ChatColor
 import com.wurmemu.server.game.World
 import com.wurmemu.server.game.logic.PlayerHandler
+import com.wurmemu.server.game.map.Chunk
 import com.wurmemu.server.game.net.packets.client.ClientMessagePacket
 import com.wurmemu.server.game.net.packets.client.LoginPacket
 import com.wurmemu.server.game.net.packets.server.LoginResponsePacket
