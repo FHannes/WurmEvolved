@@ -2,6 +2,7 @@ package com.wurmemu.server.game.net
 
 import com.wurmemu.common.constants.ChatColor
 import com.wurmemu.server.game.World
+import com.wurmemu.server.game.logic.PlayerHandler
 import com.wurmemu.server.game.net.packets.client.ClientMessagePacket
 import com.wurmemu.server.game.net.packets.client.LoginPacket
 import com.wurmemu.server.game.net.packets.server.LoginResponsePacket
@@ -15,24 +16,28 @@ class ServerHandler extends SimpleChannelInboundHandler<Packet> {
 
     ChannelGroup channelGroup
     World world
-
-    static void write(ChannelHandlerContext ctx, Packet packet) {
-        ctx.channel().writeAndFlush(packet)
-    }
+    PlayerHandler player
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Packet msg) throws Exception {
-        if (msg instanceof LoginPacket) {
-            write(ctx, new LoginResponsePacket(
-                    allowLogin: true, reason: "Welcome to WurmEvolved", layer: 0, developer: false))
-        } else if (msg instanceof ClientMessagePacket) {
-            println("Message from client to channel '${msg.channel}': ${msg.message}")
-            write(ctx, new ServerMessagePacket(
-                    channel: msg.channel, message: "Echo: ${msg.message}", color: ChatColor.WHITE))
-        } else if (msg instanceof UnknownPacket) {
+        if (player == null) {
+            if (msg instanceof LoginPacket) {
+                player = new PlayerHandler(ctx.channel(), msg.username, msg.developer)
+                player.send(new LoginResponsePacket(
+                        allowLogin: true, reason: "Welcome to WurmEvolved", layer: 0, developer: player.developer))
+                world.addPlayer(player)
+            }
+        } else {
+            if (msg instanceof ClientMessagePacket) {
+                // TODO: Send message to all players in local
+                player.send(new ServerMessagePacket(
+                        channel: msg.channel, message: "<${player.player.username}> ${msg.message}",
+                        color: ChatColor.WHITE))
+            }
+        }
+        if (msg instanceof UnknownPacket) {
             println "Unknown packet with ID ${msg.type}"
         }
-        ctx.channel().flush()
     }
 
     @Override
@@ -40,6 +45,15 @@ class ServerHandler extends SimpleChannelInboundHandler<Packet> {
         channelGroup.add(ctx.channel())
 
         super.channelActive(ctx)
+    }
+
+    @Override
+    void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        if (player != null) {
+            world.removePlayer(player)
+        }
+
+        super.channelInactive(ctx)
     }
 
 }
