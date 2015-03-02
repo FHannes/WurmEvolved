@@ -1,6 +1,8 @@
 package com.wurmemu.server.game.map
 
 import com.wurmemu.server.game.data.Tile
+import com.wurmemu.server.game.data.db.DB
+import com.wurmemu.server.game.data.db.dao.TileDAO
 
 class TerrainBuffer {
 
@@ -10,23 +12,39 @@ class TerrainBuffer {
 
     TerrainBuffer() {
         chunks = new Chunk[CHUNK_COUNT][CHUNK_COUNT]
+        (0..CHUNK_COUNT - 1). each { y ->
+            (0..CHUNK_COUNT - 1). each { x ->
+                chunks[y][x] = new Chunk(x, y)
+            }
+        }
     }
 
     Tile getTile(int x, int y) {
         getChunk(Chunk.mapToChunk(x), Chunk.mapToChunk(y)).getTile(x % Chunk.CHUNK_SIZE, y % Chunk.CHUNK_SIZE)
     }
 
+    void setTile(int x, int y, Tile tile) {
+        getChunk(Chunk.mapToChunk(x), Chunk.mapToChunk(y)).setTile(x % Chunk.CHUNK_SIZE, y % Chunk.CHUNK_SIZE, tile)
+    }
+
     Chunk getChunk(int x, int y) {
-        if (chunks[y][x] == null) {
-            chunks[y][x] = new Chunk(x, y)
-        }
         chunks[y][x]
     }
 
+    void load() {
+        TileDAO dao = DB.instance.getDAO("tileDAO")
+        dao.list().each { tile -> setTile(tile.pos.x, tile.pos.y, tile) }
+        (0..CHUNK_COUNT - 1). each { y ->
+            (0..CHUNK_COUNT - 1). each { x ->
+                chunks[y][x].fill()
+            }
+        }
+    }
+
     void save() {
-        (1..CHUNK_COUNT - 1). each {
-            y -> (1..CHUNK_COUNT - 1). each {
-                x -> chunks[y][x].save()
+        (0..CHUNK_COUNT - 1). each { y ->
+            (0..CHUNK_COUNT - 1). each { x ->
+                chunks[y][x].save()
             }
         }
     }

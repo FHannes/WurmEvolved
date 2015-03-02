@@ -26,11 +26,15 @@ class Server {
     World world
 
     boolean start() {
-        world = new World()
+        (world = new World()).load()
 
         URL mapResource = Server.class.getResource("/surface.map")
-        File mapFile = Paths.get(mapResource.toURI()).toFile()
-        new LegacyLoader(mapFile: mapFile, size: 1024).load(world.terrainBuffer)
+        if (mapResource != null) {
+            File mapFile = Paths.get(mapResource.toURI()).toFile()
+            if (mapFile.exists()) {
+                new LegacyLoader(mapFile: mapFile, size: 1024).load(world.terrainBuffer)
+            }
+        }
 
         def bossGroup = new NioEventLoopGroup()
         def workerGroup = new NioEventLoopGroup()
@@ -50,6 +54,8 @@ class Server {
                     pipeline.addLast("handler", new ServerHandler(channelGroup: channelGroup, world: world))
                 }
             })
+
+            println("Started server")
 
             bootstrap.bind(hostname, port).sync().channel().closeFuture().sync()
         } finally {

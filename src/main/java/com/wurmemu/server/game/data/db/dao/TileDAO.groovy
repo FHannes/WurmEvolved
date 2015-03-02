@@ -17,6 +17,14 @@ class TileDAO {
         tile
     }
 
+    void save(Tile[][] tiles) {
+        tiles.each { tileRow -> tileRow.each { tile -> em.merge(tile) } }
+    }
+
+    List<Tile> list() {
+        def query = em.createQuery("SELECT t FROM Tile t", Tile.class).resultList
+    }
+
     List<Tile> list(int xOffset, int yOffset, int range) {
         def query = em.createQuery("SELECT t FROM Tile t WHERE x >= :x_min AND y >= :y_min AND " +
                 "x < :x_max AND y < :y_max", Tile.class)

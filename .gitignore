@@ -3,3 +3,5 @@
 .idea/dictionaries
 
 target
+src/main/resources/*.map
+database*

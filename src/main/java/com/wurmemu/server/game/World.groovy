@@ -34,4 +34,8 @@ class World {
         players.each { player -> player.send(packet) }
     }
 
+    void load() {
+        terrainBuffer.load()
+    }
+
 }

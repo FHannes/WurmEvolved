@@ -45,6 +45,7 @@ class PlayerHandler {
                 player.x = 512
                 player.y = 512
                 player.z = world.terrainBuffer.getTile(512, 512).height / 10
+                save()
             }
             send(new LoginResponsePacket(
                     allowLogin: true, reason: "Welcome to WurmEvolved",
@@ -59,7 +60,7 @@ class PlayerHandler {
 
     void updateChunks() {
         def chunks = world.terrainBuffer.getChunksFromCoords(
-                (int) Math.floor(player.x), (int) Math.floor(player.y), 8)
+                (int) Math.floor(player.x), (int) Math.floor(player.y), (int) 256 / Chunk.CHUNK_SIZE)
         chunks.each { chunk ->
             if (!this.chunks.contains(chunk)) {
                 sendChunk(chunk)
@@ -70,6 +71,11 @@ class PlayerHandler {
 
     void sendChunk(Chunk chunk) {
         send(new TerrainPacket(tiles: chunk.toArray()))
+    }
+
+    void save() {
+        PlayerDAO dao = DB.instance.getDAO("playerDAO")
+        dao.save(player)
     }
 
 }
