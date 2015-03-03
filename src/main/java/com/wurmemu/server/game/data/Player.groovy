@@ -22,4 +22,7 @@ class Player {
     @Column(name = "z", nullable = false)
     float z = 0
 
+    @Column(name = "layer", nullable = false)
+    byte layer = 0
+
 }

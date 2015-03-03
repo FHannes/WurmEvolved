@@ -45,11 +45,12 @@ class PlayerHandler {
                 player.x = 512
                 player.y = 512
                 player.z = world.terrainBuffer.getTile(512, 512).height / 10
+                player.layer = 0
                 save()
             }
             send(new LoginResponsePacket(
                     allowLogin: true, reason: "Welcome to WurmEvolved",
-                    layer: 0,
+                    layer: player.layer,
                     x: player.x * 4, y: player.y * 4, z: player.z,
                     developer: developer))
             updateChunks()
@@ -76,6 +77,14 @@ class PlayerHandler {
     void save() {
         PlayerDAO dao = DB.instance.getDAO("playerDAO")
         dao.save(player)
+    }
+
+    void move(float x, float y, float z, byte layer) {
+        player.x = x
+        player.y = y
+        player.z = z
+        player.layer = layer
+        updateChunks()
     }
 
 }

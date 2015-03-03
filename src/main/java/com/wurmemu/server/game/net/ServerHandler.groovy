@@ -6,6 +6,7 @@ import com.wurmemu.server.game.logic.PlayerHandler
 import com.wurmemu.server.game.map.Chunk
 import com.wurmemu.server.game.net.packets.client.ClientMessagePacket
 import com.wurmemu.server.game.net.packets.client.LoginPacket
+import com.wurmemu.server.game.net.packets.client.MovementPacket
 import com.wurmemu.server.game.net.packets.server.LoginResponsePacket
 import com.wurmemu.server.game.net.packets.UnknownPacket
 import com.wurmemu.server.game.net.packets.server.ServerMessagePacket
@@ -32,6 +33,8 @@ class ServerHandler extends SimpleChannelInboundHandler<Packet> {
                 player.send(new ServerMessagePacket(
                         channel: msg.channel, message: "<${player.player.username}> ${msg.message}",
                         color: ChatColor.WHITE))
+            } else if (msg instanceof MovementPacket) {
+                player.move((float) msg.x / 4, (float) msg.y / 4, msg.z, msg.layer)
             }
         }
         if (msg instanceof UnknownPacket) {
