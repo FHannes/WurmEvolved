@@ -9,11 +9,11 @@ import io.netty.buffer.ByteBuf
 class NoMovementPacket extends AbstractPacket {
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
 
     }
 
-    static NoMovementPacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         new NoMovementPacket()
     }
 

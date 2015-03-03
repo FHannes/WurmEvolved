@@ -11,11 +11,11 @@ class TradeResultPacket extends AbstractPacket {
     boolean agree
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         out.writeBoolean(agree)
     }
 
-    static TradeResultPacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         def agree = frame.readBoolean()
         new TradeResultPacket(agree: agree)
     }

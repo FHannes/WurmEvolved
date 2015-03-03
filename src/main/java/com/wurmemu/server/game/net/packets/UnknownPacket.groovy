@@ -8,7 +8,7 @@ class UnknownPacket extends AbstractPacket {
     ByteBuf frame
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         out.writeByte(type)
         out.writeBytes(frame)
     }

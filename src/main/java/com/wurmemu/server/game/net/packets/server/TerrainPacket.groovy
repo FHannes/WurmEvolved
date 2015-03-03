@@ -12,7 +12,7 @@ class TerrainPacket extends AbstractPacket {
     Tile[][] tiles
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         out.writeShort(tiles[0][0].pos.x)
         out.writeShort(tiles[0][0].pos.y)
         def sizeX = tiles[0].length

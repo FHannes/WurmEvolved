@@ -12,12 +12,12 @@ class RenderStatsPacket extends AbstractPacket {
     int measurements
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         out.writeInt(fps)
         out.writeInt(measurements)
     }
 
-    static RenderStatsPacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         def fps = frame.readInt()
         def measurements = frame.readInt()
         new RenderStatsPacket(fps: fps, measurements: measurements)

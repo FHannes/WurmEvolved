@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation
 
 abstract class AbstractPacket {
 
-    abstract void encode(ByteBuf out)
+    abstract encode(ByteBuf out)
 
     int getPacketID() {
         return getPacketID(getClass())

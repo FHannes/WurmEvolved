@@ -8,6 +8,7 @@ import com.wurmemu.server.game.net.packets.UnknownPacket
 import com.wurmemu.server.game.net.packets.client.ClientMessagePacket
 import com.wurmemu.server.game.net.packets.client.LoginPacket
 import com.wurmemu.server.game.net.packets.client.MovementPacket
+import com.wurmemu.server.game.net.packets.client.ToggleButtonPacket
 import com.wurmemu.server.game.net.packets.server.ServerMessagePacket
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
@@ -34,6 +35,8 @@ class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
                         color: ChatColor.WHITE))
             } else if (msg instanceof MovementPacket) {
                 player.move((float) msg.x / 4, (float) msg.y / 4, msg.z, msg.layer)
+            } else if (msg instanceof ToggleButtonPacket) {
+                println "Toggle button #${msg.buttonID}: ${msg.toggleOn}"
             }
         }
         if (msg instanceof UnknownPacket) {

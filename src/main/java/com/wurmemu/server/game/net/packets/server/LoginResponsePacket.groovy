@@ -17,7 +17,7 @@ class LoginResponsePacket extends AbstractPacket {
     boolean developer
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         out.writeBoolean(allowLogin)
         writeLongString(out, reason)
         out.writeByte(layer)

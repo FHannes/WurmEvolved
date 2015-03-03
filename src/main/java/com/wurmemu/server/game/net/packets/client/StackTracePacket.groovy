@@ -11,11 +11,11 @@ class StackTracePacket extends AbstractPacket {
     String trace
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         writeLongString(out, trace)
     }
 
-    static StackTracePacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         def trace = readLongString(frame)
         new StackTracePacket(trace: trace)
     }

@@ -16,11 +16,11 @@ class MovementPacket extends AbstractPacket {
     byte layer
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         //
     }
 
-    static MovementPacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         def x = frame.readFloat()
         def y = frame.readFloat()
         def z = frame.readFloat()

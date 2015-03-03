@@ -13,13 +13,13 @@ class LoginPacket extends AbstractPacket {
     boolean developer
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         out.writeInt(protocol)
         writeString(out, username)
         writeString(out, "${username},${developer ? "true" : "false"}")
     }
 
-    static LoginPacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         def protocol = frame.readInt()
         def username = readString(frame)
         def data = readString(frame).split(',')

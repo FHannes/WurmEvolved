@@ -13,7 +13,7 @@ class ServerMessagePacket extends MessagePacket {
     Color color
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         writeString(out, channel)
         out.writeByte(color.red)
         out.writeByte(color.green)
@@ -21,7 +21,7 @@ class ServerMessagePacket extends MessagePacket {
         writeLongString(out, message)
     }
 
-    static ServerMessagePacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         def channel = readString(frame)
         def r = frame.readByte()
         def g = frame.readByte()

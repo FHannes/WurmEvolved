@@ -12,7 +12,7 @@ class DistantTerrainPacket extends AbstractPacket {
     Tile[][] tiles
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         out.writeShort((short) tiles[0][0].pos.x / 16)
         out.writeShort((short) tiles[0][0].pos.y / 16)
         def sizeX = tiles[0].length

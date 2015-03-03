@@ -9,12 +9,12 @@ import io.netty.buffer.ByteBuf
 class ClientMessagePacket extends MessagePacket {
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         writeString(out, message)
         writeString(out, channel)
     }
 
-    static ClientMessagePacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         def message = readString(frame)
         def channel = readString(frame)
         new ClientMessagePacket(channel: channel, message: message)

@@ -17,7 +17,7 @@ class PacketRegistry {
             if (AbstractPacket.class.isAssignableFrom(classType)) {
                 def packetID = AbstractPacket.getPacketID(classType)
                 if (packetID != 0) {
-                    packets.put(packetID, (Class<? extends AbstractPacket>) classType)
+                    register(packetID, (Class<? extends AbstractPacket>) classType)
                 }
             }
         }

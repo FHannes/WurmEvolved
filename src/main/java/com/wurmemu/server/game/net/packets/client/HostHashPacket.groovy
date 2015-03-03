@@ -11,11 +11,11 @@ class HostHashPacket extends AbstractPacket {
     int hash
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         out.writeInt(hash)
     }
 
-    static HostHashPacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         def hash = frame.readInt()
         new HostHashPacket(hash: hash)
     }

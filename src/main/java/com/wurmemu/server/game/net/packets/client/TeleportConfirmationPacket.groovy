@@ -11,11 +11,11 @@ class TeleportConfirmationPacket extends AbstractPacket {
     int teleportID
 
     @Override
-    void encode(ByteBuf out) {
+    encode(ByteBuf out) {
         out.writeInt(teleportID)
     }
 
-    static TeleportConfirmationPacket decode(ByteBuf frame) {
+    static decode(ByteBuf frame) {
         def teleportID = frame.readInt()
         new TeleportConfirmationPacket(teleportID: teleportID)
     }

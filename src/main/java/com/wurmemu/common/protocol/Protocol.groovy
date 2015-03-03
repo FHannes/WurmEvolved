@@ -10,6 +10,7 @@ class Protocol {
     public static final PACKET_DISTANT_TERRAIN = 9
     public static final PACKET_RENDER_STATS = 39
     public static final PACKET_TELEPORT = 55
+    public static final PACKET_TOGGLE_BUTTON = 62
     public static final PACKET_NO_MOVEMENT = 68
     public static final PACKET_MOVEMENT = 79
     public static final PACKET_STACK_TRACE = 82
