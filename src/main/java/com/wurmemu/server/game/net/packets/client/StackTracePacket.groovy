@@ -1,16 +1,17 @@
 package com.wurmemu.server.game.net.packets.client
 
 import com.wurmemu.common.protocol.Protocol
-import com.wurmemu.server.game.net.Packet
+import com.wurmemu.server.game.net.packets.AbstractPacket
+import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-class StackTracePacket extends Packet {
+@Packet(Protocol.PACKET_HOST_HASH)
+class StackTracePacket extends AbstractPacket {
 
     String trace
 
     @Override
     void encode(ByteBuf out) {
-        out.writeByte(Protocol.PACKET_HOST_HASH)
         writeLongString(out, trace)
     }
 

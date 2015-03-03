@@ -1,8 +1,6 @@
 package com.wurmemu.server.game.net.packets
 
-import com.wurmemu.server.game.net.Packet
-
-abstract class MessagePacket extends Packet {
+abstract class MessagePacket extends AbstractPacket {
 
     String channel
     String message

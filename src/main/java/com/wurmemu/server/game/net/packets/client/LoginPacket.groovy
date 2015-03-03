@@ -1,10 +1,12 @@
 package com.wurmemu.server.game.net.packets.client
 
 import com.wurmemu.common.protocol.Protocol
-import com.wurmemu.server.game.net.Packet
+import com.wurmemu.server.game.net.packets.AbstractPacket
+import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-class LoginPacket extends Packet {
+@Packet(Protocol.PACKET_LOGIN)
+class LoginPacket extends AbstractPacket {
 
     int protocol
     String username
@@ -12,7 +14,6 @@ class LoginPacket extends Packet {
 
     @Override
     void encode(ByteBuf out) {
-        out.writeByte(Protocol.PACKET_LOGIN)
         out.writeInt(protocol)
         writeString(out, username)
         writeString(out, "${username},${developer ? "true" : "false"}")

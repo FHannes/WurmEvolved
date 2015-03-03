@@ -2,16 +2,17 @@ package com.wurmemu.server.game.net.packets.server
 
 import com.wurmemu.common.protocol.Protocol
 import com.wurmemu.server.game.data.Tile
-import com.wurmemu.server.game.net.Packet
+import com.wurmemu.server.game.net.packets.AbstractPacket
+import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-class TerrainPacket extends Packet {
+@Packet(Protocol.PACKET_TERRAIN)
+class TerrainPacket extends AbstractPacket {
 
     Tile[][] tiles
 
     @Override
     void encode(ByteBuf out) {
-        out.writeByte(Protocol.PACKET_TERRAIN)
         out.writeShort(tiles[0][0].pos.x)
         out.writeShort(tiles[0][0].pos.y)
         def sizeX = tiles[0].length

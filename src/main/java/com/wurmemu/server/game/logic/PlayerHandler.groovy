@@ -8,13 +8,13 @@ import com.wurmemu.server.game.data.db.dao.PlayerDAO
 import com.wurmemu.server.game.data.factory.PlayerFactory
 import com.wurmemu.server.game.map.Chunk
 import com.wurmemu.server.game.map.TerrainBuffer
-import com.wurmemu.server.game.net.Packet
+import com.wurmemu.server.game.net.packets.AbstractPacket
 import com.wurmemu.server.game.net.packets.server.DistantTerrainPacket
 import com.wurmemu.server.game.net.packets.server.LoginResponsePacket
 import com.wurmemu.server.game.net.packets.server.TerrainPacket
 import io.netty.channel.Channel
 
-import java.awt.Point
+import java.awt.*
 
 class PlayerHandler {
 
@@ -29,7 +29,7 @@ class PlayerHandler {
     Point terrainPos
 
     PlayerHandler(Channel channel, String username, boolean developer) {
-        PlayerDAO dao = DB.instance.getDAO("playerDAO")
+        PlayerDAO dao = (PlayerDAO) DB.instance.getDAO("playerDAO")
         player = dao.load(username)
         if (player == null) {
             player = playerFactory.makePlayer(username)
@@ -41,7 +41,7 @@ class PlayerHandler {
         this.developer = developer
     }
 
-    void send(Packet packet) {
+    void send(AbstractPacket packet) {
         channel.writeAndFlush(packet)
     }
 
@@ -99,7 +99,7 @@ class PlayerHandler {
     }
 
     void save() {
-        PlayerDAO dao = DB.instance.getDAO("playerDAO")
+        PlayerDAO dao = (PlayerDAO) DB.instance.getDAO("playerDAO")
         dao.save(player)
     }
 

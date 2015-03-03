@@ -1,17 +1,18 @@
 package com.wurmemu.server.game.net.packets.client
 
 import com.wurmemu.common.protocol.Protocol
-import com.wurmemu.server.game.net.Packet
+import com.wurmemu.server.game.net.packets.AbstractPacket
+import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-class RenderStatsPacket extends Packet {
+@Packet(Protocol.PACKET_RENDER_STATS)
+class RenderStatsPacket extends AbstractPacket {
 
     int fps
     int measurements
 
     @Override
     void encode(ByteBuf out) {
-        out.writeByte(Protocol.PACKET_RENDER_STATS)
         out.writeInt(fps)
         out.writeInt(measurements)
     }

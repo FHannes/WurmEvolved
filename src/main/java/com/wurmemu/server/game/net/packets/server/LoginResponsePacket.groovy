@@ -1,10 +1,12 @@
 package com.wurmemu.server.game.net.packets.server
 
 import com.wurmemu.common.protocol.Protocol
-import com.wurmemu.server.game.net.Packet
+import com.wurmemu.server.game.net.packets.AbstractPacket
+import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-class LoginResponsePacket extends Packet {
+@Packet(Protocol.PACKET_LOGIN_RESPONSE)
+class LoginResponsePacket extends AbstractPacket {
 
     boolean allowLogin
     String reason
@@ -16,7 +18,6 @@ class LoginResponsePacket extends Packet {
 
     @Override
     void encode(ByteBuf out) {
-        out.writeByte(Protocol.PACKET_LOGIN_RESPONSE)
         out.writeBoolean(allowLogin)
         writeLongString(out, reason)
         out.writeByte(layer)

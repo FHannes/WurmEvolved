@@ -2,17 +2,18 @@ package com.wurmemu.server.game.net.packets.server
 
 import com.wurmemu.common.protocol.Protocol
 import com.wurmemu.server.game.net.packets.MessagePacket
+import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-import java.awt.Color
+import java.awt.*
 
+@Packet(Protocol.PACKET_MESSAGE)
 class ServerMessagePacket extends MessagePacket {
 
     Color color
 
     @Override
     void encode(ByteBuf out) {
-        out.writeByte(Protocol.PACKET_MESSAGE)
         writeString(out, channel)
         out.writeByte(color.red)
         out.writeByte(color.green)

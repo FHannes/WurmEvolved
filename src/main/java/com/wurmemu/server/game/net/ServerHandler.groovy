@@ -3,25 +3,24 @@ package com.wurmemu.server.game.net
 import com.wurmemu.common.constants.ChatColor
 import com.wurmemu.server.game.World
 import com.wurmemu.server.game.logic.PlayerHandler
-import com.wurmemu.server.game.map.Chunk
+import com.wurmemu.server.game.net.packets.AbstractPacket
+import com.wurmemu.server.game.net.packets.UnknownPacket
 import com.wurmemu.server.game.net.packets.client.ClientMessagePacket
 import com.wurmemu.server.game.net.packets.client.LoginPacket
 import com.wurmemu.server.game.net.packets.client.MovementPacket
-import com.wurmemu.server.game.net.packets.server.LoginResponsePacket
-import com.wurmemu.server.game.net.packets.UnknownPacket
 import com.wurmemu.server.game.net.packets.server.ServerMessagePacket
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.channel.group.ChannelGroup
 
-class ServerHandler extends SimpleChannelInboundHandler<Packet> {
+class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
 
     ChannelGroup channelGroup
     World world
     PlayerHandler player
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Packet msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, AbstractPacket msg) throws Exception {
         if (player == null) {
             if (msg instanceof LoginPacket) {
                 world.addPlayer(player = new PlayerHandler(ctx.channel(), msg.username, msg.developer))

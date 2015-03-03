@@ -4,7 +4,6 @@ import com.wurmemu.server.game.map.LegacyLoader
 import com.wurmemu.server.game.net.ServerHandler
 import com.wurmemu.server.game.net.WurmDecoder
 import com.wurmemu.server.game.net.WurmEncoder
-import com.wurmemu.server.game.net.packets.ClientPackets
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelInitializer
 import io.netty.channel.group.ChannelGroup
@@ -69,10 +68,6 @@ class Server {
         if (channelGroup != null) {
             channelGroup.close()
         }
-    }
-
-    static {
-        ClientPackets.register()
     }
 
 }

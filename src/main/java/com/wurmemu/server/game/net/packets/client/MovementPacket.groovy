@@ -1,9 +1,12 @@
 package com.wurmemu.server.game.net.packets.client
 
-import com.wurmemu.server.game.net.Packet
+import com.wurmemu.common.protocol.Protocol
+import com.wurmemu.server.game.net.packets.AbstractPacket
+import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-class MovementPacket extends Packet {
+@Packet(Protocol.PACKET_MOVEMENT)
+class MovementPacket extends AbstractPacket {
 
     float x
     float y
