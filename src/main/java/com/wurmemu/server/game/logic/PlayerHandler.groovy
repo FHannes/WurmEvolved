@@ -2,11 +2,14 @@ package com.wurmemu.server.game.logic
 
 import com.wurmemu.server.game.World
 import com.wurmemu.server.game.data.Player
+import com.wurmemu.server.game.data.Tile
 import com.wurmemu.server.game.data.db.DB
 import com.wurmemu.server.game.data.db.dao.PlayerDAO
 import com.wurmemu.server.game.data.factory.PlayerFactory
 import com.wurmemu.server.game.map.Chunk
+import com.wurmemu.server.game.map.TerrainBuffer
 import com.wurmemu.server.game.net.Packet
+import com.wurmemu.server.game.net.packets.server.DistantTerrainPacket
 import com.wurmemu.server.game.net.packets.server.LoginResponsePacket
 import com.wurmemu.server.game.net.packets.server.TerrainPacket
 import io.netty.channel.Channel
@@ -53,15 +56,15 @@ class PlayerHandler {
                     layer: player.layer,
                     x: player.x * 4, y: player.y * 4, z: player.z,
                     developer: developer))
-            updateChunks()
+            updateTerrain()
+            updateDistantTerrain()
         } else {
             // TODO: Prevent login, server-side error
         }
     }
 
-    void updateChunks() {
-        def chunks = world.terrainBuffer.getChunksFromCoords(
-                (int) Math.floor(player.x), (int) Math.floor(player.y), (int) 256 / Chunk.CHUNK_SIZE)
+    void updateTerrain() {
+        def chunks = world.terrainBuffer.getChunksFromCoords(getTileX(), getTileY(), (int) 256 / Chunk.CHUNK_SIZE)
         chunks.each { chunk ->
             if (!this.chunks.contains(chunk)) {
                 sendChunk(chunk)
@@ -74,6 +77,25 @@ class PlayerHandler {
         send(new TerrainPacket(tiles: chunk.toArray()))
     }
 
+    void updateDistantTerrain() {
+        def x1 = (short) Math.max(0, getTileX() - 1024)
+        def y1 = (short) Math.max(0, getTileY() - 1024)
+        def map_size = Chunk.CHUNK_SIZE * TerrainBuffer.CHUNK_COUNT
+        def x2 = (short) Math.min(map_size - 1, getTileX() + 1024)
+        def y2 = (short) Math.min(map_size - 1, getTileY() + 1024)
+        x1 -= (short) x1 / 16
+        y1 -= (short) y1 / 16
+        x2 -= (short) x2 / 16
+        y2 -= (short) y2 / 16
+        def tiles = new Tile[y2 - y1 + 1][x2 - x1 + 1]
+        (x1..x2).each { x ->
+            (y1..y2).each { y ->
+                tiles[y][x] = world.terrainBuffer.getTile(x * 16, y * 16)
+            }
+        }
+        send(new DistantTerrainPacket(tiles: tiles))
+    }
+
     void save() {
         PlayerDAO dao = DB.instance.getDAO("playerDAO")
         dao.save(player)
@@ -84,7 +106,16 @@ class PlayerHandler {
         player.y = y
         player.z = z
         player.layer = layer
-        updateChunks()
+        updateTerrain()
+        updateDistantTerrain()
+    }
+
+    short getTileX() {
+        (short) Math.floor(player.x)
+    }
+
+    short getTileY() {
+        (short) Math.floor(player.y)
     }
 
 }
