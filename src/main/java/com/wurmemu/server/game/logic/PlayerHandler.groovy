@@ -78,15 +78,11 @@ class PlayerHandler {
     }
 
     void updateDistantTerrain() {
-        def x1 = (short) Math.max(0, getTileX() - 1024)
-        def y1 = (short) Math.max(0, getTileY() - 1024)
+        def x1 = (short) Math.max(0, getTileX() - 1024) / 16
+        def y1 = (short) Math.max(0, getTileY() - 1024) / 16
         def map_size = Chunk.CHUNK_SIZE * TerrainBuffer.CHUNK_COUNT
-        def x2 = (short) Math.min(map_size - 1, getTileX() + 1024)
-        def y2 = (short) Math.min(map_size - 1, getTileY() + 1024)
-        x1 -= (short) x1 / 16
-        y1 -= (short) y1 / 16
-        x2 -= (short) x2 / 16
-        y2 -= (short) y2 / 16
+        def x2 = (short) Math.min(map_size - 1, getTileX() + 1024) / 16
+        def y2 = (short) Math.min(map_size - 1, getTileY() + 1024) / 16
         def tiles = new Tile[y2 - y1 + 1][x2 - x1 + 1]
         (x1..x2).each { x ->
             (y1..y2).each { y ->
