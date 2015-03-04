@@ -4,20 +4,27 @@ class Protocol {
 
     // Client 3.54
 
+    public static final PACKET_STUNNED = 1
     public static final PACKET_CLIMBING = 2
     public static final PACKET_LOGIN = 3
-    public static final PACKET_SET_CREATURE_LAYER = 5
+    public static final PACKET_CREATURE_LAYER = 5
     public static final PACKET_HOST_HASH = 6
     public static final PACKET_TERRAIN = 7
     public static final PACKET_DISTANT_TERRAIN = 9
     public static final PACKET_FIGHTING_STYLE = 15
+    public static final PACKET_DEAD = 28
+    public static final PACKET_REMOVE_EFFECT = 35
     public static final PACKET_RENDER_STATS = 39
+    public static final PACKET_FORCE_QUIT = 46
     public static final PACKET_ROTATE_OBJECT = 52
     public static final PACKET_TELEPORT = 55
+    public static final PACKET_TOGGLE_FEATURE = 59
     public static final PACKET_TOGGLE_BUTTON = 62
     public static final PACKET_REMOVE_OBJECT = 67
     public static final PACKET_NO_MOVEMENT = 68
     public static final PACKET_REMOVE_MISSION = 70
+    public static final PACKET_CREATURE_PAINT = 75
+    public static final PACKET_CREATURE_SCALE = 77
     public static final PACKET_MOVEMENT = 79
     public static final PACKET_REMOVE_CREATURE = 80
     public static final PACKET_STACK_TRACE = 82

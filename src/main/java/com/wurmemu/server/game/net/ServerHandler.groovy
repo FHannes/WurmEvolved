@@ -1,6 +1,7 @@
 package com.wurmemu.server.game.net
 
 import com.wurmemu.common.constants.ChatColor
+import com.wurmemu.common.constants.ClientFeature
 import com.wurmemu.server.game.World
 import com.wurmemu.server.game.logic.PlayerHandler
 import com.wurmemu.server.game.net.packets.AbstractPacket
@@ -10,6 +11,7 @@ import com.wurmemu.server.game.net.packets.client.LoginPacket
 import com.wurmemu.server.game.net.packets.client.MovementPacket
 import com.wurmemu.server.game.net.packets.client.ToggleButtonPacket
 import com.wurmemu.server.game.net.packets.server.ServerMessagePacket
+import com.wurmemu.server.game.net.packets.server.ToggleFeaturePacket
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.channel.group.ChannelGroup
