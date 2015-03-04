@@ -2,6 +2,7 @@ package com.wurmemu.server.game.logic
 
 import com.wurmemu.server.game.World
 import com.wurmemu.server.game.data.Player
+import com.wurmemu.server.game.data.Position
 import com.wurmemu.server.game.data.Tile
 import com.wurmemu.server.game.data.db.DB
 import com.wurmemu.server.game.data.db.dao.PlayerDAO

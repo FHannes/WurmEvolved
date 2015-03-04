@@ -47,4 +47,14 @@ class World {
         }
     }
 
+    List<PlayerHandler> getPlayersInLocal(Position pos) {
+        def players = new ArrayList<PlayerHandler>()
+        this.players.each { player ->
+            if (player.player.pos.maxAxisDistance(pos) <= 50) {
+                players.add(player)
+            }
+        }
+        players
+    }
+
 }

@@ -42,4 +42,14 @@ class Position {
         y - getTileY()
     }
 
+    float distance(Position pos) {
+        def xDiff = pos.x - x
+        def yDiff = pos.y - y
+        Math.sqrt(xDiff * xDiff + yDiff * yDiff)
+    }
+
+    float maxAxisDistance(Position pos) {
+        Math.max(Math.abs(pos.x - x), Math.abs(pos.y - y))
+    }
+
 }
