@@ -5,19 +5,19 @@ import com.wurmemu.server.game.net.packets.AbstractPacket
 import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-@Packet(Protocol.PACKET_STACK_TRACE)
-class StackTracePacket extends AbstractPacket {
+@Packet(Protocol.PACKET_VELOCITY)
+class VelocityPacket extends AbstractPacket {
 
-    String trace
+    float velocity
 
     @Override
     encode(ByteBuf out) {
-        writeLongString(out, trace)
+        out.writeFloat(velocity)
     }
 
     static decode(ByteBuf frame) {
-        def trace = readLongString(frame)
-        new StackTracePacket(trace: trace)
+        def velocity = frame.readFloat()
+        new VelocityPacket(velocity: velocity)
     }
 
 }

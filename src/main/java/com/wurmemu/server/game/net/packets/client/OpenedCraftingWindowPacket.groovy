@@ -5,19 +5,16 @@ import com.wurmemu.server.game.net.packets.AbstractPacket
 import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-@Packet(Protocol.PACKET_STACK_TRACE)
-class StackTracePacket extends AbstractPacket {
-
-    String trace
+@Packet(Protocol.PACKET_OPENED_CRAFTING_WINDOW)
+class OpenedCraftingWindowPacket extends AbstractPacket {
 
     @Override
     encode(ByteBuf out) {
-        writeLongString(out, trace)
+
     }
 
     static decode(ByteBuf frame) {
-        def trace = readLongString(frame)
-        new StackTracePacket(trace: trace)
+        new OpenedCraftingWindowPacket()
     }
 
 }

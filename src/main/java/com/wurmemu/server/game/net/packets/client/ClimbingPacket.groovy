@@ -5,19 +5,19 @@ import com.wurmemu.server.game.net.packets.AbstractPacket
 import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-@Packet(Protocol.PACKET_STACK_TRACE)
-class StackTracePacket extends AbstractPacket {
+@Packet(Protocol.PACKET_CLIMBING)
+class ClimbingPacket extends AbstractPacket {
 
-    String trace
+    boolean enable
 
     @Override
     encode(ByteBuf out) {
-        writeLongString(out, trace)
+        out.writeBoolean(enable)
     }
 
     static decode(ByteBuf frame) {
-        def trace = readLongString(frame)
-        new StackTracePacket(trace: trace)
+        def enable = frame.readBoolean()
+        new ClimbingPacket(enable: enable)
     }
 
 }

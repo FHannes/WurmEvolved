@@ -19,8 +19,8 @@ class ToggleButtonPacket extends AbstractPacket {
 
     static decode(ByteBuf frame) {
         def buttonID = frame.readByte()
-        def toggledOn = frame.readBoolean()
-        new ToggleButtonPacket(buttonID: buttonID, toggleOn: toggledOn)
+        def toggleOn = frame.readBoolean()
+        new ToggleButtonPacket(buttonID: buttonID, toggleOn: toggleOn)
     }
 
 }

@@ -1,23 +1,21 @@
-package com.wurmemu.server.game.net.packets.client
+package com.wurmemu.server.game.net.packets.server
 
 import com.wurmemu.common.protocol.Protocol
+import com.wurmemu.server.game.data.Tile
 import com.wurmemu.server.game.net.packets.AbstractPacket
 import com.wurmemu.server.game.net.packets.Packet
 import io.netty.buffer.ByteBuf
 
-@Packet(Protocol.PACKET_STACK_TRACE)
-class StackTracePacket extends AbstractPacket {
-
-    String trace
+@Packet(Protocol.PACKET_VERSION_CHECK)
+class VersionCheckPacket extends AbstractPacket {
 
     @Override
     encode(ByteBuf out) {
-        writeLongString(out, trace)
+
     }
 
     static decode(ByteBuf frame) {
-        def trace = readLongString(frame)
-        new StackTracePacket(trace: trace)
+        new VersionCheckPacket()
     }
 
 }
