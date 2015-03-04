@@ -29,5 +29,6 @@ class Protocol {
     public static final PACKET_VELOCITY = 115
     public static final PACKET_CHANGE_MODEL = 217
     public static final PACKET_OPENED_CRAFTING_WINDOW = 219
+    public static final PACKET_FRIENDS = 246
 
 }
