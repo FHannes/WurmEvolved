@@ -13,16 +13,6 @@ class Player {
     @Column(name = "username", nullable = false)
     String username
 
-    @Column(name = "x", nullable = false)
-    float x = 0
-
-    @Column(name = "y", nullable = false)
-    float y = 0
-
-    @Column(name = "z", nullable = false)
-    float z = 0
-
-    @Column(name = "layer", nullable = false)
-    byte layer = 0
+    Position pos
 
 }

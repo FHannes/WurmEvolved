@@ -11,7 +11,7 @@ class PlayerFactory {
     private IDFactory idFactory
 
     PlayerFactory() {
-        dao = DB.instance.getDAO("playerDAO")
+        dao = (PlayerDAO) DB.instance.getDAO("playerDAO")
         idFactory = new IDFactory("player", EntityType.PLAYER)
     }
 

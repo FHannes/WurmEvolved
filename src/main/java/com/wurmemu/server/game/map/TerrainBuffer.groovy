@@ -1,5 +1,6 @@
 package com.wurmemu.server.game.map
 
+import com.wurmemu.server.game.data.Position
 import com.wurmemu.server.game.data.Tile
 import com.wurmemu.server.game.data.db.DB
 import com.wurmemu.server.game.data.db.dao.TileDAO
@@ -21,6 +22,10 @@ class TerrainBuffer {
 
     Tile getTile(int x, int y) {
         getChunk(Chunk.mapToChunk(x), Chunk.mapToChunk(y)).getTile(x % Chunk.CHUNK_SIZE, y % Chunk.CHUNK_SIZE)
+    }
+
+    void getTile(Position position) {
+        getTile(position.tileX, position.tileY)
     }
 
     void setTile(int x, int y, Tile tile) {
@@ -65,6 +70,21 @@ class TerrainBuffer {
 
     List<Chunk> getChunksFromCoords(int x, int y, int chunkRange) {
         getChunks(Chunk.mapToChunk(x), Chunk.mapToChunk(y), chunkRange)
+    }
+
+    void updatePosition(Position pos) {
+        def relX = pos.tileRelativeX
+        def relY = pos.tileRelativeY
+
+        Tile tile = getTile(pos)
+        Tile tileR = getTile(tile.pos.x + 1, tile.pos.y)
+        Tile tileD = getTile(tile.pos.x, tile.pos.y + 1)
+        Tile tileRD = getTile(tile.pos.x + 1, tile.pos.y + 1)
+
+        def top = relX * tile.height + (1 - relX) * tileR.height
+        def bottom = relX * tileD.height + (1 - relX) * tileRD.height
+
+        pos.z = (relY * top + (1 - relY) * bottom) / 10
     }
 
 }

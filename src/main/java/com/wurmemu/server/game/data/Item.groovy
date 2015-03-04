@@ -7,8 +7,9 @@ import javax.persistence.*
 class Item {
 
     @Id
-    @GeneratedValue
     @Column(name = "item_id", nullable = false)
     long id
+
+    Position position
 
 }

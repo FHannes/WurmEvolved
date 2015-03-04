@@ -13,7 +13,7 @@ class IDFactory {
     private IDBase base
 
     IDFactory(String name, int type) {
-        dao = DB.instance.getDAO("idBaseDAO")
+        dao = (IDBaseDAO) DB.instance.getDAO("idBaseDAO")
         base = dao.load(name)
         if (base == null) {
             base = new IDBase(name: name, base: new AtomicLong())

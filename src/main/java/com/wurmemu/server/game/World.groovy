@@ -1,5 +1,6 @@
 package com.wurmemu.server.game
 
+import com.wurmemu.server.game.data.Position
 import com.wurmemu.server.game.logic.PlayerHandler
 import com.wurmemu.server.game.map.TerrainBuffer
 import com.wurmemu.server.game.net.packets.AbstractPacket
@@ -36,6 +37,14 @@ class World {
 
     void load() {
         terrainBuffer.load()
+    }
+
+    void updatePosition(Position pos) {
+        if (pos.layer == 0) {
+            terrainBuffer.updatePosition(pos)
+        } else {
+            // TODO: Implement cave terrain
+        }
     }
 
 }

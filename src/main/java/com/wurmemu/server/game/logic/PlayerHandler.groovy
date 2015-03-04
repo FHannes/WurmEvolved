@@ -48,17 +48,15 @@ class PlayerHandler {
     void login() {
         if (world != null) {
             if (newPlayer) {
-                player.x = 512
-                player.y = 512
-                player.z = world.terrainBuffer.getTile(512, 512).height / 10
-                player.layer = 0
+                player.pos.x = 512
+                player.pos.y = 512
+                player.pos.layer = 0
+                world.updatePosition(player.pos)
                 save()
             }
             send(new LoginResponsePacket(
                     allowLogin: true, reason: "Welcome to WurmEvolved",
-                    layer: player.layer,
-                    x: player.x * 4, y: player.y * 4, z: player.z,
-                    developer: developer))
+                    pos: player.pos, developer: developer))
             updateTerrain()
             updateDistantTerrain()
         } else {
@@ -104,20 +102,23 @@ class PlayerHandler {
     }
 
     void move(float x, float y, float z, byte layer) {
-        player.x = x
-        player.y = y
-        player.z = z
-        player.layer = layer
+        player.pos.x = x
+        player.pos.y = y
+        player.pos.z = z
+        player.pos.layer = layer
+        if (!developer) {
+            world.updatePosition(player.pos)
+        }
         updateTerrain()
         updateDistantTerrain()
     }
 
     short getTileX() {
-        (short) Math.floor(player.x)
+        player.pos.tileX
     }
 
     short getTileY() {
-        (short) Math.floor(player.y)
+        player.pos.tileY
     }
 
 }
