@@ -27,7 +27,7 @@ public class Movement3DPacket extends AbstractPacket {
         out.writeLong(getCreatureID());
         out.writeShort((short) (getZ() * 10F));
         out.writeByte((byte) Math.round(getXOffset() * 40F));
-        out.writeByte((byte) 0); // Rotation
+        out.writeByte((byte) (getRot() / 360F * 256F)); // Rotation
         out.writeByte((byte) Math.round(getYOffset() * 40F));
     }
 

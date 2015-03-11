@@ -28,6 +28,8 @@ public class MovementHandler {
     // Movement data
     private float xOffset = 0;
     private float yOffset = 0;
+    private boolean zChanged = false;
+    private boolean rotChanged = false;
 
     public MovementHandler(World world, Player player) {
         this.world = world;
@@ -121,10 +123,13 @@ public class MovementHandler {
         // Send movement to other clients
         float sendXOffset = Math.round(xOffset * 40F) / 40F;
         float sendYOffset = Math.round(yOffset * 40F) / 40F;
-        if (sendXOffset != 0 || sendYOffset != 0) {
+        if (sendXOffset != 0 || sendYOffset != 0 || zChanged || rotChanged) {
             xOffset -= sendXOffset;
             yOffset -= sendYOffset;
-            Movement3DPacket packet = new Movement3DPacket(player.getId(), sendXOffset, sendYOffset, player.getPos().getZ(), 0);
+            zChanged = false;
+            rotChanged = false;
+            Movement3DPacket packet = new Movement3DPacket(
+                    player.getId(), sendXOffset, sendYOffset, player.getPos().getZ(), player.getPos().getRot());
             for (Player localPlayer : (localPlayers != null ? localPlayers : world.getPlayers().getLocal(player.getPos()))) {
                 if (player.equals(localPlayer)) {
                     continue;
@@ -143,6 +148,8 @@ public class MovementHandler {
     public void handle(MovementPacket packet) {
         xOffset += packet.getPos().getX() - player.getPos().getX();
         yOffset += packet.getPos().getY() - player.getPos().getY();
+        zChanged = packet.getPos().getZ() != player.getPos().getZ();
+        rotChanged = packet.getPos().getRot() != player.getPos().getRot();
         player.setPos(packet.getPos());
         update();
     }

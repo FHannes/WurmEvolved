@@ -22,6 +22,7 @@ public class PlayerFactory {
         player.setUsername(username);
         Position playerPos = new Position();
         playerPos.update(512, 512);
+        playerPos.setRot(0);
         playerPos.setLayer((byte) 0);
         player.setPos(playerPos);
         dao.save(player);

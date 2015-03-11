@@ -10,12 +10,10 @@ import io.netty.buffer.ByteBuf;
 public class MovementPacket extends AbstractPacket {
 
     private Position pos;
-    private float rotation;
     private byte detection;
 
-    public MovementPacket(Position pos, float rotation, byte detection) {
+    public MovementPacket(Position pos, byte detection) {
         this.pos = pos;
-        this.rotation = rotation;
         this.detection = detection;
     }
 
@@ -29,7 +27,7 @@ public class MovementPacket extends AbstractPacket {
         pos.setObjectX(frame.readFloat());
         pos.setObjectY(frame.readFloat());
         pos.setZ(frame.readFloat());
-        float rotation = frame.readFloat();
+        pos.setRot(frame.readFloat());
         byte detection = frame.readByte();
         pos.setLayer(frame.readByte());
         for (int idx = 0; idx < 5; idx++) {
@@ -41,15 +39,11 @@ public class MovementPacket extends AbstractPacket {
             frame.readByte();
             frame.readByte();
         }
-        return new MovementPacket(pos, rotation, detection);
+        return new MovementPacket(pos, detection);
     }
 
     public Position getPos() {
         return pos;
-    }
-
-    public float getRotation() {
-        return rotation;
     }
 
     public byte getDetection() {

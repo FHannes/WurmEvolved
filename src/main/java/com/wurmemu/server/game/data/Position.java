@@ -21,6 +21,9 @@ public class Position {
     @Column(name = "z", nullable = false)
     private float z;
 
+    @Column(name = "rot", nullable = false)
+    private float rot;
+
     @Column(name = "layer", nullable = false)
     private byte layer;
 
@@ -46,6 +49,14 @@ public class Position {
 
     public void setZ(float z) {
         this.z = z;
+    }
+
+    public float getRot() {
+        return rot;
+    }
+
+    public void setRot(float rot) {
+        this.rot = rot;
     }
 
     public byte getLayer() {
