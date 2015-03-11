@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "players")
@@ -25,6 +27,8 @@ public class Player implements GameEntity {
     private transient Channel channel;
 
     private transient boolean developer;
+
+    private transient Map<Long, GameEntity> local = new HashMap<>();
 
     @Override
     public long getId() {
@@ -74,6 +78,18 @@ public class Player implements GameEntity {
         if (channel != null) {
             channel.writeAndFlush(packet);
         }
+    }
+
+    public void addLocal(GameEntity entity) {
+        local.put(entity.getId(), entity);
+    }
+
+    public boolean hasLocal(GameEntity entity) {
+        return local.containsKey(entity.getId());
+    }
+
+    public void removeLocal(GameEntity entity) {
+        local.remove(entity.getId());
     }
 
 }

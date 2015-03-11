@@ -57,11 +57,19 @@ public class Position {
     }
 
     public float getObjectX() {
-        return x * 4;
+        return getX() * 4;
+    }
+
+    public void setObjectX(float x) {
+        setX(x / 4);
     }
 
     public float getObjectY() {
         return y * 4;
+    }
+
+    public void setObjectY(float y) {
+        setY(y / 4);
     }
 
     public short getTileX() {

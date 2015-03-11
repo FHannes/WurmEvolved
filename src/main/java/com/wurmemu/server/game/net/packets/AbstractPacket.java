@@ -20,12 +20,16 @@ public abstract class AbstractPacket {
         return 0;
     }
 
+    public static String readString(ByteBuf byteBuf, int length) {
+        return new String(byteBuf.readBytes(length).array());
+    }
+
     public static String readString(ByteBuf byteBuf) {
-        return new String(byteBuf.readBytes(byteBuf.readByte()).array());
+        return readString(byteBuf, byteBuf.readByte());
     }
 
     public static String readLongString(ByteBuf byteBuf) {
-        return new String(byteBuf.readBytes(byteBuf.readShort()).array());
+        return readString(byteBuf, byteBuf.readShort());
     }
 
     public static void writeString(ByteBuf byteBuf, String str) {

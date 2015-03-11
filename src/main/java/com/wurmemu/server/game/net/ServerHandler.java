@@ -45,8 +45,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
                 player.setChannel(ctx.channel());
                 player.send(new LoginResponsePacket(
                         true, "Welcome to WurmEvolved", player.getPos(), player.isDeveloper()));
-                movementHandler.updateTerrain();
-                movementHandler.updateDistantTerrain();
+                movementHandler.initLocal();
+                movementHandler.update();
             }
         } else {
             if (msg instanceof ClientMessagePacket) {

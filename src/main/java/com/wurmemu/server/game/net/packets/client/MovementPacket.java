@@ -1,6 +1,7 @@
 package com.wurmemu.server.game.net.packets.client;
 
 import com.wurmemu.common.protocol.Protocol;
+import com.wurmemu.server.game.data.Position;
 import com.wurmemu.server.game.net.packets.AbstractPacket;
 import com.wurmemu.server.game.net.packets.Packet;
 import io.netty.buffer.ByteBuf;
@@ -8,20 +9,14 @@ import io.netty.buffer.ByteBuf;
 @Packet(Protocol.PACKET_MOVEMENT)
 public class MovementPacket extends AbstractPacket {
 
-    private float x;
-    private float y;
-    private float z;
+    private Position pos;
     private float rotation;
     private byte detection;
-    private byte layer;
 
-    public MovementPacket(float x, float y, float z, float rotation, byte detection, byte layer) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public MovementPacket(Position pos, float rotation, byte detection) {
+        this.pos = pos;
         this.rotation = rotation;
         this.detection = detection;
-        this.layer = layer;
     }
 
     @Override
@@ -30,12 +25,13 @@ public class MovementPacket extends AbstractPacket {
     }
 
     public static AbstractPacket decode(ByteBuf frame) {
-        float x = frame.readFloat();
-        float y = frame.readFloat();
-        float z = frame.readFloat();
+        Position pos = new Position();
+        pos.setObjectX(frame.readFloat());
+        pos.setObjectY(frame.readFloat());
+        pos.setZ(frame.readFloat());
         float rotation = frame.readFloat();
         byte detection = frame.readByte();
-        byte layer = frame.readByte();
+        pos.setLayer(frame.readByte());
         for (int idx = 0; idx < 5; idx++) {
             // TODO: Figure out these values
             frame.readFloat();
@@ -45,19 +41,11 @@ public class MovementPacket extends AbstractPacket {
             frame.readByte();
             frame.readByte();
         }
-        return new MovementPacket(x, y, z, rotation, detection, layer);
+        return new MovementPacket(pos, rotation, detection);
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public float getZ() {
-        return z;
+    public Position getPos() {
+        return pos;
     }
 
     public float getRotation() {
@@ -66,10 +54,6 @@ public class MovementPacket extends AbstractPacket {
 
     public byte getDetection() {
         return detection;
-    }
-
-    public byte getLayer() {
-        return layer;
     }
 
 }

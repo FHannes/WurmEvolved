@@ -6,8 +6,7 @@ import com.wurmemu.server.game.data.Tile;
 import com.wurmemu.server.game.map.Chunk;
 import com.wurmemu.server.game.map.TerrainBuffer;
 import com.wurmemu.server.game.net.packets.client.MovementPacket;
-import com.wurmemu.server.game.net.packets.server.DistantTerrainPacket;
-import com.wurmemu.server.game.net.packets.server.TerrainPacket;
+import com.wurmemu.server.game.net.packets.server.*;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -22,6 +21,13 @@ public class MovementHandler {
     // Terrain data
     private Set<Chunk> chunks = new HashSet<>();
     private Point terrainPos;
+
+    // Local data
+    private Point localPos;
+
+    // Movement data
+    private float xOffset = 0;
+    private float yOffset = 0;
 
     public MovementHandler(World world, Player player) {
         this.world = world;
@@ -54,19 +60,91 @@ public class MovementHandler {
             Tile[][] tiles = new Tile[y2 - y1 + 1][x2 - x1 + 1];
             for (short x = x1; x <= x2; x++) {
                 for (short y = y1; y <= y2; y++) {
-                    tiles[y][x] = world.getTerrainBuffer().getTile((short) (x * 16), (short) (y * 16));
+                    tiles[y - y1][x - x1] = world.getTerrainBuffer().getTile((short) (x * 16), (short) (y * 16));
                 }
             }
             player.send(new DistantTerrainPacket(tiles));
         }
     }
 
-    public void handle(MovementPacket packet) {
-        player.getPos().update(packet.getX() / 4, packet.getY() / 4);
-        player.getPos().setZ(packet.getZ());
-        player.getPos().setLayer(packet.getLayer());
+    /**
+     * Initializes the player's own local environment. This method is to be called after login. All further updates to
+     * local will only be performed as needed.
+     */
+    public void initLocal() {
+        for (Player localPlayer : world.getPlayers().getLocal(player.getPos())) {
+            if (player.equals(localPlayer)) {
+                continue;
+            }
+            player.addLocal(localPlayer);
+            player.send(new AddCreaturePacket(
+                    localPlayer.getId(), "model.creature.humanoid.human.player.male.free", localPlayer.getPos(),
+                    localPlayer.getUsername()));
+        }
+    }
+
+    /**
+     * Updates all other players if this player has moved in or out of their local. This will also send the movements of
+     * the player to all other players in local.
+     */
+    public void updatePlayerLocals() {
+        Set<Player> localPlayers = null;
+
+        // Add or remove players from local
+        if (localPos == null || terrainPos.distance(player.getPos().getTileX(), player.getPos().getTileY()) > 0) {
+            localPlayers = world.getPlayers().getLocal(player.getPos());
+            localPos = new Point(player.getPos().getTileX(), player.getPos().getTileY());
+            AddCreaturePacket packetAdd = new AddCreaturePacket(
+                    player.getId(), "model.creature.humanoid.human.player.male.free", player.getPos(),
+                    player.getUsername());
+            RemoveCreaturePacket packetRemove = new RemoveCreaturePacket(player.getId());
+            for (Player worldPlayer : world.getPlayers().all()) {
+                if (worldPlayer.equals(player)) {
+                    continue;
+                }
+                if (localPlayers.contains(worldPlayer)) {
+                    boolean hasPlayer = worldPlayer.hasLocal(player);
+                    if (!hasPlayer) {
+                        worldPlayer.addLocal(player);
+                        worldPlayer.send(packetAdd);
+                    }
+                } else {
+                    boolean hasPlayer = worldPlayer.hasLocal(player);
+                    if (hasPlayer) {
+                        worldPlayer.removeLocal(player);
+                        worldPlayer.send(packetRemove);
+                    }
+                }
+            }
+        }
+
+        // Send movement to other clients
+        float sendXOffset = Math.round(xOffset * 40F) / 40F;
+        float sendYOffset = Math.round(yOffset * 40F) / 40F;
+        if (sendXOffset != 0 || sendYOffset != 0) {
+            xOffset -= sendXOffset;
+            yOffset -= sendYOffset;
+            Movement3DPacket packet = new Movement3DPacket(player.getId(), sendXOffset, sendYOffset, player.getPos().getZ(), 0);
+            for (Player localPlayer : (localPlayers != null ? localPlayers : world.getPlayers().getLocal(player.getPos()))) {
+                if (player.equals(localPlayer)) {
+                    continue;
+                }
+                localPlayer.send(packet);
+            }
+        }
+    }
+
+    public void update() {
         updateTerrain();
         updateDistantTerrain();
+        updatePlayerLocals();
+    }
+
+    public void handle(MovementPacket packet) {
+        xOffset += packet.getPos().getX() - player.getPos().getX();
+        yOffset += packet.getPos().getY() - player.getPos().getY();
+        player.setPos(packet.getPos());
+        update();
     }
 
 }

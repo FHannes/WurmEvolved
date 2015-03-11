@@ -7,9 +7,7 @@ import com.wurmemu.server.game.data.db.dao.PlayerDAO;
 import com.wurmemu.server.game.data.factory.PlayerFactory;
 import com.wurmemu.server.game.net.packets.AbstractPacket;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerList {
@@ -42,9 +40,13 @@ public class PlayerList {
         }
     }
 
-    public List<Player> getLocal(Position pos) {
-        List<Player> players = new ArrayList<>();
-        for (Player player : players) {
+    public Collection<Player> all() {
+        return players.values();
+    }
+
+    public Set<Player> getLocal(Position pos) {
+        Set<Player> players = new HashSet<>();
+        for (Player player : this.players.values()) {
             if (player.getPos().maxAxisDistance(pos) <= 50) {
                 players.add(player);
             }
