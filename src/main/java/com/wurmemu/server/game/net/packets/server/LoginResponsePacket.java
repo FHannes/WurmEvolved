@@ -34,7 +34,7 @@ public class LoginResponsePacket extends AbstractPacket {
         out.writeByte(getPos().getLayer());
         out.writeLong(System.currentTimeMillis() * 8);
         out.writeLong(System.currentTimeMillis() * 8);
-        out.writeFloat(0);
+        out.writeFloat(getPos().getRot());
         out.writeFloat(getPos().getObjectX());
         out.writeFloat(getPos().getObjectY());
         out.writeFloat(getPos().getZ());
