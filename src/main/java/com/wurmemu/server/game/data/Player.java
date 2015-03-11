@@ -1,8 +1,13 @@
 package com.wurmemu.server.game.data;
 
 import com.wurmemu.server.game.logic.entities.GameEntity;
+import com.wurmemu.server.game.net.packets.AbstractPacket;
+import io.netty.channel.Channel;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "players")
@@ -16,6 +21,10 @@ public class Player implements GameEntity {
     private String username;
 
     private Position pos;
+
+    private transient Channel channel;
+
+    private transient boolean developer;
 
     @Override
     public long getId() {
@@ -43,6 +52,28 @@ public class Player implements GameEntity {
     @Override
     public void setPos(Position pos) {
         this.pos = pos;
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
+
+    public boolean isDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(boolean developer) {
+        this.developer = developer;
+    }
+
+    public void send(AbstractPacket packet) {
+        if (channel != null) {
+            channel.writeAndFlush(packet);
+        }
     }
 
 }

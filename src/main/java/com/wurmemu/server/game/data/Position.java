@@ -3,6 +3,12 @@ package com.wurmemu.server.game.data;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+/**
+ * Objects of this class represent positions in the game world. The coordinates consist out of an (x, y) for the
+ * position, z for the height and finally the layer for the game layer on which the position is located. All (x, y)
+ * coordinates are represented as tile coordinates, to avoid using two different coordinates systems as the client does.
+ * The object coordinates the client uses can be obtained with {@link #getObjectX()} and {@link #getObjectY()}.
+ */
 @Embeddable
 public class Position {
 
@@ -50,11 +56,11 @@ public class Position {
         this.layer = layer;
     }
 
-    public float getClientX() {
+    public float getObjectX() {
         return x * 4;
     }
 
-    public float getClientY() {
+    public float getObjectY() {
         return y * 4;
     }
 
@@ -66,11 +72,11 @@ public class Position {
         return (short) Math.floor(y);
     }
 
-    public short getTileRelativeX() {
+    public short getTileRelX() {
         return (short) (x - getTileX());
     }
 
-    public short getTileRelativeY() {
+    public short getTileRelY() {
         return (short) (y - getTileY());
     }
 
@@ -81,7 +87,12 @@ public class Position {
     }
 
     public float maxAxisDistance(Position pos) {
-        return (float) Math.max(Math.abs(pos.x - x), Math.abs(pos.y - y));
+        return Math.max(Math.abs(pos.x - x), Math.abs(pos.y - y));
+    }
+
+    public void update(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 
 }

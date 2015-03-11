@@ -82,8 +82,8 @@ public class TerrainBuffer {
     }
 
     public void updatePosition(Position pos) {
-        short relX = pos.getTileRelativeX();
-        short relY = pos.getTileRelativeX();
+        short relX = pos.getTileRelX();
+        short relY = pos.getTileRelX();
 
         Tile tile = getTile(pos);
         Tile tileR = getTile((short) (tile.getPos().getX() + 1), tile.getPos().getY());

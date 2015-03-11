@@ -29,8 +29,8 @@ public class LoginResponsePacket extends AbstractPacket {
         out.writeLong(System.currentTimeMillis() * 8);
         out.writeLong(System.currentTimeMillis() * 8);
         out.writeFloat(0);
-        out.writeFloat(getPos().getClientX());
-        out.writeFloat(getPos().getClientY());
+        out.writeFloat(getPos().getObjectX());
+        out.writeFloat(getPos().getObjectY());
         out.writeFloat(getPos().getZ());
         writeLongString(out, "model.creature.humanoid.human.player.male.free");
         out.writeBoolean(isDeveloper());
