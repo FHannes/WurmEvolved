@@ -140,6 +140,18 @@ public class MovementHandler {
         }
     }
 
+    public void leaveWorld() {
+        world.getPlayers().remove(player);
+        RemoveCreaturePacket packetRemove = new RemoveCreaturePacket(player.getId());
+        for (Player worldPlayer : world.getPlayers().all()) {
+            if (worldPlayer.hasLocal(player)) {
+                worldPlayer.removeLocal(player);
+                worldPlayer.send(packetRemove);
+            }
+        }
+        world.getPlayers().save(player);
+    }
+
     public void update() {
         updateTerrain();
         updateDistantTerrain();

@@ -81,8 +81,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        if (player != null) {
-            world.getPlayers().remove(player);
+        if (movementHandler != null) {
+            movementHandler.leaveWorld();
         }
 
         super.channelInactive(ctx);

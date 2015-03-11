@@ -54,4 +54,8 @@ public class PlayerList {
         return players;
     }
 
+    public void save(Player player) {
+        dao.save(player);
+    }
+
 }

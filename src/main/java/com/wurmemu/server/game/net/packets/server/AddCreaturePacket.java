@@ -39,7 +39,7 @@ public class AddCreaturePacket extends AbstractPacket {
         out.writeFloat(getPos().getObjectX());
         out.writeBytes(getModel().getBytes());
         out.writeFloat(getPos().getZ());
-        out.writeFloat(0); // Rotation
+        out.writeFloat(getPos().getRot()); 
         writeString(out, name);
         out.writeBoolean(true); // Never submerge
         out.writeByte(getPos().getLayer());
