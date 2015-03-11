@@ -1,6 +1,8 @@
 package com.wurmemu.server.game.net.packets.server;
 
+import com.wurmemu.common.constants.Kingdom;
 import com.wurmemu.common.protocol.Protocol;
+import com.wurmemu.server.game.data.FaceStyle;
 import com.wurmemu.server.game.data.Position;
 import com.wurmemu.server.game.net.packets.AbstractPacket;
 import com.wurmemu.server.game.net.packets.Packet;
@@ -13,12 +15,16 @@ public class LoginResponsePacket extends AbstractPacket {
     String reason;
     Position pos;
     boolean developer;
+    FaceStyle faceStyle;
+    Kingdom kingdom;
 
-    public LoginResponsePacket(boolean allowLogin, String reason, Position pos, boolean developer) {
+    public LoginResponsePacket(boolean allowLogin, String reason, Position pos, boolean developer, FaceStyle faceStyle, Kingdom kingdom) {
         this.allowLogin = allowLogin;
         this.reason = reason;
         this.pos = pos;
         this.developer = developer;
+        this.faceStyle = faceStyle;
+        this.kingdom = kingdom;
     }
 
     @Override
@@ -36,8 +42,8 @@ public class LoginResponsePacket extends AbstractPacket {
         out.writeBoolean(isDeveloper());
         out.writeBoolean(false);
         out.writeShort(0);
-        out.writeLong(0);
-        out.writeByte(0);
+        out.writeLong(faceStyle.toLong());
+        out.writeByte(kingdom.ordinal());
         out.writeInt(0);
         out.writeByte(0);
     }

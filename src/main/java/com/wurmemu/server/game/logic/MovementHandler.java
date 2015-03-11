@@ -81,7 +81,7 @@ public class MovementHandler {
             player.addLocal(localPlayer);
             player.send(new AddCreaturePacket(
                     localPlayer.getId(), "model.creature.humanoid.human.player.male.free", localPlayer.getPos(),
-                    localPlayer.getUsername()));
+                    localPlayer.getUsername(), localPlayer.getKingdom(), localPlayer.getFaceStyle()));
         }
     }
 
@@ -98,7 +98,7 @@ public class MovementHandler {
             localPos = new Point(player.getPos().getTileX(), player.getPos().getTileY());
             AddCreaturePacket packetAdd = new AddCreaturePacket(
                     player.getId(), "model.creature.humanoid.human.player.male.free", player.getPos(),
-                    player.getUsername());
+                    player.getUsername(), player.getKingdom(), player.getFaceStyle());
             RemoveCreaturePacket packetRemove = new RemoveCreaturePacket(player.getId());
             for (Player worldPlayer : world.getPlayers().all()) {
                 if (worldPlayer.equals(player)) {

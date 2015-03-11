@@ -1,6 +1,8 @@
 package com.wurmemu.server.game.net.packets.server;
 
+import com.wurmemu.common.constants.Kingdom;
 import com.wurmemu.common.protocol.Protocol;
+import com.wurmemu.server.game.data.FaceStyle;
 import com.wurmemu.server.game.data.Position;
 import com.wurmemu.server.game.net.packets.AbstractPacket;
 import com.wurmemu.server.game.net.packets.Packet;
@@ -13,12 +15,16 @@ public class AddCreaturePacket extends AbstractPacket {
     private String model;
     private Position pos;
     private String name;
+    private Kingdom kingdom;
+    private FaceStyle faceStyle;
 
-    public AddCreaturePacket(long playerID, String model, Position pos, String name) {
+    public AddCreaturePacket(long playerID, String model, Position pos, String name, Kingdom kingdom, FaceStyle faceStyle) {
         this.playerID = playerID;
         this.model = model;
         this.pos = pos;
         this.name = name;
+        this.kingdom = kingdom;
+        this.faceStyle = faceStyle;
     }
 
     @Override
@@ -36,8 +42,8 @@ public class AddCreaturePacket extends AbstractPacket {
         out.writeByte(getPos().getLayer());
         out.writeByte(0);
         out.writeByte(0); // Material
-        out.writeByte(0); // Kingdom
-        out.writeLong(0);
+        out.writeByte(kingdom.ordinal()); // Kingdom
+        out.writeLong(faceStyle.toLong());
         out.writeByte(0);
         out.writeByte(0); // Rarity (Optional)
     }
@@ -57,8 +63,9 @@ public class AddCreaturePacket extends AbstractPacket {
         pos.setLayer(frame.readByte());
         byte unknown = frame.readByte();
         frame.readByte();
-        frame.readByte();
-        frame.readLong();
+        Kingdom kingdom = Kingdom.values()[frame.readByte() & 0xFF];
+        FaceStyle faceStyle = new FaceStyle();
+        faceStyle.fromLong(frame.readLong());
         if (unknown == 1) {
             frame.readInt();
         }
@@ -66,7 +73,7 @@ public class AddCreaturePacket extends AbstractPacket {
         if (frame.isReadable()) {
             frame.readByte();
         }
-        return new AddCreaturePacket(playerID, model, pos, name);
+        return new AddCreaturePacket(playerID, model, pos, name, kingdom, faceStyle);
     }
 
     public long getPlayerID() {
@@ -83,6 +90,14 @@ public class AddCreaturePacket extends AbstractPacket {
 
     public String getName() {
         return name;
+    }
+
+    public Kingdom getKingdom() {
+        return kingdom;
+    }
+
+    public FaceStyle getFaceStyle() {
+        return faceStyle;
     }
 
 }

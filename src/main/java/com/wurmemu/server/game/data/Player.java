@@ -1,13 +1,11 @@
 package com.wurmemu.server.game.data;
 
+import com.wurmemu.common.constants.Kingdom;
 import com.wurmemu.server.game.logic.entities.GameEntity;
 import com.wurmemu.server.game.net.packets.AbstractPacket;
 import io.netty.channel.Channel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +21,15 @@ public class Player implements GameEntity {
     private String username;
 
     private Position pos;
+
+    @Column(name = "male", nullable = false)
+    private boolean male;
+
+    private FaceStyle faceStyle;
+
+    @Enumerated
+    @Column(name = "kingdom", nullable = false)
+    private Kingdom kingdom;
 
     private transient Channel channel;
 
@@ -56,6 +63,31 @@ public class Player implements GameEntity {
     @Override
     public void setPos(Position pos) {
         this.pos = pos;
+    }
+
+    public boolean isMale() {
+        return male;
+    }
+
+    public FaceStyle getFaceStyle() {
+        return faceStyle;
+    }
+
+    public void setFaceStyle(FaceStyle faceStyle) {
+        this.faceStyle = faceStyle;
+    }
+
+    public void setMale(boolean male) {
+        this.male = male;
+
+    }
+
+    public Kingdom getKingdom() {
+        return kingdom;
+    }
+
+    public void setKingdom(Kingdom kingdom) {
+        this.kingdom = kingdom;
     }
 
     public Channel getChannel() {
