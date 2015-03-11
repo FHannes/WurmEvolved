@@ -124,4 +124,9 @@ public class Player implements GameEntity {
         local.remove(entity.getId());
     }
 
+    public String getModel() {
+        return String.format("model.creature.humanoid.human.player.%s.%s",
+                isMale() ? "male" : "female", getKingdom().getResName());
+    }
+
 }

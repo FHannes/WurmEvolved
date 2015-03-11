@@ -14,14 +14,16 @@ public class LoginResponsePacket extends AbstractPacket {
     boolean allowLogin;
     String reason;
     Position pos;
+    String model;
     boolean developer;
     FaceStyle faceStyle;
     Kingdom kingdom;
 
-    public LoginResponsePacket(boolean allowLogin, String reason, Position pos, boolean developer, FaceStyle faceStyle, Kingdom kingdom) {
+    public LoginResponsePacket(boolean allowLogin, String reason, Position pos, String model, boolean developer, FaceStyle faceStyle, Kingdom kingdom) {
         this.allowLogin = allowLogin;
         this.reason = reason;
         this.pos = pos;
+        this.model = model;
         this.developer = developer;
         this.faceStyle = faceStyle;
         this.kingdom = kingdom;
@@ -38,14 +40,14 @@ public class LoginResponsePacket extends AbstractPacket {
         out.writeFloat(getPos().getObjectX());
         out.writeFloat(getPos().getObjectY());
         out.writeFloat(getPos().getZ());
-        writeLongString(out, "model.creature.humanoid.human.player.male.free");
+        writeLongString(out, getModel());
         out.writeBoolean(isDeveloper());
         out.writeBoolean(false);
         out.writeShort(0);
-        out.writeLong(faceStyle.toLong());
-        out.writeByte(kingdom.ordinal());
-        out.writeInt(0);
-        out.writeByte(0);
+        out.writeLong(getFaceStyle().toLong());
+        out.writeByte(getKingdom().ordinal());
+        out.writeInt(0); // Teleport ID
+        out.writeByte(0); // Hair type (no use as of yet [3.83], leave 0)
     }
 
     public boolean isAllowLogin() {
@@ -60,8 +62,20 @@ public class LoginResponsePacket extends AbstractPacket {
         return pos;
     }
 
+    public String getModel() {
+        return model;
+    }
+
     public boolean isDeveloper() {
         return developer;
+    }
+
+    public FaceStyle getFaceStyle() {
+        return faceStyle;
+    }
+
+    public Kingdom getKingdom() {
+        return kingdom;
     }
 
 }
