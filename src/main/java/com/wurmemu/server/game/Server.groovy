@@ -31,7 +31,7 @@ class Server {
         if (mapResource != null) {
             File mapFile = Paths.get(mapResource.toURI()).toFile()
             if (mapFile.exists()) {
-                new LegacyLoader(mapFile: mapFile, size: 1024).load(world.terrainBuffer)
+                new LegacyLoader(mapFile, 1024).load(world.terrainBuffer)
             }
         }
 

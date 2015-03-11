@@ -55,9 +55,7 @@ class PlayerHandler {
                 world.updatePosition(player.pos)
                 save()
             }
-            send(new LoginResponsePacket(
-                    allowLogin: true, reason: "Welcome to WurmEvolved",
-                    pos: player.pos, developer: developer))
+            send(new LoginResponsePacket(true, "Welcome to WurmEvolved", player.pos, developer))
             updateTerrain()
             updateDistantTerrain()
         } else {
@@ -66,7 +64,7 @@ class PlayerHandler {
     }
 
     void updateTerrain() {
-        def chunks = world.terrainBuffer.getChunksFromCoords(getTileX(), getTileY(), (int) 192 / Chunk.CHUNK_SIZE)
+        def chunks = world.terrainBuffer.getChunksFromCoords(getTileX(), getTileY(), (short) 192 / Chunk.CHUNK_SIZE)
         chunks.each { chunk ->
             if (!this.chunks.contains(chunk)) {
                 sendChunk(chunk)
@@ -76,7 +74,7 @@ class PlayerHandler {
     }
 
     void sendChunk(Chunk chunk) {
-        send(new TerrainPacket(tiles: chunk.toArray()))
+        send(new TerrainPacket(chunk.toArray()))
     }
 
     void updateDistantTerrain() {
@@ -90,10 +88,10 @@ class PlayerHandler {
             def tiles = new Tile[y2 - y1 + 1][x2 - x1 + 1]
             (x1..x2).each { x ->
                 (y1..y2).each { y ->
-                    tiles[y][x] = world.terrainBuffer.getTile(x * 16, y * 16)
+                    tiles[y][x] = world.terrainBuffer.getTile((short) x * 16, (short) y * 16)
                 }
             }
-            send(new DistantTerrainPacket(tiles: tiles))
+            send(new DistantTerrainPacket(tiles))
         }
     }
 

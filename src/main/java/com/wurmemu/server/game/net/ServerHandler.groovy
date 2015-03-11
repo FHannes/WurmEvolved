@@ -29,9 +29,9 @@ class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
             }
         } else {
             if (msg instanceof ClientMessagePacket) {
-                def packet = new ServerMessagePacket(channel: msg.channel,
-                        message: "<${playerHandler.player.username}> ${msg.message}",
-                        color: ChatColor.WHITE)
+                def packet = new ServerMessagePacket(msg.channel,
+                        "<${playerHandler.player.username}> ${msg.message}",
+                        ChatColor.WHITE)
                 if (msg.channel.equals(":Local")) {
                     world.getPlayersInLocal(playerHandler.player.pos).each { playerHandler ->
                         playerHandler.send(packet)
