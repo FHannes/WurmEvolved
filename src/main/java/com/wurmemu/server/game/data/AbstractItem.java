@@ -62,6 +62,14 @@ public abstract class AbstractItem implements GameEntity {
         this.pos = pos;
     }
 
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
     public abstract String getName();
 
     public abstract boolean isContainer();
