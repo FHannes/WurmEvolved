@@ -125,8 +125,12 @@ public class Player implements GameEntity {
     }
 
     public String getModel() {
-        return String.format("model.creature.humanoid.human.player.%s.%s",
-                isMale() ? "male" : "female", getKingdom().getResName());
+        if (isDeveloper()) {
+            return "model.creature.gmdark";
+        } else {
+            return String.format("model.creature.humanoid.human.player.%s.%s",
+                    isMale() ? "male" : "female", getKingdom().getResName());
+        }
     }
 
 }

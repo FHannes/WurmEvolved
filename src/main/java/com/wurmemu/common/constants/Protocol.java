@@ -1,4 +1,4 @@
-package com.wurmemu.common.protocol;
+package com.wurmemu.common.constants;
 
 public class Protocol {
 
