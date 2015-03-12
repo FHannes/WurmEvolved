@@ -1,5 +1,6 @@
 package com.wurmemu.server.game.logic;
 
+import com.wurmemu.common.constants.ChatColor;
 import com.wurmemu.common.constants.CreatureType;
 import com.wurmemu.server.game.World;
 import com.wurmemu.server.game.data.Player;
@@ -148,6 +149,11 @@ public class MovementHandler {
                 worldPlayer.removeLocal(player);
                 worldPlayer.send(packetRemove);
             }
+        }
+        ServerMessagePacket packet = new ServerMessagePacket(
+                ":Event", String.format("%s has left the world!", player.getUsername()), ChatColor.GREEN);
+        for (Player localPlayer : world.getPlayers().getLocal(player.getPos())) {
+            localPlayer.send(packet);
         }
         world.getPlayers().save(player);
     }

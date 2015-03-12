@@ -48,6 +48,14 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
                         player.getFaceStyle(), player.getKingdom()));
                 movementHandler.initLocal();
                 movementHandler.update();
+                ServerMessagePacket packet = new ServerMessagePacket(
+                        ":Event", String.format("%s has joined the game!", player.getUsername()), ChatColor.GREEN);
+                for (Player localPlayer : world.getPlayers().getLocal(player.getPos())) {
+                    if (localPlayer.equals(player)) {
+                        continue;
+                    }
+                    localPlayer.send(packet);
+                }
             }
         } else {
             if (msg instanceof ClientMessagePacket) {
