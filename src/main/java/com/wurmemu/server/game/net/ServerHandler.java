@@ -41,10 +41,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
                 LoginPacket msgLogin = (LoginPacket) msg;
                 init(world.getPlayers().load(msgLogin.getUsername()));
                 world.updatePosition(player.getPos());
-                player.setDeveloper(msgLogin.isDeveloper());
                 player.setChannel(ctx.channel());
                 player.send(new LoginResponsePacket(
-                        true, "Welcome to WurmEvolved", player.getPos(), player.getModel(), player.isDeveloper(),
+                        true, "Welcome to WurmEvolved", player.getPos(), player.getModel(), player.getType(),
                         player.getFaceStyle(), player.getKingdom()));
                 movementHandler.initLocal();
                 movementHandler.update();

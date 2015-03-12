@@ -1,6 +1,7 @@
 package com.wurmemu.server.game.net.packets.server;
 
 import com.wurmemu.common.constants.Kingdom;
+import com.wurmemu.common.constants.PlayerType;
 import com.wurmemu.common.protocol.Protocol;
 import com.wurmemu.server.game.data.FaceStyle;
 import com.wurmemu.server.game.data.Position;
@@ -15,16 +16,16 @@ public class LoginResponsePacket extends AbstractPacket {
     String reason;
     Position pos;
     String model;
-    boolean developer;
+    PlayerType playerType;
     FaceStyle faceStyle;
     Kingdom kingdom;
 
-    public LoginResponsePacket(boolean allowLogin, String reason, Position pos, String model, boolean developer, FaceStyle faceStyle, Kingdom kingdom) {
+    public LoginResponsePacket(boolean allowLogin, String reason, Position pos, String model, PlayerType playerType, FaceStyle faceStyle, Kingdom kingdom) {
         this.allowLogin = allowLogin;
         this.reason = reason;
         this.pos = pos;
         this.model = model;
-        this.developer = developer;
+        this.playerType = playerType;
         this.faceStyle = faceStyle;
         this.kingdom = kingdom;
     }
@@ -41,7 +42,7 @@ public class LoginResponsePacket extends AbstractPacket {
         out.writeFloat(getPos().getObjectY());
         out.writeFloat(getPos().getZ());
         writeLongString(out, getModel());
-        out.writeBoolean(isDeveloper());
+        out.writeByte(getPlayerType().ordinal());
         out.writeBoolean(false);
         out.writeShort(0);
         out.writeLong(getFaceStyle().toLong());
@@ -66,8 +67,8 @@ public class LoginResponsePacket extends AbstractPacket {
         return model;
     }
 
-    public boolean isDeveloper() {
-        return developer;
+    public PlayerType getPlayerType() {
+        return playerType;
     }
 
     public FaceStyle getFaceStyle() {

@@ -1,6 +1,7 @@
 package com.wurmemu.server.game.data;
 
 import com.wurmemu.common.constants.Kingdom;
+import com.wurmemu.common.constants.PlayerType;
 import com.wurmemu.server.game.logic.entities.GameEntity;
 import com.wurmemu.server.game.net.packets.AbstractPacket;
 import io.netty.channel.Channel;
@@ -20,6 +21,10 @@ public class Player implements GameEntity {
     @Column(name = "username", nullable = false)
     private String username;
 
+    @Enumerated
+    @Column(name = "type", nullable = false)
+    private PlayerType type;
+
     private Position pos;
 
     @Column(name = "male", nullable = false)
@@ -36,8 +41,6 @@ public class Player implements GameEntity {
     private AbstractItem inventory;
 
     private transient Channel channel;
-
-    private transient boolean developer;
 
     private transient Map<Long, GameEntity> local = new HashMap<>();
 
@@ -57,6 +60,14 @@ public class Player implements GameEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public PlayerType getType() {
+        return type;
+    }
+
+    public void setType(PlayerType type) {
+        this.type = type;
     }
 
     @Override
@@ -110,14 +121,6 @@ public class Player implements GameEntity {
         this.channel = channel;
     }
 
-    public boolean isDeveloper() {
-        return developer;
-    }
-
-    public void setDeveloper(boolean developer) {
-        this.developer = developer;
-    }
-
     public void send(AbstractPacket packet) {
         if (channel != null) {
             channel.writeAndFlush(packet);
@@ -137,11 +140,14 @@ public class Player implements GameEntity {
     }
 
     public String getModel() {
-        if (isDeveloper()) {
-            return "model.creature.gmdark";
-        } else {
-            return String.format("model.creature.humanoid.human.player.%s.%s",
-                    isMale() ? "male" : "female", getKingdom().getResName());
+        switch (getType()) {
+            case DEV:
+                return "model.creature.gmdark";
+            case GM:
+                return "model.creature.humanoid.human.skeleton";
+            default:
+                return String.format("model.creature.humanoid.human.player.%s.%s",
+                        isMale() ? "male" : "female", getKingdom().getResName());
         }
     }
 

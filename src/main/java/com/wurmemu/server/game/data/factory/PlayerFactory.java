@@ -2,6 +2,7 @@ package com.wurmemu.server.game.data.factory;
 
 import com.wurmemu.common.constants.EntityType;
 import com.wurmemu.common.constants.Kingdom;
+import com.wurmemu.common.constants.PlayerType;
 import com.wurmemu.server.game.data.FaceStyle;
 import com.wurmemu.server.game.data.Player;
 import com.wurmemu.server.game.data.Position;
@@ -28,6 +29,7 @@ public class PlayerFactory {
         Player player = new Player();
         player.setId(idFactory.makeID());
         player.setUsername(username);
+        player.setType(PlayerType.REGULAR);
         Position playerPos = new Position();
         playerPos.update(512, 512);
         playerPos.setRot(0);
