@@ -5,7 +5,7 @@ import com.wurmemu.server.game.net.packets.AbstractPacket;
 import com.wurmemu.server.game.net.packets.Packet;
 import io.netty.buffer.ByteBuf;
 
-import java.awt.Color;
+import java.awt.*;
 
 @Packet(Protocol.PACKET_CREATURE_PAINT)
 public class CreaturePaintPacket extends AbstractPacket {

@@ -7,7 +7,10 @@ import com.wurmemu.server.game.data.db.dao.PlayerDAO;
 import com.wurmemu.server.game.data.factory.PlayerFactory;
 import com.wurmemu.server.game.net.packets.AbstractPacket;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerList {

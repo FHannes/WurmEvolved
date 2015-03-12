@@ -2,8 +2,8 @@ package com.wurmemu.server.game.net.packets.server;
 
 import com.wurmemu.common.protocol.Protocol;
 import com.wurmemu.server.game.net.packets.AbstractPacket;
-import com.wurmemu.server.game.net.packets.common.MessagePacket;
 import com.wurmemu.server.game.net.packets.Packet;
+import com.wurmemu.server.game.net.packets.common.MessagePacket;
 import io.netty.buffer.ByteBuf;
 
 import java.awt.*;

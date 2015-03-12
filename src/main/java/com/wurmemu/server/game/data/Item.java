@@ -1,37 +1,47 @@
 package com.wurmemu.server.game.data;
 
-import com.wurmemu.server.game.logic.entities.GameEntity;
+import com.wurmemu.common.constants.ItemIcon;
+import com.wurmemu.common.constants.ItemType;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "items")
-public class Item implements GameEntity {
+@DiscriminatorValue("T")
+@Table(name = "typed_items")
+public class Item extends AbstractItem {
 
-    @Id
-    @Column(name = "item_id", nullable = false)
-    private long id;
+    @Column(name = "type", nullable = false)
+    private ItemType type;
 
-    private Position pos;
+    public ItemType getType() {
+        return type;
+    }
 
-    @Override
-    public long getId() {
-        return id;
+    public void setType(ItemType type) {
+        this.type = type;
     }
 
     @Override
-    public void setId(long id) {
-        this.id = id;
+    public String getName() {
+        return type.getName();
     }
 
     @Override
-    public Position getPos() {
-        return pos;
+    public boolean isContainer() {
+        return type.isContainer();
     }
 
     @Override
-    public void setPos(Position pos) {
-        this.pos = pos;
+    public ItemIcon getIcon() {
+        return type.getIcon();
+    }
+
+    @Override
+    public String getModel() {
+        return type.getModel();
     }
 
 }

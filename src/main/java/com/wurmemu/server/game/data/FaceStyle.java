@@ -7,112 +7,112 @@ import javax.persistence.Embeddable;
 public class FaceStyle {
 
     @Column(name = "upperFace", nullable = false)
-    private int upperFace;
+    private byte upperFace;
 
     @Column(name = "eyeType", nullable = false)
-    private int eyeType;
+    private byte eyeType;
 
     @Column(name = "complexion", nullable = false)
-    private int complexion;
+    private byte complexion;
 
     @Column(name = "lowerFace", nullable = false)
-    private int lowerFace;
+    private byte lowerFace;
 
     @Column(name = "hair", nullable = false)
-    private int hair;
+    private byte hair;
 
     @Column(name = "nose", nullable = false)
-    private int nose;
+    private byte nose;
 
     @Column(name = "facialHair", nullable = false)
-    private int facialHair;
+    private byte facialHair;
 
     @Column(name = "eyeColor", nullable = false)
-    private int eyeColor;
+    private byte eyeColor;
 
     @Column(name = "hairColor", nullable = false)
-    private int hairColor;
+    private byte hairColor;
 
     @Column(name = "skinColor", nullable = false)
-    private int skinColor;
+    private byte skinColor;
 
-    public int getUpperFace() {
+    public byte getUpperFace() {
         return upperFace;
     }
 
-    public void setUpperFace(int upperFace) {
+    public void setUpperFace(byte upperFace) {
         this.upperFace = upperFace;
     }
 
-    public int getEyeType() {
+    public byte getEyeType() {
         return eyeType;
     }
 
-    public void setEyeType(int eyeType) {
+    public void setEyeType(byte eyeType) {
         this.eyeType = eyeType;
     }
 
-    public int getComplexion() {
+    public byte getComplexion() {
         return complexion;
     }
 
-    public void setComplexion(int complexion) {
+    public void setComplexion(byte complexion) {
         this.complexion = complexion;
     }
 
-    public int getLowerFace() {
+    public byte getLowerFace() {
         return lowerFace;
     }
 
-    public void setLowerFace(int lowerFace) {
+    public void setLowerFace(byte lowerFace) {
         this.lowerFace = lowerFace;
     }
 
-    public int getHair() {
+    public byte getHair() {
         return hair;
     }
 
-    public void setHair(int hair) {
+    public void setHair(byte hair) {
         this.hair = hair;
     }
 
-    public int getNose() {
+    public byte getNose() {
         return nose;
     }
 
-    public void setNose(int nose) {
+    public void setNose(byte nose) {
         this.nose = nose;
     }
 
-    public int getFacialHair() {
+    public byte getFacialHair() {
         return facialHair;
     }
 
-    public void setFacialHair(int facialHair) {
+    public void setFacialHair(byte facialHair) {
         this.facialHair = facialHair;
     }
 
-    public int getEyeColor() {
+    public byte getEyeColor() {
         return eyeColor;
     }
 
-    public void setEyeColor(int eyeColor) {
+    public void setEyeColor(byte eyeColor) {
         this.eyeColor = eyeColor;
     }
 
-    public int getHairColor() {
+    public byte getHairColor() {
         return hairColor;
     }
 
-    public void setHairColor(int hairColor) {
+    public void setHairColor(byte hairColor) {
         this.hairColor = hairColor;
     }
 
-    public int getSkinColor() {
+    public byte getSkinColor() {
         return skinColor;
     }
 
-    public void setSkinColor(int skinColor) {
+    public void setSkinColor(byte skinColor) {
         this.skinColor = skinColor;
     }
 
@@ -131,16 +131,16 @@ public class FaceStyle {
     }
 
     public void fromLong(long data) {
-        this.upperFace = ((int)data & 0x7);
-        this.eyeType = ((int)(data >> 3) & 0x7);
-        this.complexion = ((int)(data >> 6) & 0x7);
-        this.lowerFace = ((int)(data >> 9) & 0x7);
-        this.hair = ((int)(data >> 12) & 0x7);
-        this.nose = ((int)(data >> 15) & 0x7);
-        this.facialHair = ((int)(data >> 18) & 0x7);
-        this.eyeColor = ((int)(data >> 21) & 0x7);
-        this.hairColor = ((int)(data >> 24) & 0x7);
-        this.skinColor = ((int)(data >> 27) & 0x7);
+        this.upperFace = (byte) ((int)data & 0x7);
+        this.eyeType = (byte) ((int)(data >> 3) & 0x7);
+        this.complexion = (byte) ((int)(data >> 6) & 0x7);
+        this.lowerFace = (byte) ((int)(data >> 9) & 0x7);
+        this.hair = (byte) ((int)(data >> 12) & 0x7);
+        this.nose = (byte) ((int)(data >> 15) & 0x7);
+        this.facialHair = (byte) ((int)(data >> 18) & 0x7);
+        this.eyeColor = (byte) ((int)(data >> 21) & 0x7);
+        this.hairColor = (byte) ((int)(data >> 24) & 0x7);
+        this.skinColor = (byte) ((int)(data >> 27) & 0x7);
     }
 
 }

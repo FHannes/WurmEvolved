@@ -77,13 +77,13 @@ public class MovementHandler {
      */
     public void initLocal() {
         for (Player localPlayer : world.getPlayers().getLocal(player.getPos())) {
-            if (player.equals(localPlayer)) {
-                continue;
+            if (!player.equals(localPlayer)) {
+                player.addLocal(localPlayer);
+                player.send(new AddCreaturePacket(
+                        localPlayer.getId(), localPlayer.getModel(), localPlayer.getPos(), localPlayer.getUsername(),
+                        CreatureType.HUMAN, localPlayer.getKingdom(), localPlayer.getFaceStyle()));
             }
-            player.addLocal(localPlayer);
-            player.send(new AddCreaturePacket(
-                    localPlayer.getId(), localPlayer.getModel(), localPlayer.getPos(), localPlayer.getUsername(),
-                    CreatureType.HUMAN, localPlayer.getKingdom(), localPlayer.getFaceStyle()));
+            player.send(new AddUserPacket(":Local", localPlayer.getUsername(), localPlayer.getId()));
         }
     }
 
@@ -102,6 +102,8 @@ public class MovementHandler {
                     player.getId(), player.getModel(), player.getPos(), player.getUsername(), CreatureType.HUMAN,
                     player.getKingdom(), player.getFaceStyle());
             RemoveCreaturePacket packetRemove = new RemoveCreaturePacket(player.getId());
+            AddUserPacket packetAddUser = new AddUserPacket(":Local", player.getUsername(), player.getId());
+            RemoveUserPacket packetRemoveUser = new RemoveUserPacket(":Local", player.getUsername());
             for (Player worldPlayer : world.getPlayers().all()) {
                 if (worldPlayer.equals(player)) {
                     continue;
@@ -111,12 +113,21 @@ public class MovementHandler {
                     if (!hasPlayer) {
                         worldPlayer.addLocal(player);
                         worldPlayer.send(packetAdd);
+                        worldPlayer.send(packetAddUser);
+                        player.send(new AddCreaturePacket(
+                                worldPlayer.getId(), worldPlayer.getModel(), worldPlayer.getPos(),
+                                worldPlayer.getUsername(), CreatureType.HUMAN, worldPlayer.getKingdom(),
+                                worldPlayer.getFaceStyle()));
+                        player.send(new AddUserPacket(":Local", worldPlayer.getUsername(), worldPlayer.getId()));
                     }
                 } else {
                     boolean hasPlayer = worldPlayer.hasLocal(player);
                     if (hasPlayer) {
                         worldPlayer.removeLocal(player);
+                        worldPlayer.send(packetRemoveUser);
                         worldPlayer.send(packetRemove);
+                        player.send(new RemoveCreaturePacket(worldPlayer.getId()));
+                        player.send(new RemoveUserPacket(":Local", worldPlayer.getUsername()));
                     }
                 }
             }

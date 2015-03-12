@@ -1,6 +1,6 @@
 package com.wurmemu.server.game.data.db.dao;
 
-import com.wurmemu.server.game.data.Item;
+import com.wurmemu.server.game.data.AbstractItem;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -13,13 +13,13 @@ public class ItemDAO {
     @PersistenceContext
     private EntityManager em;
 
-    public Item save(Item item) {
+    public AbstractItem save(AbstractItem item) {
         em.merge(item);
         return item;
     }
 
-    public List<Item> list() {
-        return em.createQuery("SELECT i FROM Item i", Item.class).getResultList();
+    public List<AbstractItem> list() {
+        return em.createQuery("SELECT i FROM AbstractItem i", AbstractItem.class).getResultList();
     }
 
 }

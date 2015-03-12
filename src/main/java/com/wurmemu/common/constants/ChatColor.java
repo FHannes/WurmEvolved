@@ -1,6 +1,6 @@
 package com.wurmemu.common.constants;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class ChatColor {
 

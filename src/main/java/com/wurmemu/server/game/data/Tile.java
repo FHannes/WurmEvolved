@@ -2,7 +2,10 @@ package com.wurmemu.server.game.data;
 
 import com.wurmemu.common.constants.TileType;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "tiles")

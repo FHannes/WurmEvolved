@@ -1,4 +1,4 @@
-package com.wurmemu.common.constants;
+package com.wurmemu.common.protocol;
 
 public class Protocol {
 
@@ -15,10 +15,12 @@ public class Protocol {
     public static final int PACKET_DEAD = 28;
     public static final int PACKET_ADD_CREATURE = 30;
     public static final int PACKET_REMOVE_EFFECT = 35;
+    public static final int PACKET_LOGIN_RESPONSE = 37;
     public static final int PACKET_RENDER_STATS = 39;
     public static final int PACKET_FORCE_QUIT = 46;
     public static final int PACKET_ROTATE_OBJECT = 52;
     public static final int PACKET_TELEPORT = 55;
+    public static final int PACKET_ADD_USER = 57;
     public static final int PACKET_TOGGLE_FEATURE = 59;
     public static final int PACKET_TOGGLE_BUTTON = 62;
     public static final int PACKET_REMOVE_OBJECT = 67;
@@ -30,7 +32,7 @@ public class Protocol {
     public static final int PACKET_REMOVE_CREATURE = 80;
     public static final int PACKET_STACK_TRACE = 82;
     public static final int PACKET_TRADE_RESULT = 83;
-    public static final int PACKET_LOGIN_RESPONSE = 37;
+    public static final int PACKET_REMOVE_USER = 91;
     public static final int PACKET_VERSION_CHECK = 97;
     public static final int PACKET_MOVEMENT_3D = 106;
     public static final int PACKET_MESSAGE = 107;
