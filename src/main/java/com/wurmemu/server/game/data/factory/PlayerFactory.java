@@ -15,11 +15,13 @@ public class PlayerFactory {
     private PlayerDAO dao;
     private IDFactory idFactory;
     private Random random;
+    private ItemFactory itemFactory;
 
     public PlayerFactory() {
         dao = (PlayerDAO) DB.getInstance().getDAO("playerDAO");
         idFactory = new IDFactory("player", EntityType.PLAYER);
         random = new Random();
+        itemFactory = new ItemFactory();
     }
 
     public Player makePlayer(String username) {
@@ -44,6 +46,7 @@ public class PlayerFactory {
         faceStyle.setSkinColor((byte) random.nextInt(8));
         faceStyle.setUpperFace((byte) random.nextInt(8));
         player.setFaceStyle(faceStyle);
+        player.setInventory(itemFactory.makeInventory());
         player.setKingdom(Kingdom.FREEDOM);
         dao.save(player);
         return player;

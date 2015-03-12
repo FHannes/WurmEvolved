@@ -2,6 +2,7 @@ package com.wurmemu.common.constants;
 
 public enum ItemType {
 
+    INVENTORY("Inventory", true, ItemIcon.INVENTORY, ""),
     HATCHET("hatchet", false, ItemIcon.SMALL_AXE, "model.weapon.hatchet");
 
     ItemType(String name, boolean container, ItemIcon icon, String model) {

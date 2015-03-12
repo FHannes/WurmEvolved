@@ -31,6 +31,10 @@ public class Player implements GameEntity {
     @Column(name = "kingdom", nullable = false)
     private Kingdom kingdom;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "inventory_id", referencedColumnName = "item_id")
+    private AbstractItem inventory;
+
     private transient Channel channel;
 
     private transient boolean developer;
@@ -88,6 +92,14 @@ public class Player implements GameEntity {
 
     public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
+    }
+
+    public AbstractItem getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(AbstractItem inventory) {
+        this.inventory = inventory;
     }
 
     public Channel getChannel() {
