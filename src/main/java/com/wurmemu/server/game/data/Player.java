@@ -1,5 +1,6 @@
 package com.wurmemu.server.game.data;
 
+import com.sun.javafx.image.impl.ByteIndexed;
 import com.wurmemu.common.constants.Kingdom;
 import com.wurmemu.common.constants.PlayerType;
 import com.wurmemu.server.game.logic.entities.GameEntity;
@@ -143,11 +144,21 @@ public class Player implements GameEntity {
         switch (getType()) {
             case DEV:
                 return "model.creature.gmdark";
+            case ARCH:
             case GM:
                 return "model.creature.humanoid.human.skeleton";
             default:
                 return String.format("model.creature.humanoid.human.player.%s.%s",
                         isMale() ? "male" : "female", getKingdom().getResName());
+        }
+    }
+
+    public String getFullName() {
+        switch (getType()) {
+            case REGULAR:
+                return getUsername();
+            default:
+                return String.format("%s (%s)", getUsername(), getType().toString());
         }
     }
 

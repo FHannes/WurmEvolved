@@ -80,7 +80,7 @@ public class MovementHandler {
             if (!player.equals(localPlayer)) {
                 player.addLocal(localPlayer);
                 player.send(new AddCreaturePacket(
-                        localPlayer.getId(), localPlayer.getModel(), localPlayer.getPos(), localPlayer.getUsername(),
+                        localPlayer.getId(), localPlayer.getModel(), localPlayer.getPos(), localPlayer.getFullName(),
                         CreatureType.HUMAN, localPlayer.getKingdom(), localPlayer.getFaceStyle()));
             }
             player.send(new AddUserPacket(":Local", localPlayer.getUsername(), localPlayer.getId()));
@@ -99,7 +99,7 @@ public class MovementHandler {
             localPlayers = world.getPlayers().getLocal(player.getPos());
             localPos = new Point(player.getPos().getTileX(), player.getPos().getTileY());
             AddCreaturePacket packetAdd = new AddCreaturePacket(
-                    player.getId(), player.getModel(), player.getPos(), player.getUsername(), CreatureType.HUMAN,
+                    player.getId(), player.getModel(), player.getPos(), player.getFullName(), CreatureType.HUMAN,
                     player.getKingdom(), player.getFaceStyle());
             RemoveCreaturePacket packetRemove = new RemoveCreaturePacket(player.getId());
             AddUserPacket packetAddUser = new AddUserPacket(":Local", player.getUsername(), player.getId());
