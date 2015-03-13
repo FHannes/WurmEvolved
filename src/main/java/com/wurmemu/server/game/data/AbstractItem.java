@@ -34,6 +34,12 @@ public abstract class AbstractItem implements GameEntity {
     @Column(name = "weight", nullable = false)
     private float weight;
 
+    @Column(name = "quality", nullable = false)
+    private float quality;
+
+    @Column(name = "damage", nullable = false)
+    private float damage;
+
     @Override
     public long getId() {
         return id;
@@ -68,6 +74,22 @@ public abstract class AbstractItem implements GameEntity {
 
     public void setWeight(float weight) {
         this.weight = weight;
+    }
+
+    public float getQuality() {
+        return quality;
+    }
+
+    public void setQuality(float quality) {
+        this.quality = quality;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
     }
 
     public abstract String getName();
