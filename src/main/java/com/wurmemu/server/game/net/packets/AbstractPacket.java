@@ -25,11 +25,11 @@ public abstract class AbstractPacket {
     }
 
     public static String readString(ByteBuf byteBuf) {
-        return readString(byteBuf, byteBuf.readByte());
+        return readString(byteBuf, byteBuf.readByte() & 0xFF);
     }
 
     public static String readLongString(ByteBuf byteBuf) {
-        return readString(byteBuf, byteBuf.readShort());
+        return readString(byteBuf, byteBuf.readShort() & 0xFFFF);
     }
 
     public static void writeString(ByteBuf byteBuf, String str) {

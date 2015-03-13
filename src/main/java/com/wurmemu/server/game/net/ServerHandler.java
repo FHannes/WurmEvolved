@@ -11,6 +11,7 @@ import com.wurmemu.server.game.net.packets.client.LoginPacket;
 import com.wurmemu.server.game.net.packets.client.MovementPacket;
 import com.wurmemu.server.game.net.packets.client.ToggleButtonPacket;
 import com.wurmemu.server.game.net.packets.server.LoginResponsePacket;
+import com.wurmemu.server.game.net.packets.server.OpenContainerPacket;
 import com.wurmemu.server.game.net.packets.server.ServerMessagePacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

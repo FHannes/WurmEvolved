@@ -12,12 +12,16 @@ public class Protocol {
     public static final int PACKET_TERRAIN = 7;
     public static final int PACKET_DISTANT_TERRAIN = 9;
     public static final int PACKET_FIGHTING_STYLE = 15;
+    public static final int PACKET_CREATURE_HEALTH = 16;
     public static final int PACKET_DEAD = 28;
     public static final int PACKET_ADD_CREATURE = 30;
     public static final int PACKET_REMOVE_EFFECT = 35;
     public static final int PACKET_LOGIN_RESPONSE = 37;
     public static final int PACKET_RENDER_STATS = 39;
+    public static final int PACKET_CLOSE_CONTAINER = 42;
+    public static final int PACKET_OPEN_CONTAINER = 43;
     public static final int PACKET_FORCE_QUIT = 46;
+    public static final int PACKET_CREATURE_ATTITUDE = 48;
     public static final int PACKET_ROTATE_OBJECT = 52;
     public static final int PACKET_TELEPORT = 55;
     public static final int PACKET_ADD_USER = 57;
@@ -27,6 +31,7 @@ public class Protocol {
     public static final int PACKET_NO_MOVEMENT = 68;
     public static final int PACKET_REMOVE_MISSION = 70;
     public static final int PACKET_CREATURE_PAINT = 75;
+    public static final int PACKET_ADD_ITEM = 76;
     public static final int PACKET_CREATURE_SCALE = 77;
     public static final int PACKET_MOVEMENT = 79;
     public static final int PACKET_REMOVE_CREATURE = 80;
@@ -40,6 +45,7 @@ public class Protocol {
     public static final int PACKET_VELOCITY = 115;
     public static final int PACKET_CHANGE_MODEL = 217;
     public static final int PACKET_OPENED_CRAFTING_WINDOW = 219;
+    public static final int PACKET_OPEN_ITEM_CONTAINER = 243;
     public static final int PACKET_FRIENDS = 246;
     public static final int PACKET_FACESTYLE = 254;
 

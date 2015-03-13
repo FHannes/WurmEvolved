@@ -5,39 +5,35 @@ import com.wurmemu.server.game.net.packets.AbstractPacket;
 import com.wurmemu.server.game.net.packets.Packet;
 import io.netty.buffer.ByteBuf;
 
-@Packet(Protocol.PACKET_MOVEMENT_3D)
-public class Movement3DPacket extends AbstractPacket {
+@Packet(Protocol.PACKET_MOVEMENT)
+public class Movement2DPacket extends AbstractPacket {
 
     private long creatureID;
     private float xOffset;
     private float yOffset;
-    private float z;
     private float rot;
 
-    public Movement3DPacket(long creatureID, float xOffset, float yOffset, float z, float rot) {
+    public Movement2DPacket(long creatureID, float xOffset, float yOffset, float rot) {
         this.creatureID = creatureID;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
-        this.z = z;
         this.rot = rot;
     }
 
     @Override
     public void encode(ByteBuf out) {
         out.writeLong(getCreatureID());
-        out.writeShort((short) (getZ() * 10F));
+        out.writeByte((byte) Math.round(getYOffset() * 40F));
         out.writeByte((byte) Math.round(getXOffset() * 40F));
         out.writeByte((byte) (getRot() / 360F * 256F));
-        out.writeByte((byte) Math.round(getYOffset() * 40F));
     }
 
     public static AbstractPacket decode(ByteBuf frame) {
         long creatureID = frame.readLong();
-        float z = frame.readShort() / 10F;
+        float yOffset = frame.readByte() / 40F;
         float xOffset = frame.readByte() / 40F;
         float rot = frame.readByte() / 256F * 360F;
-        float yOffset = frame.readByte() / 40F;
-        return new Movement3DPacket(creatureID, xOffset, yOffset, z, rot);
+        return new Movement2DPacket(creatureID, xOffset, yOffset, rot);
     }
 
     public long getCreatureID() {
@@ -50,10 +46,6 @@ public class Movement3DPacket extends AbstractPacket {
 
     public float getYOffset() {
         return yOffset;
-    }
-
-    public float getZ() {
-        return z;
     }
 
     public float getRot() {

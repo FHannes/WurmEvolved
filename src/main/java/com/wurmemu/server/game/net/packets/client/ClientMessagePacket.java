@@ -20,7 +20,7 @@ public class ClientMessagePacket extends MessagePacket {
     }
 
     public static AbstractPacket decode(ByteBuf frame) {
-        String message = readLongString(frame);
+        String message = readString(frame);
         String channel = readString(frame);
         return new ClientMessagePacket(channel, message);
     }
