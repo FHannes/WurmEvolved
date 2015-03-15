@@ -15,7 +15,7 @@ public class AddItemPacket extends AbstractPacket {
     private long parentID;
     private long itemID;
     private ItemIcon icon;
-    private String baseName;
+    private String itemName;
     private String name;
     private float quality;
     private float damage;
@@ -28,12 +28,12 @@ public class AddItemPacket extends AbstractPacket {
     private byte temperature;
     private byte rarity;
 
-    public AddItemPacket(long containerID, long parentID, long itemID, ItemIcon icon, String baseName, String name, float quality, float damage, float weight, Color color, int price, ItemIcon impIcon, short flags, byte material, byte temperature, byte rarity) {
+    public AddItemPacket(long containerID, long parentID, long itemID, ItemIcon icon, String itemName, String name, float quality, float damage, float weight, Color color, int price, ItemIcon impIcon, short flags, byte material, byte temperature, byte rarity) {
         this.containerID = containerID;
         this.parentID = parentID;
         this.itemID = itemID;
         this.icon = icon;
-        this.baseName = baseName;
+        this.itemName = itemName;
         this.name = name;
         this.quality = quality;
         this.damage = damage;
@@ -53,7 +53,7 @@ public class AddItemPacket extends AbstractPacket {
         out.writeLong(getParentID());
         out.writeLong(getItemID());
         out.writeShort(getIcon().getValue());
-        writeString(out, getBaseName());
+        writeString(out, getItemName());
         writeString(out, getName());
         out.writeFloat(getQuality());
         out.writeFloat(getDamage());
@@ -111,12 +111,12 @@ public class AddItemPacket extends AbstractPacket {
         this.icon = icon;
     }
 
-    public String getBaseName() {
-        return baseName;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setBaseName(String baseName) {
-        this.baseName = baseName;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public String getName() {

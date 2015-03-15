@@ -38,4 +38,14 @@ public class ItemFactory {
         return item;
     }
 
+    public AbstractItem makeItem(ItemType type) {
+        Item item = new Item();
+        item.setId(idFactory.makeID());
+        item.setPos(makeEmptyPos());
+        item.setWeight(0);
+        item.setType(type);
+        dao.save(item);
+        return item;
+    }
+
 }
