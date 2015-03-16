@@ -61,4 +61,13 @@ public class PlayerList {
         dao.save(player);
     }
 
+    public Player get(String username) {
+        for (Player player : players.values()) {
+            if (player.getUsername().equals(username)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
 }

@@ -1,8 +1,12 @@
 package net.wurmevolved.server.game.net;
 
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.group.ChannelGroup;
 import net.wurmevolved.common.constants.ChatColor;
 import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.Player;
+import net.wurmevolved.server.game.logic.ChatHandler;
 import net.wurmevolved.server.game.logic.MovementHandler;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.UnknownPacket;
@@ -12,9 +16,6 @@ import net.wurmevolved.server.game.net.packets.client.MovementPacket;
 import net.wurmevolved.server.game.net.packets.client.ToggleButtonPacket;
 import net.wurmevolved.server.game.net.packets.server.LoginResponsePacket;
 import net.wurmevolved.server.game.net.packets.server.ServerMessagePacket;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.group.ChannelGroup;
 
 public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
 
@@ -22,6 +23,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
     private World world;
 
     private Player player;
+    private ChatHandler chatHandler;
     private MovementHandler movementHandler;
 
     public ServerHandler(ChannelGroup channelGroup, World world) {
@@ -32,6 +34,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
     public void init(Player player) {
         this.player = player;
         movementHandler = new MovementHandler(world, player);
+        chatHandler = new ChatHandler(world, player);
     }
 
     @Override
@@ -47,26 +50,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
                         player.getFaceStyle(), player.getKingdom()));
                 movementHandler.initLocal();
                 movementHandler.update();
-                ServerMessagePacket packet = new ServerMessagePacket(
-                        ":Event", String.format("%s has joined the game!", player.getUsername()), ChatColor.GREEN);
-                for (Player localPlayer : world.getPlayers().getLocal(player.getPos())) {
-                    if (localPlayer.equals(player)) {
-                        continue;
-                    }
-                    localPlayer.send(packet);
-                }
+                chatHandler.sendLocal(String.format("%s has joined the game!", player.getUsername()));
             }
         } else {
             if (msg instanceof ClientMessagePacket) {
-                ClientMessagePacket msgMsg = (ClientMessagePacket) msg;
-                ServerMessagePacket packet = new ServerMessagePacket(msgMsg.getChannel(),
-                        String.format("<%s> %s", player.getUsername(), msgMsg.getMessage()),
-                        ChatColor.WHITE);
-                if (((ClientMessagePacket) msg).getChannel().equals(":Local")) {
-                    for (Player player : world.getPlayers().getLocal(this.player.getPos())) {
-                        player.send(packet);
-                    }
-                }
+                chatHandler.handle((ClientMessagePacket) msg);
             } else if (msg instanceof MovementPacket) {
                 movementHandler.handle((MovementPacket) msg);
             } else if (msg instanceof ToggleButtonPacket) {
@@ -90,6 +78,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         if (movementHandler != null) {
             movementHandler.leaveWorld();
+            chatHandler.sendLocal(String.format("%s has left the world!", player.getUsername()));
         }
 
         super.channelInactive(ctx);

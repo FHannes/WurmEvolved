@@ -2,11 +2,13 @@ package net.wurmevolved.server.game.cli;
 
 import net.wurmevolved.common.constants.PlayerType;
 import net.wurmevolved.server.game.Server;
+import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.cli.commands.QuitCommand;
+import net.wurmevolved.server.game.data.Player;
 
 import java.io.*;
 
-public class CLIProcessor {
+public class CLIProcessor implements CommandCaller {
 
     private Server server;
 
@@ -23,32 +25,45 @@ public class CLIProcessor {
         this(server, System.in, System.out);
     }
 
-    public Server getServer() {
-        return server;
+    @Override
+    public World getWorld() {
+        return server.getWorld();
+    }
+
+    @Override
+    public Player getPlayer() {
+        return null;
+    }
+
+    @Override
+    public PlayerType getType() {
+        return PlayerType.DEV;
     }
 
     public void run() {
         try {
             writer.write("Command-line processor started");
             writer.newLine();
-            writer.write("> ");
-            writer.flush();
             while (true) {
+                writer.write("> ");
+                writer.flush();
                 String command = reader.readLine();
-                int pos = command.indexOf(' ');
-                String args = "";
-                if (pos != -1) {
-                    args = command.substring(pos + 1);
-                    command = command.substring(0, pos);
-                }
-                AbstractCommand cmdHandler = CommandRegistry.getInstance().get(command, PlayerType.DEV);
-                if (cmdHandler != null) {
-                    if (cmdHandler instanceof QuitCommand) {
-                        break;
+                if (!command.equals("")) {
+                    int pos = command.indexOf(' ');
+                    String args = "";
+                    if (pos != -1) {
+                        args = command.substring(pos + 1);
+                        command = command.substring(0, pos);
                     }
-                    cmdHandler.process(this, args);
-                } else {
-                    writeLine("Unknown command");
+                    AbstractCommand cmdHandler = CommandRegistry.getInstance().get(command, PlayerType.DEV);
+                    if (cmdHandler != null) {
+                        if (cmdHandler instanceof QuitCommand) {
+                            break;
+                        }
+                        cmdHandler.process(this, args);
+                    } else {
+                        writeLine("Unknown command");
+                    }
                 }
             }
         } catch (IOException e) {
@@ -68,6 +83,7 @@ public class CLIProcessor {
         }
     }
 
+    @Override
     public void writeLine(String line) {
         writeLine(line, true);
     }

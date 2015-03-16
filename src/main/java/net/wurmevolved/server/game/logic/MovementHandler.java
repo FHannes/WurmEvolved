@@ -162,11 +162,8 @@ public class MovementHandler {
             }
         }
         RemoveUserPacket packetRemoveUser = new RemoveUserPacket(":Local", player.getUsername());
-        ServerMessagePacket packetMessage = new ServerMessagePacket(
-                ":Event", String.format("%s has left the world!", player.getUsername()), ChatColor.GREEN);
         for (Player localPlayer : world.getPlayers().getLocal(player.getPos())) {
             localPlayer.send(packetRemoveUser);
-            localPlayer.send(packetMessage);
         }
         world.getPlayers().save(player);
     }

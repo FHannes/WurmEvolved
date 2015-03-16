@@ -1,9 +1,9 @@
 package net.wurmevolved.server.game.net;
 
-import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import net.wurmevolved.server.game.net.packets.AbstractPacket;
 
 public class WurmEncoder extends MessageToByteEncoder<AbstractPacket> {
 

@@ -1,9 +1,9 @@
 package net.wurmevolved.server.game.net.packets.client;
 
+import io.netty.buffer.ByteBuf;
 import net.wurmevolved.common.protocol.Protocol;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.Packet;
-import io.netty.buffer.ByteBuf;
 
 @Packet(Protocol.PACKET_TOGGLE_BUTTON)
 public class ToggleButtonPacket extends AbstractPacket {

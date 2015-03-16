@@ -1,12 +1,7 @@
 package net.wurmevolved.server.game;
 
-import io.netty.channel.Channel;
-import io.netty.util.concurrent.Future;
-import net.wurmevolved.server.game.map.LegacyLoader;
-import net.wurmevolved.server.game.net.ServerHandler;
-import net.wurmevolved.server.game.net.WurmDecoder;
-import net.wurmevolved.server.game.net.WurmEncoder;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.group.ChannelGroup;
@@ -14,7 +9,12 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import net.wurmevolved.server.game.map.LegacyLoader;
+import net.wurmevolved.server.game.net.ServerHandler;
+import net.wurmevolved.server.game.net.WurmDecoder;
+import net.wurmevolved.server.game.net.WurmEncoder;
 
 import java.io.File;
 import java.net.URL;

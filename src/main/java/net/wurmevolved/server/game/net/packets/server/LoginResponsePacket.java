@@ -1,5 +1,6 @@
 package net.wurmevolved.server.game.net.packets.server;
 
+import io.netty.buffer.ByteBuf;
 import net.wurmevolved.common.constants.Kingdom;
 import net.wurmevolved.common.constants.PlayerType;
 import net.wurmevolved.common.protocol.Protocol;
@@ -7,7 +8,6 @@ import net.wurmevolved.server.game.data.FaceStyle;
 import net.wurmevolved.server.game.data.Position;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.Packet;
-import io.netty.buffer.ByteBuf;
 
 @Packet(Protocol.PACKET_LOGIN_RESPONSE)
 public class LoginResponsePacket extends AbstractPacket {

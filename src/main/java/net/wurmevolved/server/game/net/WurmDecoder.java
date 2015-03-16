@@ -1,9 +1,9 @@
 package net.wurmevolved.server.game.net;
 
-import net.wurmevolved.server.game.net.packets.PacketRegistry;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
+import net.wurmevolved.server.game.net.packets.PacketRegistry;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
 package net.wurmevolved.server.game.data;
 
+import io.netty.channel.Channel;
 import net.wurmevolved.common.constants.Kingdom;
 import net.wurmevolved.common.constants.PlayerType;
 import net.wurmevolved.server.game.logic.entities.GameEntity;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
-import io.netty.channel.Channel;
 
 import javax.persistence.*;
 import java.util.HashMap;
