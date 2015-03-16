@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Class-Path: maven-artifact-2.0.5.jar reflections-0.9.9-RC2.jar dom4j-1
+ .6.1.jar antlr-2.7.7.jar jboss-logging-3.1.3.GA.jar maven-profile-2.0
+ .5.jar javassist-3.18.1-GA.jar spring-beans-4.1.4.RELEASE.jar hiberna
+ te-commons-annotations-4.0.5.Final.jar ant-1.6.5.jar jboss-logging-an
+ notations-1.2.0.Beta1.jar spring-core-4.1.4.RELEASE.jar spring-tx-4.1
+ .4.RELEASE.jar xml-apis-1.0.b2.jar maven-artifact-manager-2.0.5.jar m
+ aven-project-2.0.5.jar slf4j-api-1.7.10.jar jade-plugin-common-1.3.8.
+ jar hibernate-entitymanager-4.3.6.Final.jar netty-all-4.0.25.Final.ja
+ r maven-model-2.0.5.jar spring-expression-4.1.4.RELEASE.jar wagon-pro
+ vider-api-1.0-beta-2.jar hibernate-jpa-2.1-api-1.0.0.Final.jar annota
+ tions-2.0.1.jar maven-plugin-api-2.0.5.jar xpp3-1.1.3.4-RC8.jar sprin
+ g-security-crypto-3.2.5.RELEASE.jar jandex-1.1.0.Final.jar classworld
+ s-1.1-alpha-2.jar jboss-transaction-api_1.2_spec-1.0.0.Final.jar plex
+ us-container-default-1.0-alpha-9.jar spring-jdbc-4.1.4.RELEASE.jar co
+ mmons-logging-1.2.jar spring-context-4.1.4.RELEASE.jar hsqldb-2.3.2.j
+ ar junit-3.8.1.jar spring-aop-4.1.4.RELEASE.jar plexus-utils-1.1.jar 
+ maven-repository-metadata-2.0.5.jar maven-plugin-anno-1.4.1.jar guava
+ -15.0.jar aopalliance-1.0.jar reflections-maven-0.9.9-RC2.jar hiberna
+ te-core-4.3.6.Final.jar xstream-1.1.3.jar maven-settings-2.0.5.jar sp
+ ring-orm-4.1.4.RELEASE.jar
+Main-Class: net.wurmevolved.server.game.Main
+

@@ -4,5 +4,6 @@
 .idea/dataSources.*
 
 target
+out
 src/main/resources/*.map
 database*
