@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PlayerList {
 
     private Map<Long, Player> players = new ConcurrentHashMap<>();
+    private Map<String, Long> nameMap = new ConcurrentHashMap<>();
     private PlayerDAO dao = (PlayerDAO) DB.getInstance().getDAO("playerDAO");
     private PlayerFactory playerFactory = new PlayerFactory();
 
@@ -26,6 +27,7 @@ public class PlayerList {
             dao.save(player);
         }
         players.put(player.getId(), player);
+        nameMap.put(player.getUsername(), player.getId());
         return player;
     }
 
@@ -34,7 +36,11 @@ public class PlayerList {
     }
 
     public void remove(long id) {
-        players.remove(id);
+        Player player = players.get(id);
+        if (player != null) {
+            players.remove(id);
+            nameMap.remove(player.getUsername());
+        }
     }
 
     public void broadcast(AbstractPacket packet) {
@@ -61,11 +67,13 @@ public class PlayerList {
         dao.save(player);
     }
 
+    public Player get(long id) {
+        return players.get(id);
+    }
+
     public Player get(String username) {
-        for (Player player : players.values()) {
-            if (player.getUsername().equals(username)) {
-                return player;
-            }
+        if (nameMap.containsKey(username)) {
+            return get(nameMap.get(username));
         }
         return null;
     }

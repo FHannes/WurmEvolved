@@ -28,6 +28,9 @@ public class ChatHandler implements CommandCaller {
 
     public void handle(ClientMessagePacket packet) {
         String msg = packet.getMessage();
+        if (msg.equals("")) {
+            return;
+        }
         if (msg.startsWith("/")) {
             msg = msg.substring(1);
             AbstractCommand cmd = null;
