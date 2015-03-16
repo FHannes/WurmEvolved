@@ -1,7 +1,7 @@
 package net.wurmevolved.server.game.data;
 
 import net.wurmevolved.common.constants.ItemIcon;
-import net.wurmevolved.server.game.logic.entities.GameEntity;
+import net.wurmevolved.server.game.logic.GameEntity;
 
 import javax.persistence.*;
 import java.util.HashMap;
