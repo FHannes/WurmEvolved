@@ -42,7 +42,7 @@ public class CLIProcessor implements CommandCaller {
 
     public void run() {
         try {
-            writer.write("Command-line processor started");
+            writer.write("Command-line processor started.");
             writer.newLine();
             while (true) {
                 writer.write("> ");
@@ -62,7 +62,7 @@ public class CLIProcessor implements CommandCaller {
                         }
                         cmdHandler.process(this, args);
                     } else {
-                        writeLine("Unknown command");
+                        writeLine("Unknown command.");
                     }
                 }
             }

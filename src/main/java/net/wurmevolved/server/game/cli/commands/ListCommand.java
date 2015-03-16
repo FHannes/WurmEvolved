@@ -25,7 +25,7 @@ public class ListCommand extends AbstractCommand {
         }
         String playerList = String.join(", ", names);
         if (!playerList.equals("")) {
-            caller.writeLine(playerList);
+            caller.writeLine(playerList + '.');
         }
     }
 

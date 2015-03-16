@@ -38,7 +38,7 @@ public class ChatHandler implements CommandCaller {
                 cmd = CommandRegistry.getInstance().get(command, player.getType());
             }
             if (cmd == null) {
-                send("Unknown command");
+                send("Unknown command.");
             } else {
                 cmd.process(this, args);
             }

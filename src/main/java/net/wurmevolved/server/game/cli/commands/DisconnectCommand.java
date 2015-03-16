@@ -18,7 +18,7 @@ public class DisconnectCommand extends AbstractCommand {
         if (caller.getPlayer() == null || caller.getType().equals(PlayerType.DEV) && !args.equals("")) {
             Player player = caller.getWorld().getPlayers().get(args);
             if (player == null) {
-                caller.writeLine("Player not found");
+                caller.writeLine("Player not found.");
             } else {
                 player.getChannel().close();
             }
