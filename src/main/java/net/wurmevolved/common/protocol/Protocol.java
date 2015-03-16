@@ -49,6 +49,7 @@ public class Protocol {
     public static final int PACKET_VELOCITY = 115;
     public static final int PACKET_CHANGE_MODEL = 217;
     public static final int PACKET_OPENED_CRAFTING_WINDOW = 219;
+    public static final int PACKET_SUPPORT = 230;
     public static final int PACKET_OPEN_ITEM_CONTAINER = 243;
     public static final int PACKET_FRIENDS = 246;
     public static final int PACKET_FACESTYLE = 254;
