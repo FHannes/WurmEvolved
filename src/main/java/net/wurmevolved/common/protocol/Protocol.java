@@ -30,6 +30,7 @@ public class Protocol {
     public static final int PACKET_REMOVE_OBJECT = 67;
     public static final int PACKET_NO_MOVEMENT = 68;
     public static final int PACKET_REMOVE_MISSION = 70;
+    public static final int PACKET_SEND_ACTIONLIST = 73;
     public static final int PACKET_CREATURE_PAINT = 75;
     public static final int PACKET_ADD_ITEM = 76;
     public static final int PACKET_CREATURE_SCALE = 77;

@@ -45,7 +45,7 @@ public class ChatHandler implements CommandCaller {
                 command = command.toLowerCase();
                 switch (command) {
                     case "server":
-                        msg = parseMsg(msg);
+                        msg = parseMsg(args);
                         send(":Server", msg, ChatColor.WHITE);
                         sendAll(":Server", msg, ChatColor.WHITE);
                         return;

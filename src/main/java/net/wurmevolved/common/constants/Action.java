@@ -4,7 +4,9 @@ public enum Action {
 
     UNKNOWN(0, "Unknown"),
 
-    TAKE(1000, "Take");
+    EXAMINE(1, "Examine"),
+
+    TAKE(145, "Take");
 
     private static final Action[] actions = new Action[65535];
     private short id;
