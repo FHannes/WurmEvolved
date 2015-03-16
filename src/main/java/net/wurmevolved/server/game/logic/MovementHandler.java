@@ -1,6 +1,5 @@
 package net.wurmevolved.server.game.logic;
 
-import net.wurmevolved.common.constants.ChatColor;
 import net.wurmevolved.common.constants.CreatureType;
 import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.Player;
@@ -87,6 +86,16 @@ public class MovementHandler {
         }
     }
 
+    public void initServer() {
+        for (Player serverPlayer : world.getPlayers().all()) {
+            if (serverPlayer.equals(player)) {
+                continue;
+            }
+            player.send(new AddUserPacket(":Server", serverPlayer.getUsername(), serverPlayer.getId()));
+        }
+        world.getPlayers().broadcast(new AddUserPacket(":Server", player.getUsername(), player.getId()));
+    }
+
     /**
      * Updates all other players if this player has moved in or out of their local. This will also send the movements of
      * the player to all other players in local.
@@ -165,6 +174,7 @@ public class MovementHandler {
         for (Player localPlayer : world.getPlayers().getLocal(player.getPos())) {
             localPlayer.send(packetRemoveUser);
         }
+        world.getPlayers().broadcast(new RemoveUserPacket(":Server", player.getUsername()));
         world.getPlayers().save(player);
     }
 

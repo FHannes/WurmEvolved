@@ -49,6 +49,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
                         true, "Welcome to WurmEvolved", player.getPos(), player.getModel(), player.getType(),
                         player.getFaceStyle(), player.getKingdom()));
                 movementHandler.initLocal();
+                movementHandler.initServer();
                 movementHandler.update();
                 chatHandler.sendLocal(String.format("%s has joined the game!", player.getUsername()));
             }

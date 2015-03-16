@@ -22,6 +22,10 @@ public class ChatHandler implements CommandCaller {
         this.player = player;
     }
 
+    private String parseMsg(String msg) {
+        return String.format("<%s> %s", player.getUsername(), msg);
+    }
+
     public void handle(ClientMessagePacket packet) {
         String msg = packet.getMessage();
         if (msg.startsWith("/")) {
@@ -35,6 +39,14 @@ public class ChatHandler implements CommandCaller {
                     command = msg.substring(0, pos);
                     args = msg.substring(pos + 1);
                 }
+                command = command.toLowerCase();
+                switch (command) {
+                    case "server":
+                        msg = parseMsg(msg);
+                        send(":Server", msg, ChatColor.WHITE);
+                        sendAll(":Server", msg, ChatColor.WHITE);
+                        return;
+                }
                 cmd = CommandRegistry.getInstance().get(command, player.getType());
             }
             if (cmd == null) {
@@ -43,9 +55,17 @@ public class ChatHandler implements CommandCaller {
                 cmd.process(this, args);
             }
         } else {
-            msg = String.format("<%s> %s", player.getUsername(), msg);
-            send(":Local", msg, ChatColor.WHITE);
-            sendLocal(":Local", msg, ChatColor.WHITE);
+            msg = parseMsg(msg);
+            switch (packet.getChannel()) {
+                case ":Local":
+                    send(":Local", msg, ChatColor.WHITE);
+                    sendLocal(":Local", msg, ChatColor.WHITE);
+                    break;
+                case ":Server":
+                    send(":Server", msg, ChatColor.WHITE);
+                    sendAll(":Server", msg, ChatColor.WHITE);
+                    break;
+            }
         }
     }
 
@@ -69,6 +89,20 @@ public class ChatHandler implements CommandCaller {
 
     public void sendLocal(String msg) {
         sendLocal(":Event", msg, ChatColor.GREEN);
+    }
+
+    public void sendAll(String channel, String msg, Color color) {
+        ServerMessagePacket packet = new ServerMessagePacket(channel, msg, color);
+        for (Player localPlayer : world.getPlayers().all()) {
+            if (localPlayer.equals(player)) {
+                continue;
+            }
+            localPlayer.send(packet);
+        }
+    }
+
+    public void sendAll(String msg) {
+        sendAll(":Event", msg, ChatColor.GREEN);
     }
 
     @Override
