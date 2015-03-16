@@ -1,5 +1,7 @@
 package net.wurmevolved.server.game;
 
+import io.netty.channel.Channel;
+import io.netty.util.concurrent.Future;
 import net.wurmevolved.server.game.map.LegacyLoader;
 import net.wurmevolved.server.game.net.ServerHandler;
 import net.wurmevolved.server.game.net.WurmDecoder;
@@ -18,12 +20,15 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 
-class Server {
+public class Server {
 
     private String hostname;
     private int port;
 
     private ChannelGroup channelGroup;
+    private NioEventLoopGroup bossGroup;
+    private NioEventLoopGroup workerGroup;
+    private Channel serverChannel;
 
     private World world;
 
@@ -32,7 +37,11 @@ class Server {
         this.port = port;
     }
 
-    public boolean start() {
+    public World getWorld() {
+        return world;
+    }
+
+    public void start() {
         (world = new World()).load();
 
         try {
@@ -44,41 +53,46 @@ class Server {
                 }
             }
 
-            NioEventLoopGroup bossGroup = new NioEventLoopGroup();
-            NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+            bossGroup = new NioEventLoopGroup();
+            workerGroup = new NioEventLoopGroup();
 
             channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
-            try {
-                ServerBootstrap bootstrap = new ServerBootstrap()
-                        .group(bossGroup, workerGroup)
-                        .channel(NioServerSocketChannel.class)
-                        .childHandler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("encoder", new WurmEncoder());
-                        pipeline.addLast("decoder", new WurmDecoder());
-                        pipeline.addLast("handler", new ServerHandler(channelGroup, world));
-                    }
-                });
+            ServerBootstrap bootstrap = new ServerBootstrap()
+                    .group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ChannelPipeline pipeline = ch.pipeline();
+                            pipeline.addLast("encoder", new WurmEncoder());
+                            pipeline.addLast("decoder", new WurmDecoder());
+                            pipeline.addLast("handler", new ServerHandler(channelGroup, world));
+                        }
+                    });
 
-                System.out.println("Started server");
+            System.out.println("Started server");
 
-                bootstrap.bind(hostname, port).sync().channel().closeFuture().sync();
-            } finally {
-                bossGroup.shutdownGracefully();
-                workerGroup.shutdownGracefully();
-            }
+            serverChannel = bootstrap.bind(hostname, port).sync().channel();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     public void stop() {
-        if (channelGroup != null) {
-            channelGroup.close();
+        if (channelGroup != null && serverChannel != null) {
+            System.out.println("Stopping server");
+
+            Future futureBoss = bossGroup.shutdownGracefully();
+            Future futureWorker = workerGroup.shutdownGracefully();
+            try {
+                futureBoss.await();
+                futureWorker.await();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                channelGroup.close();
+            }
         }
     }
 
