@@ -1,5 +1,6 @@
 package net.wurmevolved.server.game.data;
 
+import net.wurmevolved.common.constants.BodyType;
 import net.wurmevolved.common.constants.ItemIcon;
 import net.wurmevolved.common.constants.Material;
 import net.wurmevolved.common.constants.Rarity;
@@ -25,12 +26,7 @@ public abstract class AbstractItem implements GameEntity {
 
     private Position pos;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "container_items",
-            joinColumns = {@JoinColumn(name="container_id", referencedColumnName="item_id")},
-            inverseJoinColumns = {@JoinColumn(name="item_id", referencedColumnName="item_id", unique = true)}
-    )
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
     @MapKey(name = "id")
     private Map<Long, AbstractItem> items = new HashMap<>();
 
@@ -151,20 +147,32 @@ public abstract class AbstractItem implements GameEntity {
 
     public abstract boolean isContainer();
 
+    public abstract boolean isNoDrop();
+
     public abstract ItemIcon getIcon();
 
     public abstract String getModel();
 
+    public BodyType getBodyType() {
+        if (getParent() != null && getParent().getBodyType() != null) {
+            return BodyType.LEFT_HELD_ITEM;
+        }
+        return null;
+    }
+
     public short getFlags() {
         short flags = 0;
         if (isWound()) {
-            flags |= 1;
-        }
-        if (isBody()) {
             flags |= 2;
         }
-        if (isContainer()) {
+        if (isBody()) {
             flags |= 4;
+        }
+        if (isContainer()) {
+            flags |= 8;
+        }
+        if (isNoDrop()) {
+            flags |= 16;
         }
         return flags;
     }

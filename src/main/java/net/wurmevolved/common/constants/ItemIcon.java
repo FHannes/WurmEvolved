@@ -2,6 +2,13 @@ package net.wurmevolved.common.constants;
 
 public enum ItemIcon {
 
+    BODY(0),
+    TORSO(1),
+    HEAD(2),
+    ARM(3),
+    HAND(4),
+    LEGS(5),
+    FOOT(6),
     INVENTORY(20),
     UNKNOWN(60),
     SMALL_AXE(1207);

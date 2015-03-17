@@ -48,6 +48,7 @@ public class PlayerFactory {
         faceStyle.setSkinColor((byte) random.nextInt(8));
         faceStyle.setUpperFace((byte) random.nextInt(8));
         player.setFaceStyle(faceStyle);
+        player.setBody(itemFactory.makeBody());
         player.setInventory(itemFactory.makeInventory());
         player.setKingdom(Kingdom.FREEDOM);
         dao.save(player);

@@ -37,6 +37,10 @@ public class Player implements GameEntity {
     private Kingdom kingdom;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "body_id", referencedColumnName = "item_id")
+    private AbstractItem body;
+
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "inventory_id", referencedColumnName = "item_id")
     private AbstractItem inventory;
 
@@ -102,6 +106,14 @@ public class Player implements GameEntity {
 
     public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
+    }
+
+    public AbstractItem getBody() {
+        return body;
+    }
+
+    public void setBody(AbstractItem body) {
+        this.body = body;
     }
 
     public AbstractItem getInventory() {
