@@ -2,6 +2,7 @@ package net.wurmevolved.server.game.data.factory;
 
 import net.wurmevolved.common.constants.EntityType;
 import net.wurmevolved.common.constants.ItemType;
+import net.wurmevolved.common.constants.Rarity;
 import net.wurmevolved.server.game.data.AbstractItem;
 import net.wurmevolved.server.game.data.Item;
 import net.wurmevolved.server.game.data.Position;
@@ -32,8 +33,14 @@ public class ItemFactory {
         Item item = new Item();
         item.setId(idFactory.makeID());
         item.setPos(makeEmptyPos());
-        item.setWeight(0);
+        item.setQuality(100);
+        item.setDamage(0);
         item.setType(ItemType.INVENTORY);
+        item.setWeight(item.getType().getWeight());
+        item.setName("");
+        item.setMaterial(item.getType().getMaterial());
+        item.setTemperature((byte) 0);
+        item.setRarity(Rarity.NONE);
         dao.save(item);
         return item;
     }
@@ -42,8 +49,14 @@ public class ItemFactory {
         Item item = new Item();
         item.setId(idFactory.makeID());
         item.setPos(makeEmptyPos());
-        item.setWeight(0);
+        item.setQuality(100);
+        item.setDamage(0);
         item.setType(type);
+        item.setWeight(item.getType().getWeight());
+        item.setName("");
+        item.setMaterial(item.getType().getMaterial());
+        item.setTemperature((byte) 0);
+        item.setRarity(Rarity.NONE);
         dao.save(item);
         return item;
     }

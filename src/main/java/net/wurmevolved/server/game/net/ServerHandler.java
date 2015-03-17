@@ -8,6 +8,7 @@ import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.Player;
 import net.wurmevolved.server.game.logic.ActionHandler;
 import net.wurmevolved.server.game.logic.ChatHandler;
+import net.wurmevolved.server.game.logic.ItemHandler;
 import net.wurmevolved.server.game.logic.MovementHandler;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.UnknownPacket;
@@ -24,6 +25,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
     private ChatHandler chatHandler;
     private MovementHandler movementHandler;
     private ActionHandler actionHandler;
+    private ItemHandler itemHandler;
 
     public ServerHandler(ChannelGroup channelGroup, World world) {
         this.channelGroup = channelGroup;
@@ -35,6 +37,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
         movementHandler = new MovementHandler(world, player);
         chatHandler = new ChatHandler(world, player);
         actionHandler = new ActionHandler(world, player);
+        itemHandler = new ItemHandler(world, player);
     }
 
     @Override
@@ -51,6 +54,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
                 movementHandler.initLocal();
                 movementHandler.initServer();
                 movementHandler.update();
+                itemHandler.init();
                 chatHandler.sendLocal(String.format("%s has joined the game!", player.getUsername()));
             }
         } else {

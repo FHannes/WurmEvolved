@@ -1,9 +1,12 @@
 package net.wurmevolved.server.game.data;
 
 import net.wurmevolved.common.constants.ItemIcon;
+import net.wurmevolved.common.constants.Material;
+import net.wurmevolved.common.constants.Rarity;
 import net.wurmevolved.server.game.logic.GameEntity;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,12 +43,24 @@ public abstract class AbstractItem implements GameEntity {
     @Column(name = "damage", nullable = false)
     private float damage;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "material", nullable = false)
+    private Material material;
+
+    @Column(name = "temperature", nullable = false)
+    private byte temperature;
+
+    @Enumerated
+    @Column(name = "rarity", nullable = false)
+    private Rarity rarity;
+
     @Override
     public long getId() {
         return id;
     }
 
-    @Override
     public void setId(long id) {
         this.id = id;
     }
@@ -66,6 +81,10 @@ public abstract class AbstractItem implements GameEntity {
     @Override
     public void setPos(Position pos) {
         this.pos = pos;
+    }
+
+    public Collection<AbstractItem> getItems() {
+        return items.values();
     }
 
     public float getWeight() {
@@ -92,12 +111,75 @@ public abstract class AbstractItem implements GameEntity {
         this.damage = damage;
     }
 
-    public abstract String getName();
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    public byte getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(byte temperature) {
+        this.temperature = temperature;
+    }
+
+    public Rarity getRarity() {
+        return rarity;
+    }
+
+    public void setRarity(Rarity rarity) {
+        this.rarity = rarity;
+    }
+
+    public abstract String getItemName();
+
+    public abstract boolean isWound();
+
+    public abstract boolean isBody();
 
     public abstract boolean isContainer();
 
     public abstract ItemIcon getIcon();
 
     public abstract String getModel();
+
+    public short getFlags() {
+        short flags = 0;
+        if (isWound()) {
+            flags |= 1;
+        }
+        if (isBody()) {
+            flags |= 2;
+        }
+        if (isContainer()) {
+            flags |= 4;
+        }
+        return flags;
+    }
+
+    public void addItem(AbstractItem item) {
+        items.put(item.getId(), item);
+        item.setParent(this);
+    }
+
+    public float calculateWeight() {
+        float weight = getWeight();
+        for (AbstractItem item : items.values()) {
+            weight += item.calculateWeight();
+        }
+        return weight;
+    }
 
 }

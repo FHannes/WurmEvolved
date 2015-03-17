@@ -25,8 +25,18 @@ public class Item extends AbstractItem {
     }
 
     @Override
-    public String getName() {
+    public String getItemName() {
         return type.getName();
+    }
+
+    @Override
+    public boolean isWound() {
+        return type.isWound();
+    }
+
+    @Override
+    public boolean isBody() {
+        return type.isBody();
     }
 
     @Override

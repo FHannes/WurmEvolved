@@ -2,6 +2,8 @@ package net.wurmevolved.server.game.net.packets.server;
 
 import io.netty.buffer.ByteBuf;
 import net.wurmevolved.common.constants.ItemIcon;
+import net.wurmevolved.common.constants.Material;
+import net.wurmevolved.common.constants.Rarity;
 import net.wurmevolved.common.protocol.Protocol;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.Packet;
@@ -24,11 +26,11 @@ public class AddItemPacket extends AbstractPacket {
     private int price;
     private ItemIcon impIcon;
     private short flags;
-    private byte material;
+    private Material material;
     private byte temperature;
-    private byte rarity;
+    private Rarity rarity;
 
-    public AddItemPacket(long containerID, long parentID, long itemID, ItemIcon icon, String itemName, String name, float quality, float damage, float weight, Color color, int price, ItemIcon impIcon, short flags, byte material, byte temperature, byte rarity) {
+    public AddItemPacket(long containerID, long parentID, long itemID, ItemIcon icon, String itemName, String name, float quality, float damage, float weight, Color color, int price, ItemIcon impIcon, short flags, Material material, byte temperature, Rarity rarity) {
         this.containerID = containerID;
         this.parentID = parentID;
         this.itemID = itemID;
@@ -73,9 +75,9 @@ public class AddItemPacket extends AbstractPacket {
             out.writeShort(getImpIcon().getValue());
         }
         out.writeShort(getFlags());
-        out.writeByte(getMaterial());
+        out.writeByte(getMaterial().getId());
         out.writeByte(getTemperature());
-        out.writeByte(getRarity());
+        out.writeByte(getRarity().ordinal());
         // Unknown optional byte value
     }
 
@@ -183,11 +185,11 @@ public class AddItemPacket extends AbstractPacket {
         this.flags = flags;
     }
 
-    public byte getMaterial() {
+    public Material getMaterial() {
         return material;
     }
 
-    public void setMaterial(byte material) {
+    public void setMaterial(Material material) {
         this.material = material;
     }
 
@@ -199,11 +201,11 @@ public class AddItemPacket extends AbstractPacket {
         this.temperature = temperature;
     }
 
-    public byte getRarity() {
+    public Rarity getRarity() {
         return rarity;
     }
 
-    public void setRarity(byte rarity) {
+    public void setRarity(Rarity rarity) {
         this.rarity = rarity;
     }
 
