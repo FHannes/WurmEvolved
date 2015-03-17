@@ -3,7 +3,6 @@ package net.wurmevolved.server.game.net;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
-import net.wurmevolved.common.constants.ChatColor;
 import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.Player;
 import net.wurmevolved.server.game.logic.ActionHandler;
@@ -14,7 +13,6 @@ import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.UnknownPacket;
 import net.wurmevolved.server.game.net.packets.client.*;
 import net.wurmevolved.server.game.net.packets.server.LoginResponsePacket;
-import net.wurmevolved.server.game.net.packets.server.ServerMessagePacket;
 
 public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
 

@@ -14,8 +14,8 @@ public enum BodyType {
     LEFT_FOOT,
     RIGHT_FOOT,
     SHIELD_SLOT,
-    UNKNOWN1, // Unknown [3.85]
-    UNKNOWN2, // Unknown [3.85]
+    UNKNOWN1, // Unknown (placeholder) [3.85]
+    UNKNOWN2, // Unknown (placeholder) [3.85]
     CAPE,
     TABARD,
     RIGHT_RING,
