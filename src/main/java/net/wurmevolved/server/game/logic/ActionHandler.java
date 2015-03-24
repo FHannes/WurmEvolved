@@ -6,6 +6,7 @@ import net.wurmevolved.server.game.menu.Menu;
 import net.wurmevolved.server.game.menu.MenuFactory;
 import net.wurmevolved.server.game.menu.MenuItem;
 import net.wurmevolved.server.game.net.packets.client.RequestActionPacket;
+import net.wurmevolved.server.game.net.packets.client.SendActionPacket;
 import net.wurmevolved.server.game.net.packets.server.SendActionListPacket;
 
 import java.util.ArrayList;
@@ -29,6 +30,10 @@ public class ActionHandler {
         List<MenuItem> items = new ArrayList<>();
         menu.buildMenu(items);
         player.send(new SendActionListPacket(packet.getRequestID(), items, menu.getWiki()));
+    }
+
+    public void handle(SendActionPacket packet) {
+
     }
 
 }
