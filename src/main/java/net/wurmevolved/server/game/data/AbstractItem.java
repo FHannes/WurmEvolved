@@ -153,6 +153,8 @@ public abstract class AbstractItem implements GameEntity {
 
     public abstract String getModel();
 
+    public abstract String getExamine();
+
     public BodyType getBodyType() {
         if (getParent() != null && getParent().getBodyType() != null) {
             return BodyType.LEFT_HELD_ITEM;

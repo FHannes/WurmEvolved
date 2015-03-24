@@ -61,6 +61,11 @@ public class Item extends AbstractItem {
     }
 
     @Override
+    public String getExamine() {
+        return type.getExamine();
+    }
+
+    @Override
     public BodyType getBodyType() {
         switch (getType()) {
             case BODY:

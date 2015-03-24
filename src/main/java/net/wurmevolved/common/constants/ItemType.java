@@ -2,38 +2,64 @@ package net.wurmevolved.common.constants;
 
 public enum ItemType {
 
-    INVENTORY("inventory", true, ItemIcon.INVENTORY, "", Material.UNKNOWN, 0F),
-    HATCHET("hatchet", false, ItemIcon.SMALL_AXE, "model.weapon.hatchet", Material.BIRCHWOOD, 1.5F),
-    BODY("body", false, true, true, false, ItemIcon.BODY, "", Material.FLESH, 0F),
-    HEAD("head", false, true, true, false, ItemIcon.HEAD, "", Material.FLESH, 0F),
-    NECK("neck", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    FACE("face", false, true, true, false, ItemIcon.HEAD, "", Material.FLESH, 0F),
-    TORSO("torso", false, true, true, false, ItemIcon.TORSO, "", Material.FLESH, 0F),
-    CAPE("cape", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    LEFT_SHOULDER("left shoulder", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    RIGHT_SHOULDER("right shoulder", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    BACK("back", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    TABARD("tabard", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    LEFT_ARM("left arm", false, true, true, false, ItemIcon.ARM, "", Material.FLESH, 0F),
-    SHIELD_SLOT("shield slot", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    LEFT_HAND("left hand", false, true, true, false, ItemIcon.HAND, "", Material.FLESH, 0F),
-    LEFT_RING("left ring", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    LEFT_HELD_ITEM("left held item", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    RIGHT_ARM("right arm", false, true, true, false, ItemIcon.ARM, "", Material.FLESH, 0F),
-    RIGHT_HAND("right hand", false, true, true, false, ItemIcon.HAND, "", Material.FLESH, 0F),
-    RIGHT_RING("right ring", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    RIGHT_HELD_ITEM("right held item", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    LEGS("legs", false, true, true, false, ItemIcon.LEGS, "", Material.FLESH, 0F),
-    BELT("belt", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    HIP_SLOT("hip slot", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F),
-    LEFT_FOOT("left foot", false, true, true, false, ItemIcon.FOOT, "", Material.FLESH, 0F),
-    RIGHT_FOOT("right foot", false, true, true, false, ItemIcon.FOOT, "", Material.FLESH, 0F);
+    INVENTORY("inventory", true, ItemIcon.INVENTORY, "", Material.UNKNOWN, 0F,
+            "This is where you keep your things."),
+    HATCHET("hatchet", false, ItemIcon.SMALL_AXE, "model.weapon.hatchet", Material.BIRCHWOOD, 1.5F,
+            "A short but sturdy axe with a thick blade specially designed to cut down trees with but poor in combat."),
+    BODY("body", false, true, true, false, ItemIcon.BODY, "", Material.FLESH, 0F,
+            "A body."),
+    HEAD("head", false, true, true, false, ItemIcon.HEAD, "", Material.FLESH, 0F,
+            "A head."),
+    NECK("neck", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    FACE("face", false, true, true, false, ItemIcon.HEAD, "", Material.FLESH, 0F,
+            "A face."),
+    TORSO("torso", false, true, true, false, ItemIcon.TORSO, "", Material.FLESH, 0F,
+            "A body without the extremities."),
+    CAPE("cape", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    LEFT_SHOULDER("left shoulder", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    RIGHT_SHOULDER("right shoulder", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    BACK("back", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    TABARD("tabard", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    LEFT_ARM("left arm", false, true, true, false, ItemIcon.ARM, "", Material.FLESH, 0F,
+            "An arm."),
+    SHIELD_SLOT("shield slot", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    LEFT_HAND("left hand", false, true, true, false, ItemIcon.HAND, "", Material.FLESH, 0F,
+            "A hand."),
+    LEFT_RING("left ring", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    LEFT_HELD_ITEM("left held item", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    RIGHT_ARM("right arm", false, true, true, false, ItemIcon.ARM, "", Material.FLESH, 0F,
+            "An arm."),
+    RIGHT_HAND("right hand", false, true, true, false, ItemIcon.HAND, "", Material.FLESH, 0F,
+            "A hand."),
+    RIGHT_RING("right ring", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    RIGHT_HELD_ITEM("right held item", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    LEGS("legs", false, true, true, false, ItemIcon.LEGS, "", Material.FLESH, 0F,
+            "Two legs."),
+    BELT("belt", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    HIP_SLOT("hip slot", false, true, true, false, ItemIcon.UNKNOWN, "", Material.FLESH, 0F,
+            "A place to put equipment."),
+    LEFT_FOOT("left foot", false, true, true, false, ItemIcon.FOOT, "", Material.FLESH, 0F,
+            "A foot."),
+    RIGHT_FOOT("right foot", false, true, true, false, ItemIcon.FOOT, "", Material.FLESH, 0F,
+            "A foot.");
 
-    ItemType(String name, boolean container, ItemIcon icon, String model, Material material, float weight) {
-        this(name, false, false, container, false, icon, model, material, weight);
+    ItemType(String name, boolean container, ItemIcon icon, String model, Material material, float weight, String examine) {
+        this(name, false, false, container, false, icon, model, material, weight, examine);
     }
 
-    ItemType(String name, boolean wound, boolean body, boolean container, boolean noDrop, ItemIcon icon, String model, Material material, float weight) {
+    ItemType(String name, boolean wound, boolean body, boolean container, boolean noDrop, ItemIcon icon, String model, Material material, float weight, String examine) {
         this.name = name;
         this.wound = wound;
         this.body = body;
@@ -43,6 +69,7 @@ public enum ItemType {
         this.model = model;
         this.material = material;
         this.weight = weight;
+        this.examine = examine;
     }
 
     private String name;
@@ -54,6 +81,7 @@ public enum ItemType {
     private String model;
     private Material material;
     private float weight;
+    private String examine;
 
     public String getName() {
         return name;
@@ -89,6 +117,10 @@ public enum ItemType {
 
     public float getWeight() {
         return weight;
+    }
+
+    public String getExamine() {
+        return examine;
     }
 
 }
