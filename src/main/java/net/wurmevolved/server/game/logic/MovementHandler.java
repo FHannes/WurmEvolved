@@ -2,6 +2,7 @@ package net.wurmevolved.server.game.logic;
 
 import net.wurmevolved.common.constants.CreatureType;
 import net.wurmevolved.server.game.World;
+import net.wurmevolved.server.game.data.AbstractItem;
 import net.wurmevolved.server.game.data.Player;
 import net.wurmevolved.server.game.data.Tile;
 import net.wurmevolved.server.game.map.Chunk;
@@ -83,6 +84,10 @@ public class MovementHandler {
                         CreatureType.HUMAN, localPlayer.getKingdom(), localPlayer.getFaceStyle()));
             }
             player.send(new AddUserPacket(":Local", localPlayer.getUsername(), localPlayer.getId()));
+        }
+        for (AbstractItem localItem : world.getItems().getLocal(player.getPos())) {
+            player.addLocal(localItem);
+            // TODO: Send add ground object packet
         }
     }
 
