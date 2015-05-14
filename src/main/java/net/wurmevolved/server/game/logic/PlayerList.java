@@ -56,7 +56,7 @@ public class PlayerList {
     public Set<Player> getLocal(Position pos) {
         Set<Player> players = new HashSet<>();
         for (Player player : this.players.values()) {
-            if (player.getPos().maxAxisDistance(pos) <= 50) {
+            if (player.getPos().maxAxisDistance(pos) <= player.getPos().getLayer().getLocal()) {
                 players.add(player);
             }
         }

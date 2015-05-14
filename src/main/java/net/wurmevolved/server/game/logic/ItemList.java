@@ -30,7 +30,7 @@ public class ItemList {
     public Set<AbstractItem> getLocal(Position pos) {
         Set<AbstractItem> items = new HashSet<>();
         for (AbstractItem item : this.items.values()) {
-            if (item.getPos().maxAxisDistance(pos) <= 50) {
+            if (item.getPos().maxAxisDistance(pos) <= item.getPos().getLayer().getLocal()) {
                 items.add(item);
             }
         }
