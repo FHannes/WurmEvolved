@@ -1,5 +1,7 @@
 package net.wurmevolved.server.game.data;
 
+import net.wurmevolved.common.constants.Layer;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -25,7 +27,7 @@ public class Position {
     private float rot;
 
     @Column(name = "layer", nullable = false)
-    private byte layer;
+    private Layer layer;
 
     public float getX() {
         return x;
@@ -59,11 +61,11 @@ public class Position {
         this.rot = rot;
     }
 
-    public byte getLayer() {
+    public Layer getLayer() {
         return layer;
     }
 
-    public void setLayer(byte layer) {
+    public void setLayer(Layer layer) {
         this.layer = layer;
     }
 

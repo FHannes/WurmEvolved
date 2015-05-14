@@ -2,6 +2,7 @@ package net.wurmevolved.server.game.data.factory;
 
 import net.wurmevolved.common.constants.EntityType;
 import net.wurmevolved.common.constants.Kingdom;
+import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.common.constants.PlayerType;
 import net.wurmevolved.server.game.data.FaceStyle;
 import net.wurmevolved.server.game.data.Player;
@@ -33,7 +34,7 @@ public class PlayerFactory {
         Position playerPos = new Position();
         playerPos.update(512, 512);
         playerPos.setRot(0);
-        playerPos.setLayer((byte) 0);
+        playerPos.setLayer(Layer.SURFACE);
         player.setPos(playerPos);
         player.setMale(true);
         FaceStyle faceStyle = new FaceStyle();

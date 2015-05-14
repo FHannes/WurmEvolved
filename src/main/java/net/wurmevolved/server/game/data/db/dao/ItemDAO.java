@@ -1,10 +1,12 @@
 package net.wurmevolved.server.game.data.db.dao;
 
+import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.data.AbstractItem;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -37,6 +39,12 @@ public class ItemDAO {
 
     public List<AbstractItem> list() {
         return em.createQuery("SELECT i FROM AbstractItem i", AbstractItem.class).getResultList();
+    }
+
+    public List<AbstractItem> listGroundItems() {
+        TypedQuery<AbstractItem> query = em.createQuery("SELECT i FROM AbstractItem i WHERE layer <> :layer",
+                AbstractItem.class);
+        return query.setParameter("layer", Layer.NONE).getResultList();
     }
 
 }

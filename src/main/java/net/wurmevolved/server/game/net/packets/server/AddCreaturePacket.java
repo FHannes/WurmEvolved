@@ -3,6 +3,7 @@ package net.wurmevolved.server.game.net.packets.server;
 import io.netty.buffer.ByteBuf;
 import net.wurmevolved.common.constants.CreatureType;
 import net.wurmevolved.common.constants.Kingdom;
+import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.common.protocol.Protocol;
 import net.wurmevolved.server.game.data.FaceStyle;
 import net.wurmevolved.server.game.data.Position;
@@ -42,7 +43,7 @@ public class AddCreaturePacket extends AbstractPacket {
         out.writeFloat(getPos().getRot());
         writeString(out, name);
         out.writeBoolean(true); // Never submerge
-        out.writeByte(getPos().getLayer());
+        out.writeByte(getPos().getLayer().getId());
         out.writeByte(getType().ordinal());
         out.writeByte(0); // Material
         out.writeByte(getKingdom().ordinal());
@@ -66,7 +67,7 @@ public class AddCreaturePacket extends AbstractPacket {
         frame.readFloat();
         String name = readString(frame);
         frame.readBoolean();
-        pos.setLayer(frame.readByte());
+        pos.setLayer(Layer.get(frame.readByte()));
         CreatureType type = CreatureType.values()[frame.readByte() & 0xFF];
         frame.readByte();
         Kingdom kingdom = Kingdom.values()[frame.readByte() & 0xFF];

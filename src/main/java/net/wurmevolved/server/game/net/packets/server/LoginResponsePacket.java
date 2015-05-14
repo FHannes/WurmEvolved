@@ -34,7 +34,7 @@ public class LoginResponsePacket extends AbstractPacket {
     public void encode(ByteBuf out) {
         out.writeBoolean(isAllowLogin());
         writeLongString(out, getReason());
-        out.writeByte(getPos().getLayer());
+        out.writeByte(getPos().getLayer().getId());
         out.writeLong(System.currentTimeMillis() * 8);
         out.writeLong(System.currentTimeMillis() * 8);
         out.writeFloat(getPos().getRot());

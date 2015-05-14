@@ -1,6 +1,7 @@
 package net.wurmevolved.server.game.net.packets.client;
 
 import io.netty.buffer.ByteBuf;
+import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.common.protocol.Protocol;
 import net.wurmevolved.server.game.data.Position;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
@@ -29,7 +30,7 @@ public class MovementPacket extends AbstractPacket {
         pos.setZ(frame.readFloat());
         pos.setRot(frame.readFloat());
         byte detection = frame.readByte();
-        pos.setLayer(frame.readByte());
+        pos.setLayer(Layer.get(frame.readByte()));
         for (int idx = 0; idx < 5; idx++) {
             // TODO: Figure out these values
             frame.readFloat();

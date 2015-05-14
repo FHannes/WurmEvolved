@@ -2,6 +2,7 @@ package net.wurmevolved.server.game.data.factory;
 
 import net.wurmevolved.common.constants.EntityType;
 import net.wurmevolved.common.constants.ItemType;
+import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.common.constants.Rarity;
 import net.wurmevolved.server.game.data.AbstractItem;
 import net.wurmevolved.server.game.data.Item;
@@ -28,7 +29,7 @@ public class ItemFactory {
         pos.setY(0);
         pos.setZ(0);
         pos.setRot(0);
-        pos.setLayer((byte) 0);
+        pos.setLayer(Layer.NONE);
         return pos;
     }
 

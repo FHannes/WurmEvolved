@@ -6,6 +6,7 @@ public enum Action {
 
     EXAMINE(1, "Examine"),
 
+    DROP(145, "Drop"),
     TAKE(145, "Take");
 
     private static final Action[] actions = new Action[65535];
