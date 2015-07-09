@@ -38,7 +38,7 @@ public class Protocol {
     public static final int PACKET_REMOVE_CREATURE = 80;
     public static final int PACKET_STACK_TRACE = 82;
     public static final int PACKET_TRADE_RESULT = 83;
-    public static final int PACKET_MOVE_ITEM = 84;
+    public static final int PACKET_MOVE_OBJECT = 84;
     public static final int PACKET_REMOVE_USER = 91;
     public static final int PACKET_VERSION_CHECK = 97;
     public static final int PACKET_MOVEMENT_3D = 106;
@@ -47,6 +47,7 @@ public class Protocol {
     public static final int PACKET_REMOVE_ITEM = 109;
     public static final int PACKET_REQUEST_ACTION = 110;
     public static final int PACKET_VELOCITY = 115;
+    public static final int PACKET_ADD_OBJECT = 118;
     public static final int PACKET_CHANGE_MODEL = 217;
     public static final int PACKET_OPENED_CRAFTING_WINDOW = 219;
     public static final int PACKET_SUPPORT = 230;

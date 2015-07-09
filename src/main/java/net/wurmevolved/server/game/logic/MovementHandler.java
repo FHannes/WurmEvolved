@@ -87,7 +87,8 @@ public class MovementHandler {
         }
         for (AbstractItem localItem : world.getItems().getLocal(player.getPos())) {
             player.addLocal(localItem);
-            // TODO: Send add ground object packet
+            player.send(new AddObjectPacket(localItem.getId(), localItem.getModel(), localItem.getPos(),
+                    localItem.getName(), localItem.getMaterial()));
         }
     }
 
