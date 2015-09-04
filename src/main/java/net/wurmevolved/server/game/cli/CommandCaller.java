@@ -6,9 +6,9 @@ import net.wurmevolved.server.game.data.Player;
 
 public interface CommandCaller {
 
-    public World getWorld();
-    public Player getPlayer();
-    public PlayerType getType();
-    public void writeLine(String line);
+    World getWorld();
+    Player getPlayer();
+    PlayerType getType();
+    void writeLine(String line);
 
 }

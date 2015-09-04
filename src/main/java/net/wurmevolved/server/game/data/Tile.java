@@ -2,10 +2,8 @@ package net.wurmevolved.server.game.data;
 
 import net.wurmevolved.common.constants.TileType;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "tiles")
@@ -25,6 +23,9 @@ public class Tile {
 
     @Column(name = "height", nullable = false)
     private short height;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
+    private Set<AbstractItem> items;
 
     public Tile() {
 
@@ -76,6 +77,14 @@ public class Tile {
 
     public void setHeight(short height) {
         this.height = height;
+    }
+
+    public Set<AbstractItem> getItems() {
+        return items;
+    }
+
+    public void addItem(AbstractItem item) {
+        items.add(item);
     }
 
 }

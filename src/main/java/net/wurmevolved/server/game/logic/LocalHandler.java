@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MovementHandler {
+public class LocalHandler {
 
     private World world;
     private Player player;
@@ -33,7 +33,7 @@ public class MovementHandler {
     private boolean zChanged = false;
     private boolean rotChanged = false;
 
-    public MovementHandler(World world, Player player) {
+    public LocalHandler(World world, Player player) {
         this.world = world;
         this.player = player;
     }
@@ -85,10 +85,12 @@ public class MovementHandler {
             }
             player.send(new AddUserPacket(":Local", localPlayer.getUsername(), localPlayer.getId()));
         }
-        for (AbstractItem localItem : world.getItems().getLocal(player.getPos())) {
-            player.addLocal(localItem);
-            player.send(new AddObjectPacket(localItem.getId(), localItem.getModel(), localItem.getPos(),
-                    localItem.getName(), localItem.getMaterial()));
+        for (Tile tile : world.getLocal(player.getPos())) {
+            for (AbstractItem localItem : tile.getItems()) {
+                player.addLocal(localItem);
+                player.send(new AddObjectPacket(localItem.getId(), localItem.getModel(), localItem.getPos(),
+                        localItem.getName(), localItem.getMaterial()));
+            }
         }
     }
 

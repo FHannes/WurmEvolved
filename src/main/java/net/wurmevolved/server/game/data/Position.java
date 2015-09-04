@@ -107,8 +107,16 @@ public class Position {
         return (float) Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     }
 
+    public float maxAxisDistance(float x, float y) {
+        return Math.max(Math.abs(x - this.x), Math.abs(y - this.y));
+    }
+
     public float maxAxisDistance(Position pos) {
-        return Math.max(Math.abs(pos.x - x), Math.abs(pos.y - y));
+        return maxAxisDistance(pos.x, pos.y);
+    }
+
+    public float maxAxisDistance(TilePos pos) {
+        return maxAxisDistance(pos.getX() * 4F, pos.getY() * 4F);
     }
 
     public void update(float x, float y) {
