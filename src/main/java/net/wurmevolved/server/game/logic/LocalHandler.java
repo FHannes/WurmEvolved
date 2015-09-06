@@ -13,6 +13,7 @@ import net.wurmevolved.server.game.net.packets.server.*;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -76,12 +77,13 @@ public class LocalHandler {
     public void updateItems() {
         if (itemPos == null || itemPos.distance(player.getPos().getTileX(), player.getPos().getTileY()) > 0) {
             int diffX = player.getPos().getTileX() - itemPos.x, diffY = player.getPos().getTileY() - itemPos.y;
+            int oldX = itemPos.x, oldY = itemPos.y;
 
             itemPos = new Point((int) Math.floor(player.getPos().getTileX()), (int) Math.floor(player.getPos().getTileY()));
 
-            // TODO: Remove old local items
-
+            Set<AbstractItem> removeItems = new HashSet<>();
             if (diffX != 0) {
+                oldX += Layer.SURFACE.getLocal() * -diffX;
                 diffX = itemPos.x + Layer.SURFACE.getLocal() * diffX;
                 for (Tile tile : world.getLocal(player.getPos())) {
                     if (tile.getPos().getX() == diffX) {
@@ -92,7 +94,19 @@ public class LocalHandler {
                         }
                     }
                 }
+                // Remove items now out of range
+                Iterator<GameEntity> it = player.iteratorLocal();
+                while (it.hasNext()) {
+                    GameEntity ge = it.next();
+                    if (ge instanceof AbstractItem) {
+                        AbstractItem item = (AbstractItem) ge;
+                        if (item.getPos().getLayer().equals(Layer.SURFACE) && item.getPos().getTileX() == oldX) {
+                            removeItems.add(item);
+                        }
+                    }
+                }
             } else {
+                oldY += Layer.SURFACE.getLocal() * -diffY;
                 diffY = itemPos.y + Layer.SURFACE.getLocal() * diffY;
                 for (Tile tile : world.getLocal(player.getPos())) {
                     if (tile.getPos().getY() == diffY) {
@@ -103,6 +117,21 @@ public class LocalHandler {
                         }
                     }
                 }
+                // Remove items now out of range
+                Iterator<GameEntity> it = player.iteratorLocal();
+                while (it.hasNext()) {
+                    GameEntity ge = it.next();
+                    if (ge instanceof AbstractItem) {
+                        AbstractItem item = (AbstractItem) ge;
+                        if (item.getPos().getLayer().equals(Layer.SURFACE) && item.getPos().getTileY() == oldY) {
+                            removeItems.add(item);
+                        }
+                    }
+                }
+            }
+            for (AbstractItem item : removeItems) {
+                player.send(new RemoveObjectPacket(item.getId()));
+                player.removeLocal(item);
             }
         }
     }
