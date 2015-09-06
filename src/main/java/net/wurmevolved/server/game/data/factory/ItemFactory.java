@@ -41,7 +41,7 @@ public class ItemFactory {
         item.setDamage(0);
         item.setType(type);
         item.setWeight(item.getType().getWeight());
-        item.setName("");
+        item.setName(item.getType().getName());
         item.setMaterial(item.getType().getMaterial());
         item.setTemperature((byte) 0);
         item.setRarity(Rarity.NONE);

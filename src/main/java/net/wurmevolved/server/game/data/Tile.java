@@ -3,6 +3,7 @@ package net.wurmevolved.server.game.data;
 import net.wurmevolved.common.constants.TileType;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,8 +25,8 @@ public class Tile {
     @Column(name = "height", nullable = false)
     private short height;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
-    private Set<AbstractItem> items;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<AbstractItem> items = new HashSet<>();
 
     public Tile() {
 
