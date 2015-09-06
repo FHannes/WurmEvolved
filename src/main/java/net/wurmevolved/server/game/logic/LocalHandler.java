@@ -1,6 +1,7 @@
 package net.wurmevolved.server.game.logic;
 
 import net.wurmevolved.common.constants.CreatureType;
+import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.AbstractItem;
 import net.wurmevolved.server.game.data.Player;
@@ -23,6 +24,7 @@ public class LocalHandler {
     // Terrain data
     private Set<Chunk> chunks = new HashSet<>();
     private Point terrainPos;
+    private Point itemPos;
 
     // Local data
     private Point localPos;
@@ -71,11 +73,46 @@ public class LocalHandler {
         }
     }
 
+    public void updateItems() {
+        if (itemPos == null || itemPos.distance(player.getPos().getTileX(), player.getPos().getTileY()) > 0) {
+            int diffX = player.getPos().getTileX() - itemPos.x, diffY = player.getPos().getTileY() - itemPos.y;
+
+            itemPos = new Point((int) Math.floor(player.getPos().getTileX()), (int) Math.floor(player.getPos().getTileY()));
+
+            // TODO: Remove old local items
+
+            if (diffX != 0) {
+                diffX = itemPos.x + Layer.SURFACE.getLocal() * diffX;
+                for (Tile tile : world.getLocal(player.getPos())) {
+                    if (tile.getPos().getX() == diffX) {
+                        for (AbstractItem localItem : tile.getItems()) {
+                            player.addLocal(localItem);
+                            player.send(new AddObjectPacket(localItem.getId(), localItem.getModel(), localItem.getPos(),
+                                    localItem.getName(), localItem.getMaterial()));
+                        }
+                    }
+                }
+            } else {
+                diffY = itemPos.y + Layer.SURFACE.getLocal() * diffY;
+                for (Tile tile : world.getLocal(player.getPos())) {
+                    if (tile.getPos().getY() == diffY) {
+                        for (AbstractItem localItem : tile.getItems()) {
+                            player.addLocal(localItem);
+                            player.send(new AddObjectPacket(localItem.getId(), localItem.getModel(), localItem.getPos(),
+                                    localItem.getName(), localItem.getMaterial()));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Initializes the player's own local environment. This method is to be called after login. All further updates to
      * local will only be performed as needed.
      */
     public void initLocal() {
+        // Init local players
         for (Player localPlayer : world.getPlayers().getLocal(player.getPos())) {
             if (!player.equals(localPlayer)) {
                 player.addLocal(localPlayer);
@@ -85,6 +122,8 @@ public class LocalHandler {
             }
             player.send(new AddUserPacket(":Local", localPlayer.getUsername(), localPlayer.getId()));
         }
+
+        // Init local items
         for (Tile tile : world.getLocal(player.getPos())) {
             for (AbstractItem localItem : tile.getItems()) {
                 player.addLocal(localItem);
@@ -92,6 +131,7 @@ public class LocalHandler {
                         localItem.getName(), localItem.getMaterial()));
             }
         }
+        itemPos = new Point((int) Math.floor(player.getPos().getTileX()), (int) Math.floor(player.getPos().getTileY()));
     }
 
     public void initServer() {
@@ -112,7 +152,7 @@ public class LocalHandler {
         Set<Player> localPlayers = null;
 
         // Add or remove players from local
-        if (localPos == null || terrainPos.distance(player.getPos().getTileX(), player.getPos().getTileY()) > 0) {
+        if (localPos == null || localPos.distance(player.getPos().getTileX(), player.getPos().getTileY()) > 0) {
             localPlayers = world.getPlayers().getLocal(player.getPos());
             localPos = new Point(player.getPos().getTileX(), player.getPos().getTileY());
             AddCreaturePacket packetAdd = new AddCreaturePacket(
@@ -190,6 +230,7 @@ public class LocalHandler {
         updateTerrain();
         updateDistantTerrain();
         updatePlayerLocals();
+        updateItems();
     }
 
     public void handle(MovementPacket packet) {

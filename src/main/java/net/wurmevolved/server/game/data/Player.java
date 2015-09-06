@@ -8,6 +8,7 @@ import net.wurmevolved.server.game.net.packets.AbstractPacket;
 
 import javax.persistence.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 @Entity
@@ -148,6 +149,10 @@ public class Player implements GameEntity {
 
     public void removeLocal(GameEntity entity) {
         local.remove(entity.getId());
+    }
+
+    public Iterator<GameEntity> iteratorLocal() {
+        return local.values().iterator();
     }
 
     public String getModel() {
