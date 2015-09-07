@@ -3,6 +3,7 @@ package net.wurmevolved.server.game;
 import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.data.Position;
 import net.wurmevolved.server.game.data.Tile;
+import net.wurmevolved.server.game.logic.ObjectHandler;
 import net.wurmevolved.server.game.logic.PlayerList;
 import net.wurmevolved.server.game.map.Chunk;
 import net.wurmevolved.server.game.map.TerrainBuffer;
@@ -14,10 +15,12 @@ public class World {
 
     private PlayerList players;
     private TerrainBuffer terrainBuffer;
+    private ObjectHandler objectHandler;
 
     public World() {
         players = new PlayerList();
         terrainBuffer = new TerrainBuffer();
+        objectHandler = new ObjectHandler(this);
     }
 
     public PlayerList getPlayers() {
@@ -26,6 +29,10 @@ public class World {
 
     public TerrainBuffer getTerrainBuffer() {
         return terrainBuffer;
+    }
+
+    public ObjectHandler getObjectHandler() {
+        return objectHandler;
     }
 
     public void load() {

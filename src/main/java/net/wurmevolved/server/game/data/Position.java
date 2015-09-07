@@ -124,4 +124,14 @@ public class Position {
         this.y = y;
     }
 
+    public boolean isLocal(Position pos) {
+        if (getLayer().equals(Layer.NONE) || pos.getLayer().equals(Layer.NONE)) {
+            return false;
+        }
+
+        short tx = getTileX(), ty = getTileY();
+        short otx = pos.getTileX(), oty = getTileY();
+        return Math.abs(tx - otx) <= pos.getLayer().getLocal() && Math.abs(ty - oty) <= pos.getLayer().getLocal();
+    }
+
 }

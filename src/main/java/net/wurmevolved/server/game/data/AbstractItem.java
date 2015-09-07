@@ -1,10 +1,9 @@
 package net.wurmevolved.server.game.data;
 
-import net.wurmevolved.common.constants.BodyType;
-import net.wurmevolved.common.constants.ItemIcon;
-import net.wurmevolved.common.constants.Material;
-import net.wurmevolved.common.constants.Rarity;
+import net.wurmevolved.common.constants.*;
 import net.wurmevolved.server.game.logic.GameEntity;
+import net.wurmevolved.server.game.logic.observers.ItemObserver;
+import net.wurmevolved.server.game.logic.observers.ObserverList;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -52,6 +51,8 @@ public abstract class AbstractItem implements GameEntity {
     @Column(name = "rarity", nullable = false)
     private Rarity rarity;
 
+    protected transient ObserverList<ItemObserver> observers = new ObserverList<>();
+
     @Override
     public long getId() {
         return id;
@@ -76,7 +77,31 @@ public abstract class AbstractItem implements GameEntity {
 
     @Override
     public void setPos(Position pos) {
+        Position oldPos = this.pos;
         this.pos = pos;
+        if (oldPos == null) {
+            if (!pos.getLayer().equals(Layer.NONE)) {
+                // Drop item
+                getObservers().getAll().forEach(o -> o.onAddedToWorld(this, pos));
+            }
+        } else if (!oldPos.getLayer().equals(pos.getLayer())) {
+            if (oldPos.getLayer().equals(Layer.NONE)) {
+                // Drop item
+                getObservers().getAll().forEach(o -> o.onAddedToWorld(this, pos));
+            } else if (pos.getLayer().equals(Layer.NONE)) {
+                // Pick up item
+                getObservers().getAll().forEach(o -> o.onRemovedFromWorld(this));
+            } else {
+                // Move between surface/cave layer
+                getObservers().getAll().forEach(o -> {
+                    o.onRemovedFromWorld(this);
+                    o.onAddedToWorld(this, pos);
+                });
+            }
+        } else {
+            // Move item in world
+            getObservers().getAll().forEach(o -> o.onChangedWorldPosition(this, oldPos, pos));
+        }
     }
 
     public Collection<AbstractItem> getItems() {
@@ -190,6 +215,10 @@ public abstract class AbstractItem implements GameEntity {
             weight += item.calculateWeight();
         }
         return weight;
+    }
+
+    public ObserverList<ItemObserver> getObservers() {
+        return observers;
     }
 
 }

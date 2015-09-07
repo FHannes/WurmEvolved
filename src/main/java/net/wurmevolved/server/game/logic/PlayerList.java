@@ -53,10 +53,38 @@ public class PlayerList {
         return players.values();
     }
 
+    /**
+     * Returns a set with all players in the local area of the given position.
+     *
+     * <i>NOTE: This does NOT return a list of all players which have the given position in their local area! There is a
+     * difference. See {@link #getContainedLocal(Position)} for this.</i>
+     *
+     * @param pos
+     * @return
+     */
     public Set<Player> getLocal(Position pos) {
         Set<Player> players = new HashSet<>();
         for (Player player : this.players.values()) {
-            if (player.getPos().maxAxisDistance(pos) <= player.getPos().getLayer().getLocal()) {
+            if (pos.isLocal(player.getPos())) {
+                players.add(player);
+            }
+        }
+        return players;
+    }
+
+    /**
+     * Returns a set with all players for which a given position is in their local.
+     *
+     * <i>NOTE: This does NOT return a list of all players within the local area of the given position! There is a
+     * difference. See {@link #getLocal(Position)} for this.</i>
+     *
+     * @param pos
+     * @return
+     */
+    public Set<Player> getContainedLocal(Position pos) {
+        Set<Player> players = new HashSet<>();
+        for (Player player : this.players.values()) {
+            if (player.getPos().isLocal(pos)) {
                 players.add(player);
             }
         }
