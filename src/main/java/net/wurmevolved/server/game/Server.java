@@ -45,7 +45,7 @@ public class Server {
         (world = new World()).load();
 
         try {
-            URL mapResource = Server.class.getResource("/surface.tmp.map");
+            URL mapResource = Server.class.getResource("/surface.map");
             if (mapResource != null) {
                 File mapFile = Paths.get(mapResource.toURI()).toFile();
                 if (mapFile.exists()) {

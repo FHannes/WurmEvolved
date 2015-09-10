@@ -33,8 +33,8 @@ public class AddObjectPacket extends AbstractPacket {
         writeString(out, getName());
         out.writeLong(getId());
         out.writeByte(getMaterial().getId());
-        out.writeFloat(getPos().getObjectY());
         out.writeFloat(getPos().getObjectX());
+        out.writeFloat(getPos().getObjectY());
         out.writeFloat(getPos().getZ());
         out.writeFloat(getPos().getRot());
         out.writeByte(getPos().getLayer().getId());

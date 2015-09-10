@@ -62,7 +62,7 @@ public class Chunk {
             for (short x = 0; x < CHUNK_SIZE; x++) {
                 if (tiles[y][x] == null) {
                     tiles[y][x] = new Tile(new TilePos((short) (xOffset + x), (short) (yOffset + y)),
-                            TileType.STONE_SLABS, (byte) 0, (byte) 20, (short) 0);
+                            TileType.COBBLESTONE, (byte) 0, (byte) 20, (short) 10);
                 }
             }
         }
