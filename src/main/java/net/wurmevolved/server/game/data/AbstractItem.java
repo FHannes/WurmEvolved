@@ -39,7 +39,7 @@ public abstract class AbstractItem implements GameEntity {
     private float damage;
 
     @Column(name = "name", nullable = false)
-    private String name;
+    private String name = "";
 
     @Column(name = "material", nullable = false)
     private Material material;

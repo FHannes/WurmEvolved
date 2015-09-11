@@ -8,9 +8,7 @@ import net.wurmevolved.server.game.net.ServerHandler;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Table(name = "players")
@@ -48,7 +46,7 @@ public class Player implements GameEntity {
 
     private transient Channel channel;
 
-    private transient Map<Long, GameEntity> local = new HashMap<>();
+    private transient Map<Class<? extends GameEntity>, Map<Long, GameEntity>> local = new HashMap<>();
 
     @Override
     public long getId() {
@@ -141,19 +139,32 @@ public class Player implements GameEntity {
     }
 
     public void addLocal(GameEntity entity) {
-        local.put(entity.getId(), entity);
+        Map<Long, GameEntity> localEntities;
+        if (!local.containsKey(entity.getClass())) {
+            localEntities = new HashMap<>();
+            local.put(entity.getClass(), localEntities);
+        } else {
+            localEntities = local.get(entity.getClass());
+        }
+        localEntities.put(entity.getId(), entity);
     }
 
     public boolean hasLocal(GameEntity entity) {
-        return local.containsKey(entity.getId());
+        return local.containsKey(entity.getClass()) && local.get(entity.getClass()).containsKey(entity.getId());
     }
 
     public void removeLocal(GameEntity entity) {
-        local.remove(entity.getId());
+        if (local.containsKey(entity.getClass())) {
+            local.get(entity.getClass()).remove(entity.getId());
+        }
     }
 
-    public Iterator<GameEntity> iteratorLocal() {
-        return local.values().iterator();
+    public Collection<GameEntity> getLocal(Class<? extends GameEntity> clazz) {
+        if (local.containsKey(clazz)) {
+            return new ArrayList<>(local.get(clazz).values());
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     public String getModel() {

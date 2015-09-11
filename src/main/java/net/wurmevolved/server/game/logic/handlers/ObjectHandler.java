@@ -1,4 +1,4 @@
-package net.wurmevolved.server.game.logic;
+package net.wurmevolved.server.game.logic.handlers;
 
 import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.World;

@@ -5,11 +5,17 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.Player;
-import net.wurmevolved.server.game.logic.*;
+import net.wurmevolved.server.game.logic.handlers.*;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.UnknownPacket;
 import net.wurmevolved.server.game.net.packets.client.*;
+import net.wurmevolved.server.game.net.packets.server.AddUserPacket;
 import net.wurmevolved.server.game.net.packets.server.LoginResponsePacket;
+import net.wurmevolved.server.game.net.packets.server.RemoveCreaturePacket;
+import net.wurmevolved.server.game.net.packets.server.RemoveUserPacket;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
 
@@ -17,10 +23,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
     private World world;
 
     private Player player;
-    private ChatHandler chatHandler;
-    private LocalHandler localHandler;
-    private ActionHandler actionHandler;
-    private ItemHandler itemHandler;
+    private List<LogicHandler> logicHandlers = new LinkedList<>();
 
     public ServerHandler(ChannelGroup channelGroup, World world) {
         this.channelGroup = channelGroup;
@@ -29,10 +32,24 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
 
     public void init(Player player) {
         this.player = player;
-        localHandler = new LocalHandler(world, player);
-        chatHandler = new ChatHandler(world, player);
-        actionHandler = new ActionHandler(world, player);
-        itemHandler = new ItemHandler(world, player);
+
+        logicHandlers.add(new ConnectionHandler(world, player));
+
+        MovementHandler movementHandler = new MovementHandler(player);
+        logicHandlers.add(movementHandler);
+
+        TerrainHandler terrainHandler = new TerrainHandler(world, player);
+        movementHandler.getObservers().add(terrainHandler);
+        logicHandlers.add(terrainHandler);
+
+        LocalHandler localHandler = new LocalHandler(world, player);
+        movementHandler.getObservers().add(localHandler);
+        logicHandlers.add(localHandler);
+
+        logicHandlers.add(new ActionHandler(player));
+        logicHandlers.add(new InventoryHandler(player));
+        logicHandlers.add(new ChatHandler(world, player));
+        logicHandlers.add(new GUIHandler());
     }
 
     @Override
@@ -46,23 +63,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
                 player.send(new LoginResponsePacket(
                         true, "Welcome to WurmEvolved", player.getPos(), player.getModel(), player.getType(),
                         player.getFaceStyle(), player.getKingdom()));
-                localHandler.initLocal();
-                localHandler.initServer();
-                localHandler.update();
-                itemHandler.init();
-                chatHandler.sendLocal(String.format("%s has joined the game!", player.getUsername()));
+                logicHandlers.forEach(LogicHandler::join);
             }
         } else {
-            if (msg instanceof ClientMessagePacket) {
-                chatHandler.handle((ClientMessagePacket) msg);
-            } else if (msg instanceof MovementPacket) {
-                localHandler.handle((MovementPacket) msg);
-            } else if (msg instanceof ToggleButtonPacket) {
-                ToggleButtonPacket msgToggle = (ToggleButtonPacket) msg;
-                System.out.println(String.format("Toggle button #%d: %s", msgToggle.getButtonID(), Boolean.toString(msgToggle.isToggleOn())));
-            } else if (msg instanceof RequestActionPacket) {
-                actionHandler.handle((RequestActionPacket) msg);
-            }
+            logicHandlers.forEach(lh -> lh.handle(msg));
         }
         if (msg instanceof UnknownPacket) {
             System.out.println(String.format("Unknown packet with ID %d", ((UnknownPacket) msg).getType()));
@@ -78,10 +82,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        if (localHandler != null) {
-            localHandler.leaveWorld();
-            chatHandler.sendLocal(String.format("%s has left the world!", player.getUsername()));
-        }
+        logicHandlers.forEach(LogicHandler::leave);
 
         super.channelInactive(ctx);
     }

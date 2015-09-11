@@ -18,7 +18,7 @@ public class LocalObjectObserver implements ItemObserver {
     public void onAddedToWorld(AbstractItem item, Position pos) {
         if (player.getPos().isLocal(pos)) {
             player.addLocal(item);
-            player.send(new AddObjectPacket(item.getId(), item.getModel(), item.getPos(), item.getName(),
+            player.send(new AddObjectPacket(item.getId(), item.getModel(), item.getPos(), item.getItemName(),
                     item.getMaterial()));
         }
     }
