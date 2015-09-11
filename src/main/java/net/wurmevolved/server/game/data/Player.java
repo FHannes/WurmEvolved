@@ -4,17 +4,19 @@ import io.netty.channel.Channel;
 import net.wurmevolved.common.constants.Kingdom;
 import net.wurmevolved.common.constants.PlayerType;
 import net.wurmevolved.server.game.logic.GameEntity;
+import net.wurmevolved.server.game.logic.observers.MovementObserver;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
+import net.wurmevolved.server.game.net.packets.server.RemoveCreaturePacket;
+import net.wurmevolved.server.game.net.packets.server.RemoveObjectPacket;
+import net.wurmevolved.server.game.net.packets.server.RemoveUserPacket;
+import net.wurmevolved.server.game.util.PlayerHelper;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Table(name = "players")
-public class Player implements GameEntity {
+public class Player implements GameEntity, MovementObserver {
 
     @Id
     @Column(name = "player_id", nullable = false)
@@ -161,9 +163,9 @@ public class Player implements GameEntity {
         }
     }
 
-    public Collection<GameEntity> getLocal(Class<? extends GameEntity> clazz) {
+    public <T extends GameEntity> List<T> getLocal(Class<T> clazz) {
         if (local.containsKey(clazz)) {
-            return new ArrayList<>(local.get(clazz).values());
+            return new ArrayList<>(((Map<Long, T>) local.get(clazz)).values());
         } else {
             return new ArrayList<>();
         }
@@ -189,6 +191,21 @@ public class Player implements GameEntity {
             default:
                 return String.format("%s (%s)", getUsername(), getType().toString());
         }
+    }
+
+    @Override
+    public void onPlayerMovedTile(Position pos, int xOffset, int yOffset) {
+        List<GameEntity> removeLocals = new ArrayList<>();
+
+        // Remove items no longer in local
+        PlayerHelper.getLocalItems(this).forEach(i -> {
+            if (!pos.isLocal(i.getPos())) {
+                send(new RemoveObjectPacket(i.getId()));
+                removeLocals.add(i);
+            }
+        });
+
+        removeLocals.forEach(this::removeLocal);
     }
 
 }

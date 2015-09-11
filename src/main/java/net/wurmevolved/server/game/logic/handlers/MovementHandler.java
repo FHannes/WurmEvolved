@@ -54,11 +54,11 @@ public class MovementHandler extends LogicHandler {
             rotChanged = false;
             Movement3DPacket packet = new Movement3DPacket(
                     player.getId(), sendXOffset, sendYOffset, player.getPos().getZ(), player.getPos().getRot());
-            for (GameEntity localPlayer : player.getLocal(Player.class)) {
+            for (Player localPlayer : player.getLocal(Player.class)) {
                 if (player.equals(localPlayer)) {
                     continue;
                 }
-                ((Player) localPlayer).send(packet);
+                localPlayer.send(packet);
             }
         }
     }

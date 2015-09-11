@@ -3,15 +3,13 @@ package net.wurmevolved.server.game.logic.handlers;
 import net.wurmevolved.common.constants.CreatureType;
 import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.World;
-import net.wurmevolved.server.game.data.AbstractItem;
-import net.wurmevolved.server.game.data.Player;
-import net.wurmevolved.server.game.data.Position;
-import net.wurmevolved.server.game.data.Tile;
+import net.wurmevolved.server.game.data.*;
 import net.wurmevolved.server.game.logic.GameEntity;
 import net.wurmevolved.server.game.logic.observers.MovementObserver;
 import net.wurmevolved.server.game.logic.observers.impl.LocalObjectObserver;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.server.*;
+import net.wurmevolved.server.game.util.PlayerHelper;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,11 +25,9 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
     }
 
     public void updateItems(Position pos, int diffX, int diffY) {
-        int prevX = pos.getTileX() - diffX, prevY = pos.getTileY() - diffY, oldX = prevX, oldY = prevY;
+        int prevX = pos.getTileX() - diffX, prevY = pos.getTileY() - diffY;
 
-        Set<AbstractItem> removeItems = new HashSet<>();
         if (diffX != 0) {
-            oldX += Layer.SURFACE.getLocal() * -diffX;
             diffX = prevX + Layer.SURFACE.getLocal() * diffX;
             for (Tile tile : world.getLocal(player.getPos())) {
                 if (tile.getPos().getX() == diffX) {
@@ -42,17 +38,7 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
                     }
                 }
             }
-            // Remove items now out of range
-            for (GameEntity ge : player.getLocal(AbstractItem.class)) {
-                if (ge instanceof AbstractItem) {
-                    AbstractItem item = (AbstractItem) ge;
-                    if (item.getPos().getLayer().equals(Layer.SURFACE) && item.getPos().getTileX() == oldX) {
-                        removeItems.add(item);
-                    }
-                }
-            }
         } else {
-            oldY += Layer.SURFACE.getLocal() * -diffY;
             diffY = prevY + Layer.SURFACE.getLocal() * diffY;
             for (Tile tile : world.getLocal(player.getPos())) {
                 if (tile.getPos().getY() == diffY) {
@@ -63,19 +49,6 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
                     }
                 }
             }
-            // Remove items now out of range
-            for (GameEntity ge : player.getLocal(AbstractItem.class)) {
-                if (ge instanceof AbstractItem) {
-                    AbstractItem item = (AbstractItem) ge;
-                    if (item.getPos().getLayer().equals(Layer.SURFACE) && item.getPos().getTileY() == oldY) {
-                        removeItems.add(item);
-                    }
-                }
-            }
-        }
-        for (AbstractItem item : removeItems) {
-            player.send(new RemoveObjectPacket(item.getId()));
-            player.removeLocal(item);
         }
     }
 

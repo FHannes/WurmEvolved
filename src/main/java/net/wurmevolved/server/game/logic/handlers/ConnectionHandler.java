@@ -44,7 +44,7 @@ public class ConnectionHandler extends LogicHandler {
             }
         });
         RemoveUserPacket packetRemoveUser = new RemoveUserPacket(":Local", player.getUsername());
-        player.getLocal(Player.class).forEach(p -> ((Player) p).send(packetRemoveUser));
+        player.getLocal(Player.class).forEach(p -> p.send(packetRemoveUser));
         world.getPlayers().broadcast(new RemoveUserPacket(":Server", player.getUsername()));
         world.getPlayers().save(player);
     }

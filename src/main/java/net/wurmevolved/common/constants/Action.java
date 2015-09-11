@@ -9,7 +9,7 @@ public enum Action {
     DROP(145, "Drop"),
     TAKE(145, "Take");
 
-    private static final Action[] actions = new Action[65535];
+    private static final Action[] actions = new Action[65536];
     private short id;
     private String name;
 

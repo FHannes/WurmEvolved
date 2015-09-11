@@ -4,9 +4,9 @@ import net.wurmevolved.server.game.data.Position;
 
 public interface GameEntity {
 
-    public long getId();
+    long getId();
 
-    public Position getPos();
-    public void setPos(Position pos);
+    Position getPos();
+    void setPos(Position pos);
 
 }

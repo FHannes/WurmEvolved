@@ -33,6 +33,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
         logicHandlers.add(new ConnectionHandler(world, player));
 
         MovementHandler movementHandler = new MovementHandler(player);
+        movementHandler.getObservers().add(player);
         logicHandlers.add(movementHandler);
 
         TerrainHandler terrainHandler = new TerrainHandler(world, player);
