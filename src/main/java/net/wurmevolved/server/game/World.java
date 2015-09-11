@@ -3,6 +3,7 @@ package net.wurmevolved.server.game;
 import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.data.Position;
 import net.wurmevolved.server.game.data.Tile;
+import net.wurmevolved.server.game.data.TilePos;
 import net.wurmevolved.server.game.logic.PlayerList;
 import net.wurmevolved.server.game.logic.handlers.ObjectHandler;
 import net.wurmevolved.server.game.map.Chunk;
@@ -47,7 +48,7 @@ public class World {
         }
     }
 
-    public Set<Tile> getLocal(Position pos) { // TODO: Seems to be broken...
+    public Set<Tile> getLocal(Position pos) {
         Set<Tile> tiles = new HashSet<>();
 
         short local = pos.getLayer().getLocal();
@@ -58,12 +59,16 @@ public class World {
         short scx = Chunk.mapToChunk(sx), scy = Chunk.mapToChunk(sy);
         short ecx = Chunk.mapToChunk(ex), ecy = Chunk.mapToChunk(ey);
 
-        for (short ly = scy; ly < ecy; ly++) {
-            for (short lx = scx; lx < ecx; lx++) {
+        for (short ly = scy; ly <= ecy; ly++) {
+            for (short lx = scx; lx <= ecx; lx++) {
                 Chunk chunk = terrainBuffer.getChunk(lx, ly);
                 for (short ry = 0; ry < Chunk.CHUNK_SIZE; ry++) {
                     for (short rx = 0; rx < Chunk.CHUNK_SIZE; rx++) {
-                        tiles.add(chunk.getTile(rx, ry));
+                        Tile t = chunk.getTile(rx, ry);
+                        TilePos tp = t.getPos();
+                        if (tp.getX() >= sx && tp.getY() >= sy && tp.getX() <= ex && tp.getY() <= ey) {
+                            tiles.add(t);
+                        }
                     }
                 }
             }
