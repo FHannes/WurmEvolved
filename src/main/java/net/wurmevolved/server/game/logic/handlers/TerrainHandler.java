@@ -12,7 +12,8 @@ import net.wurmevolved.server.game.net.packets.server.DistantTerrainPacket;
 import net.wurmevolved.server.game.net.packets.server.TerrainPacket;
 
 import java.awt.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TerrainHandler extends LogicHandler implements MovementObserver {
 

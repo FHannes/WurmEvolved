@@ -1,7 +1,6 @@
 package net.wurmevolved.server.game.logic.handlers;
 
 import net.wurmevolved.common.constants.ItemType;
-import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.AbstractItem;
 import net.wurmevolved.server.game.data.Player;
 import net.wurmevolved.server.game.data.db.DB;

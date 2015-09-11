@@ -8,11 +8,8 @@ import net.wurmevolved.server.game.data.Player;
 import net.wurmevolved.server.game.logic.handlers.*;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.UnknownPacket;
-import net.wurmevolved.server.game.net.packets.client.*;
-import net.wurmevolved.server.game.net.packets.server.AddUserPacket;
+import net.wurmevolved.server.game.net.packets.client.LoginPacket;
 import net.wurmevolved.server.game.net.packets.server.LoginResponsePacket;
-import net.wurmevolved.server.game.net.packets.server.RemoveCreaturePacket;
-import net.wurmevolved.server.game.net.packets.server.RemoveUserPacket;
 
 import java.util.LinkedList;
 import java.util.List;

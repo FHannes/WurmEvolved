@@ -8,19 +8,12 @@ import net.wurmevolved.server.game.data.Player;
 import net.wurmevolved.server.game.data.Position;
 import net.wurmevolved.server.game.data.Tile;
 import net.wurmevolved.server.game.logic.GameEntity;
-import net.wurmevolved.server.game.logic.observers.ItemObserver;
 import net.wurmevolved.server.game.logic.observers.MovementObserver;
 import net.wurmevolved.server.game.logic.observers.impl.LocalObjectObserver;
-import net.wurmevolved.server.game.map.Chunk;
-import net.wurmevolved.server.game.map.TerrainBuffer;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
-import net.wurmevolved.server.game.net.packets.client.MovementPacket;
 import net.wurmevolved.server.game.net.packets.server.*;
 
-import java.awt.*;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class LocalHandler extends LogicHandler implements MovementObserver {

@@ -2,15 +2,10 @@ package net.wurmevolved.server.game.logic.handlers;
 
 import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.Player;
-import net.wurmevolved.server.game.map.Chunk;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.server.AddUserPacket;
 import net.wurmevolved.server.game.net.packets.server.RemoveCreaturePacket;
 import net.wurmevolved.server.game.net.packets.server.RemoveUserPacket;
-
-import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ConnectionHandler extends LogicHandler {
 

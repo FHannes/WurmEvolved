@@ -1,13 +1,11 @@
 package net.wurmevolved.server.game.net.packets.server;
 
 import io.netty.buffer.ByteBuf;
-import net.wurmevolved.common.constants.*;
+import net.wurmevolved.common.constants.Material;
 import net.wurmevolved.common.protocol.Protocol;
 import net.wurmevolved.server.game.data.Position;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.Packet;
-
-import java.awt.*;
 
 @Packet(Protocol.PACKET_ADD_OBJECT)
 public class AddObjectPacket extends AbstractPacket {

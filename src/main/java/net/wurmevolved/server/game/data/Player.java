@@ -4,11 +4,13 @@ import io.netty.channel.Channel;
 import net.wurmevolved.common.constants.Kingdom;
 import net.wurmevolved.common.constants.PlayerType;
 import net.wurmevolved.server.game.logic.GameEntity;
-import net.wurmevolved.server.game.net.ServerHandler;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "players")

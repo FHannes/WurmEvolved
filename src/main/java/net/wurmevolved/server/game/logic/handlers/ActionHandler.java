@@ -1,13 +1,11 @@
 package net.wurmevolved.server.game.logic.handlers;
 
-import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.Player;
 import net.wurmevolved.server.game.menu.Menu;
 import net.wurmevolved.server.game.menu.MenuFactory;
 import net.wurmevolved.server.game.menu.MenuItem;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.client.RequestActionPacket;
-import net.wurmevolved.server.game.net.packets.client.SendActionPacket;
 import net.wurmevolved.server.game.net.packets.server.SendActionListPacket;
 
 import java.util.ArrayList;
