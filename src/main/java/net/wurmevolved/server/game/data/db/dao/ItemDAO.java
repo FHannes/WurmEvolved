@@ -1,12 +1,10 @@
 package net.wurmevolved.server.game.data.db.dao;
 
-import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.data.AbstractItem;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;

@@ -2,7 +2,6 @@ package net.wurmevolved.server.game.logic.handlers;
 
 import net.wurmevolved.server.game.data.Player;
 import net.wurmevolved.server.game.data.Position;
-import net.wurmevolved.server.game.logic.GameEntity;
 import net.wurmevolved.server.game.logic.observers.MovementObserver;
 import net.wurmevolved.server.game.logic.observers.ObserverList;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;

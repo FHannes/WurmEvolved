@@ -4,19 +4,17 @@ import io.netty.channel.Channel;
 import net.wurmevolved.common.constants.Kingdom;
 import net.wurmevolved.common.constants.PlayerType;
 import net.wurmevolved.server.game.logic.GameEntity;
-import net.wurmevolved.server.game.logic.observers.MovementObserver;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
-import net.wurmevolved.server.game.net.packets.server.RemoveCreaturePacket;
-import net.wurmevolved.server.game.net.packets.server.RemoveObjectPacket;
-import net.wurmevolved.server.game.net.packets.server.RemoveUserPacket;
-import net.wurmevolved.server.game.util.PlayerHelper;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "players")
-public class Player implements GameEntity, MovementObserver {
+public class Player implements GameEntity {
 
     @Id
     @Column(name = "player_id", nullable = false)
@@ -191,21 +189,6 @@ public class Player implements GameEntity, MovementObserver {
             default:
                 return String.format("%s (%s)", getUsername(), getType().toString());
         }
-    }
-
-    @Override
-    public void onPlayerMovedTile(Position pos, int xOffset, int yOffset) {
-        List<GameEntity> removeLocals = new ArrayList<>();
-
-        // Remove items no longer in local
-        PlayerHelper.getLocalItems(this).forEach(i -> {
-            if (!pos.isLocal(i.getPos())) {
-                send(new RemoveObjectPacket(i.getId()));
-                removeLocals.add(i);
-            }
-        });
-
-        removeLocals.forEach(this::removeLocal);
     }
 
 }

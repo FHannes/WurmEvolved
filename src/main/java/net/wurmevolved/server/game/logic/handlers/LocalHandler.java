@@ -3,7 +3,10 @@ package net.wurmevolved.server.game.logic.handlers;
 import net.wurmevolved.common.constants.CreatureType;
 import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.World;
-import net.wurmevolved.server.game.data.*;
+import net.wurmevolved.server.game.data.AbstractItem;
+import net.wurmevolved.server.game.data.Player;
+import net.wurmevolved.server.game.data.Position;
+import net.wurmevolved.server.game.data.Tile;
 import net.wurmevolved.server.game.logic.GameEntity;
 import net.wurmevolved.server.game.logic.observers.MovementObserver;
 import net.wurmevolved.server.game.logic.observers.impl.LocalObjectObserver;
@@ -11,7 +14,8 @@ import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.server.*;
 import net.wurmevolved.server.game.util.PlayerHelper;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class LocalHandler extends LogicHandler implements MovementObserver {
@@ -64,9 +68,7 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
         AddCreaturePacket packetAdd = new AddCreaturePacket(
                 player.getId(), player.getModel(), player.getPos(), player.getFullName(), CreatureType.HUMAN,
                 player.getKingdom(), player.getFaceStyle());
-        RemoveCreaturePacket packetRemove = new RemoveCreaturePacket(player.getId());
         AddUserPacket packetAddUser = new AddUserPacket(":Local", player.getUsername(), player.getId());
-        RemoveUserPacket packetRemoveUser = new RemoveUserPacket(":Local", player.getUsername());
         for (Player worldPlayer : world.getPlayers().all()) {
             if (worldPlayer.equals(player)) {
                 continue;
@@ -83,23 +85,43 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
                             worldPlayer.getFaceStyle()));
                     player.send(new AddUserPacket(":Local", worldPlayer.getUsername(), worldPlayer.getId()));
                 }
-            } else {
-                boolean hasPlayer = worldPlayer.hasLocal(player);
-                if (hasPlayer) {
-                    worldPlayer.removeLocal(player);
-                    worldPlayer.send(packetRemoveUser);
-                    worldPlayer.send(packetRemove);
-                    player.send(new RemoveCreaturePacket(worldPlayer.getId()));
-                    player.send(new RemoveUserPacket(":Local", worldPlayer.getUsername()));
-                }
             }
         }
+    }
+
+    public void removeLocals(Position pos) {
+        List<GameEntity> removeLocals = new ArrayList<>();
+
+        // Remove players no longer in local
+        RemoveCreaturePacket packetRemove = new RemoveCreaturePacket(player.getId());
+        RemoveUserPacket packetRemoveUser = new RemoveUserPacket(":Local", player.getUsername());
+        player.getLocal(Player.class).forEach(p -> {
+            if (!pos.isLocal(p.getPos())) {
+                p.removeLocal(player);
+                p.send(packetRemoveUser);
+                p.send(packetRemove);
+                player.send(new RemoveCreaturePacket(p.getId()));
+                player.send(new RemoveUserPacket(":Local", p.getUsername()));
+                removeLocals.add(p);
+            }
+        });
+
+        // Remove items no longer in local
+        PlayerHelper.getLocalItems(player).forEach(i -> {
+            if (!pos.isLocal(i.getPos())) {
+                player.send(new RemoveObjectPacket(i.getId()));
+                removeLocals.add(i);
+            }
+        });
+
+        removeLocals.forEach(player::removeLocal);
     }
 
     @Override
     public void onPlayerMovedTile(Position pos, int xOffset, int yOffset) {
         updatePlayerLocals();
         updateItems(pos, xOffset, yOffset);
+        removeLocals(pos);
     }
 
     @Override
