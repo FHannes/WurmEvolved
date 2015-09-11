@@ -118,8 +118,14 @@ public class Position {
         }
 
         short tx = getTileX(), ty = getTileY();
-        short otx = pos.getTileX(), oty = getTileY();
+        short otx = pos.getTileX(), oty = pos.getTileY();
         return Math.abs(tx - otx) <= pos.getLayer().getLocal() && Math.abs(ty - oty) <= pos.getLayer().getLocal();
+    }
+
+    public boolean isLocal(TilePos pos, Layer layer) {
+        short tx = getTileX(), ty = getTileY();
+        short otx = pos.getX(), oty = pos.getY();
+        return Math.abs(tx - otx) <= layer.getLocal() && Math.abs(ty - oty) <= layer.getLocal();
     }
 
 }

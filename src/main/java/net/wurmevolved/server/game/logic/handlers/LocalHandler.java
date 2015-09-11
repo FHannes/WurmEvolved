@@ -15,6 +15,7 @@ import net.wurmevolved.server.game.net.packets.server.*;
 import net.wurmevolved.server.game.util.PlayerHelper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,74 +24,71 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
     private World world;
     private Player player;
 
+    private Set<Tile> localTiles = new HashSet<>();
+
     public LocalHandler(World world, Player player) {
         this.world = world;
         this.player = player;
     }
 
-    public void updateItems(Position pos, int diffX, int diffY) {
-        int prevX = pos.getTileX() - diffX, prevY = pos.getTileY() - diffY;
+    public void updateObjects() {
+        world.getLocal(player.getPos()).forEach(t -> {
+            if (!localTiles.contains(t)) {
+                localTiles.add(t);
 
-        if (diffX != 0) {
-            diffX = prevX + Layer.SURFACE.getLocal() * diffX;
-            for (Tile tile : world.getLocal(player.getPos())) {
-                if (tile.getPos().getX() == diffX) {
-                    for (AbstractItem localItem : tile.getItems()) {
-                        player.addLocal(localItem);
-                        player.send(new AddObjectPacket(localItem.getId(), localItem.getModel(), localItem.getPos(),
-                                localItem.getItemName(), localItem.getMaterial()));
-                    }
+                // Ground items
+                for (AbstractItem localItem : t.getItems()) {
+                    player.addLocal(localItem);
+                    player.send(new AddObjectPacket(localItem.getId(), localItem.getModel(), localItem.getPos(),
+                            localItem.getItemName(), localItem.getMaterial()));
+                    //localItem.getObservers().add(new LocalObjectObserver(player)); // TODO: Replace with something clean
                 }
             }
-        } else {
-            diffY = prevY + Layer.SURFACE.getLocal() * diffY;
-            for (Tile tile : world.getLocal(player.getPos())) {
-                if (tile.getPos().getY() == diffY) {
-                    for (AbstractItem localItem : tile.getItems()) {
-                        player.addLocal(localItem);
-                        player.send(new AddObjectPacket(localItem.getId(), localItem.getModel(), localItem.getPos(),
-                                localItem.getItemName(), localItem.getMaterial()));
-                    }
-                }
-            }
-        }
+        });
     }
 
     /**
      * Updates all other players if this player has moved in or out of their local. This will also send the movements of
      * the player to all other players in local.
      */
-    public void updatePlayerLocals() {
-        Set<Player> localPlayers;
-
-        // Add or remove players from local
-        localPlayers = world.getPlayers().getLocal(player.getPos());
+    public void updatePlayers() {
         AddCreaturePacket packetAdd = new AddCreaturePacket(
                 player.getId(), player.getModel(), player.getPos(), player.getFullName(), CreatureType.HUMAN,
                 player.getKingdom(), player.getFaceStyle());
         AddUserPacket packetAddUser = new AddUserPacket(":Local", player.getUsername(), player.getId());
-        for (Player worldPlayer : world.getPlayers().all()) {
+        world.getPlayers().getLocal(player.getPos()).forEach(worldPlayer -> {
             if (worldPlayer.equals(player)) {
-                continue;
+                return;
             }
-            if (localPlayers.contains(worldPlayer)) {
-                boolean hasPlayer = worldPlayer.hasLocal(player);
-                if (!hasPlayer) {
-                    worldPlayer.addLocal(player);
-                    worldPlayer.send(packetAdd);
-                    worldPlayer.send(packetAddUser);
-                    player.send(new AddCreaturePacket(
-                            worldPlayer.getId(), worldPlayer.getModel(), worldPlayer.getPos(),
-                            worldPlayer.getUsername(), CreatureType.HUMAN, worldPlayer.getKingdom(),
-                            worldPlayer.getFaceStyle()));
-                    player.send(new AddUserPacket(":Local", worldPlayer.getUsername(), worldPlayer.getId()));
-                }
+            if (!worldPlayer.hasLocal(player)) {
+                // Add player to other player's local
+                worldPlayer.addLocal(player);
+                worldPlayer.send(packetAdd);
+                worldPlayer.send(packetAddUser);
             }
-        }
+            if (!player.hasLocal(worldPlayer)) {
+                // Add other player to player's local
+                player.addLocal(worldPlayer);
+                player.send(new AddCreaturePacket(
+                        worldPlayer.getId(), worldPlayer.getModel(), worldPlayer.getPos(),
+                        worldPlayer.getUsername(), CreatureType.HUMAN, worldPlayer.getKingdom(),
+                        worldPlayer.getFaceStyle()));
+                player.send(new AddUserPacket(":Local", worldPlayer.getUsername(), worldPlayer.getId()));
+            }
+        });
     }
 
-    public void removeLocals(Position pos) {
+    public void pruneLocals(Position pos) {
         List<GameEntity> removeLocals = new ArrayList<>();
+
+        // Remove tiles from local tile cache
+        List<Tile> removeTiles = new ArrayList<>();
+        localTiles.forEach(t -> {
+            if (!pos.isLocal(t.getPos(), Layer.SURFACE)) {
+                removeTiles.add(t);
+            }
+        });
+        removeTiles.forEach(localTiles::remove);
 
         // Remove players no longer in local
         RemoveCreaturePacket packetRemove = new RemoveCreaturePacket(player.getId());
@@ -117,38 +115,20 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
         removeLocals.forEach(player::removeLocal);
     }
 
+    private void updateLocals() {
+        updatePlayers();
+        updateObjects();
+    }
+
     @Override
     public void onPlayerMovedTile(Position pos, int xOffset, int yOffset) {
-        updatePlayerLocals();
-        updateItems(pos, xOffset, yOffset);
-        removeLocals(pos);
+        pruneLocals(pos);
+        updateLocals();
     }
 
     @Override
     public void join() {
-        // Init local players
-        for (Player localPlayer : world.getPlayers().getLocal(player.getPos())) {
-            if (!player.equals(localPlayer)) {
-                player.addLocal(localPlayer);
-                player.send(new AddCreaturePacket(
-                        localPlayer.getId(), localPlayer.getModel(), localPlayer.getPos(), localPlayer.getFullName(),
-                        CreatureType.HUMAN, localPlayer.getKingdom(), localPlayer.getFaceStyle()));
-            }
-            player.send(new AddUserPacket(":Local", localPlayer.getUsername(), localPlayer.getId()));
-        }
-
-        // Init local items
-        for (Tile tile : world.getLocal(player.getPos())) {
-            for (AbstractItem localItem : tile.getItems()) {
-                player.addLocal(localItem);
-                player.send(new AddObjectPacket(localItem.getId(), localItem.getModel(), localItem.getPos(),
-                        localItem.getItemName(), localItem.getMaterial()));
-                localItem.getObservers().add(new LocalObjectObserver(player));
-            }
-        }
-
-        // Init locals of other players
-        updatePlayerLocals();
+        updateLocals();
     }
 
     @Override

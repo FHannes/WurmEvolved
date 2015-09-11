@@ -47,7 +47,7 @@ public class World {
         }
     }
 
-    public Set<Tile> getLocal(Position pos) {
+    public Set<Tile> getLocal(Position pos) { // TODO: Seems to be broken...
         Set<Tile> tiles = new HashSet<>();
 
         short local = pos.getLayer().getLocal();
