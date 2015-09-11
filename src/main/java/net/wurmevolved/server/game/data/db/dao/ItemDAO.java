@@ -41,10 +41,4 @@ public class ItemDAO {
         return em.createQuery("SELECT i FROM AbstractItem i", AbstractItem.class).getResultList();
     }
 
-    public List<AbstractItem> listGroundItems() {
-        TypedQuery<AbstractItem> query = em.createQuery("SELECT i FROM AbstractItem i WHERE layer <> :layer",
-                AbstractItem.class);
-        return query.setParameter("layer", Layer.NONE).getResultList();
-    }
-
 }
