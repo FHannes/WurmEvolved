@@ -39,7 +39,7 @@ public class MovementHandler extends LogicHandler {
         player.setPos(pos);
 
         if (tileXOffset != 0 || tileYOffset != 0) {
-            observers.getAll().forEach(o -> o.onPlayerMovedTile(pos, tileXOffset, tileYOffset));
+            observers.getAll().forEach(MovementObserver::onPlayerMovedTile);
         }
 
         reply();

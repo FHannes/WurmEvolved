@@ -2,7 +2,6 @@ package net.wurmevolved.server.game.logic.handlers;
 
 import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.Player;
-import net.wurmevolved.server.game.data.Position;
 import net.wurmevolved.server.game.data.Tile;
 import net.wurmevolved.server.game.logic.observers.MovementObserver;
 import net.wurmevolved.server.game.map.Chunk;
@@ -67,7 +66,7 @@ public class TerrainHandler extends LogicHandler implements MovementObserver {
     }
 
     @Override
-    public void onPlayerMovedTile(Position pos, int xOffset, int yOffset) {
+    public void onPlayerMovedTile() {
         update();
     }
 

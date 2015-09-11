@@ -5,11 +5,9 @@ import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.World;
 import net.wurmevolved.server.game.data.AbstractItem;
 import net.wurmevolved.server.game.data.Player;
-import net.wurmevolved.server.game.data.Position;
 import net.wurmevolved.server.game.data.Tile;
 import net.wurmevolved.server.game.logic.GameEntity;
 import net.wurmevolved.server.game.logic.observers.MovementObserver;
-import net.wurmevolved.server.game.logic.observers.impl.LocalObjectObserver;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.server.*;
 import net.wurmevolved.server.game.util.PlayerHelper;
@@ -47,10 +45,6 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
         });
     }
 
-    /**
-     * Updates all other players if this player has moved in or out of their local. This will also send the movements of
-     * the player to all other players in local.
-     */
     public void updatePlayers() {
         AddCreaturePacket packetAdd = new AddCreaturePacket(
                 player.getId(), player.getModel(), player.getPos(), player.getFullName(), CreatureType.HUMAN,
@@ -78,13 +72,13 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
         });
     }
 
-    public void pruneLocals(Position pos) {
+    public void pruneLocals() {
         List<GameEntity> removeLocals = new ArrayList<>();
 
         // Remove tiles from local tile cache
         List<Tile> removeTiles = new ArrayList<>();
         localTiles.forEach(t -> {
-            if (!pos.isLocal(t.getPos(), Layer.SURFACE)) {
+            if (!player.getPos().isLocal(t.getPos(), Layer.SURFACE)) {
                 removeTiles.add(t);
             }
         });
@@ -94,7 +88,7 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
         RemoveCreaturePacket packetRemove = new RemoveCreaturePacket(player.getId());
         RemoveUserPacket packetRemoveUser = new RemoveUserPacket(":Local", player.getUsername());
         player.getLocal(Player.class).forEach(p -> {
-            if (!pos.isLocal(p.getPos())) {
+            if (!player.getPos().isLocal(p.getPos())) {
                 p.removeLocal(player);
                 p.send(packetRemoveUser);
                 p.send(packetRemove);
@@ -106,7 +100,7 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
 
         // Remove items no longer in local
         PlayerHelper.getLocalItems(player).forEach(i -> {
-            if (!pos.isLocal(i.getPos())) {
+            if (!player.getPos().isLocal(i.getPos())) {
                 player.send(new RemoveObjectPacket(i.getId()));
                 removeLocals.add(i);
             }
@@ -121,8 +115,8 @@ public class LocalHandler extends LogicHandler implements MovementObserver {
     }
 
     @Override
-    public void onPlayerMovedTile(Position pos, int xOffset, int yOffset) {
-        pruneLocals(pos);
+    public void onPlayerMovedTile() {
+        pruneLocals();
         updateLocals();
     }
 
