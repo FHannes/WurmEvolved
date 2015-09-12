@@ -1,7 +1,7 @@
 package net.wurmevolved.server.game.net.packets.client;
 
 import io.netty.buffer.ByteBuf;
-import net.wurmevolved.common.constants.Action;
+import net.wurmevolved.common.constants.ActionType;
 import net.wurmevolved.common.protocol.Protocol;
 import net.wurmevolved.server.game.net.packets.AbstractPacket;
 import net.wurmevolved.server.game.net.packets.Packet;
@@ -11,12 +11,12 @@ public class SendActionPacket extends AbstractPacket {
 
     private long[] targetIDs;
     private long activeID;
-    private Action action;
+    private ActionType actionType;
 
-    public SendActionPacket(long[] targetIDs, long activeID, Action action) {
+    public SendActionPacket(long[] targetIDs, long activeID, ActionType actionType) {
         this.targetIDs = targetIDs;
         this.activeID = activeID;
-        this.action = action;
+        this.actionType = actionType;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class SendActionPacket extends AbstractPacket {
         for (long targetID : getTargetIDs()) {
             out.writeLong(targetID);
         }
-        out.writeShort(getAction().getId());
+        out.writeShort(getActionType().getId());
     }
 
     public static AbstractPacket decode(ByteBuf frame) {
@@ -35,8 +35,8 @@ public class SendActionPacket extends AbstractPacket {
         for (int idx = 0; idx < targetIDs.length; idx++) {
             targetIDs[idx] = frame.readLong();
         }
-        Action action = Action.get(frame.readShort());
-        return new SendActionPacket(targetIDs, activeID, action);
+        ActionType actionType = ActionType.get(frame.readShort());
+        return new SendActionPacket(targetIDs, activeID, actionType);
     }
 
     public long[] getTargetIDs() {
@@ -47,8 +47,8 @@ public class SendActionPacket extends AbstractPacket {
         return activeID;
     }
 
-    public Action getAction() {
-        return action;
+    public ActionType getActionType() {
+        return actionType;
     }
 
 }

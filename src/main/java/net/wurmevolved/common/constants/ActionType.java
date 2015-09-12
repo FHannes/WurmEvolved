@@ -1,6 +1,6 @@
 package net.wurmevolved.common.constants;
 
-public enum Action {
+public enum ActionType {
 
     UNKNOWN(0, "Unknown"),
 
@@ -9,11 +9,11 @@ public enum Action {
     DROP(145, "Drop"),
     TAKE(145, "Take");
 
-    private static final Action[] actions = new Action[65536];
+    private static final ActionType[] actions = new ActionType[65536];
     private short id;
     private String name;
 
-    Action(int id, String name) {
+    ActionType(int id, String name) {
         this.id = (short) id;
         this.name = name;
     }
@@ -26,14 +26,14 @@ public enum Action {
         return name;
     }
 
-    public static Action get(short id) {
-        Action action = actions[id & 0xFFFF];
-        return action != null ? action : UNKNOWN;
+    public static ActionType get(short id) {
+        ActionType actionType = actions[id & 0xFFFF];
+        return actionType != null ? actionType : UNKNOWN;
     }
 
     static {
-        for (Action action : values()) {
-            actions[action.getId() & 0xFFFF] = action;
+        for (ActionType actionType : values()) {
+            actions[actionType.getId() & 0xFFFF] = actionType;
         }
     }
 

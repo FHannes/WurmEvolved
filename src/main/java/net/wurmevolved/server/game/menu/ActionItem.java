@@ -1,33 +1,33 @@
 package net.wurmevolved.server.game.menu;
 
-import net.wurmevolved.common.constants.Action;
+import net.wurmevolved.common.constants.ActionType;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ActionItem extends MenuItem {
 
-    private static final Map<Action, ActionItem> items = new HashMap<>();
-    private Action action;
+    private static final Map<ActionType, ActionItem> items = new HashMap<>();
+    private ActionType actionType;
 
-    public ActionItem(Action action) {
-        this.action = action;
+    public ActionItem(ActionType actionType) {
+        this.actionType = actionType;
     }
 
     @Override
     public short getId() {
-        return action.getId();
+        return actionType.getId();
     }
 
     @Override
     public String getCaption() {
-        return action.getName();
+        return actionType.getName();
     }
 
-    public static ActionItem get(Action action) {
-        ActionItem item = items.get(action);
+    public static ActionItem get(ActionType actionType) {
+        ActionItem item = items.get(actionType);
         if (item == null) {
-            items.put(action, item = new ActionItem(action));
+            items.put(actionType, item = new ActionItem(actionType));
         }
         return item;
     }

@@ -9,33 +9,36 @@ import net.wurmevolved.server.game.data.Tile;
 import net.wurmevolved.server.game.data.db.DB;
 import net.wurmevolved.server.game.data.db.dao.ItemDAO;
 import net.wurmevolved.server.game.data.db.dao.TileDAO;
-import net.wurmevolved.server.game.logic.observers.impl.LocalObjectObserver;
+import net.wurmevolved.server.game.net.packets.server.AddObjectPacket;
 
 public class ObjectHandler {
 
     private World world;
 
-    private ItemDAO dao;
+    private ItemDAO itemDAO;
     private TileDAO tileDAO;
 
     public ObjectHandler(World world) {
         this.world = world;
 
-        dao = (ItemDAO) DB.getInstance().getDAO("itemDAO");
+        itemDAO = (ItemDAO) DB.getInstance().getDAO("itemDAO");
         tileDAO = (TileDAO) DB.getInstance().getDAO("tileDAO");
     }
 
     public void drop(AbstractItem item, Position position) {
-        assert !item.getPos().getLayer().equals(Layer.NONE);
+        assert item.getPos().getLayer().equals(Layer.NONE);
 
-        // The order of execution is important as setting the position will trigger a method in the observer
-        for (Player player : world.getPlayers().getContainedLocal(position)) {
-            item.getObservers().add(new LocalObjectObserver(player));
-        }
         item.setPos(position);
         Tile tile = world.getTerrainBuffer().getTile(position);
         tile.addItem(item);
-        dao.save(item);
+
+        for (Player player : world.getPlayers().getContainedLocal(position)) {
+            player.addLocal(item);
+            player.send(new AddObjectPacket(item.getId(), item.getModel(), item.getPos(), item.getItemName(),
+                    item.getMaterial()));
+        }
+
+        itemDAO.save(item);
         tileDAO.save(tile);
     }
 

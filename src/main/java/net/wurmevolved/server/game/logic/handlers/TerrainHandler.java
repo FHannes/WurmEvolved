@@ -30,11 +30,11 @@ public class TerrainHandler extends LogicHandler implements MovementObserver {
     private void updateTerrain() {
         java.util.List<Chunk> chunks = world.getTerrainBuffer().getChunksFromCoords(
                 player.getPos().getTileX(), player.getPos().getTileY(), (short) (192 / Chunk.CHUNK_SIZE));
-        for (Chunk chunk : chunks) {
+        chunks.forEach(chunk -> {
             if (!this.chunks.contains(chunk)) {
                 sendChunk(chunk);
             }
-        }
+        });
         this.chunks = new HashSet<>(chunks);
     }
 

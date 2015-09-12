@@ -1,6 +1,6 @@
 package net.wurmevolved.server.game.menu;
 
-import net.wurmevolved.common.constants.Action;
+import net.wurmevolved.common.constants.ActionType;
 
 public class MenuFactory {
 
@@ -8,8 +8,8 @@ public class MenuFactory {
         return new Menu(wiki);
     }
 
-    public MenuItem makeMenuItem(Action action) {
-        return new ActionItem(action);
+    public MenuItem makeMenuItem(ActionType actionType) {
+        return new ActionItem(actionType);
     }
 
 }
