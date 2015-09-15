@@ -1,5 +1,6 @@
 package net.wurmevolved.server.game.data.db;
 
+import net.wurmevolved.server.game.data.db.dao.AbstractDAO;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class DB {
@@ -15,8 +16,8 @@ public class DB {
         return instance != null ? instance : (instance = new DB());
     }
 
-    public Object getDAO(String name) {
-        return context.getBean(name);
+    public AbstractDAO getDAO(String name) {
+        return (AbstractDAO) context.getBean(name);
     }
 
     public void close() {

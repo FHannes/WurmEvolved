@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Transactional
-public class TileDAO {
+public class TileDAO extends AbstractDAO<Tile> {
 
     @PersistenceContext
     private EntityManager em;
@@ -27,6 +27,7 @@ public class TileDAO {
         }
     }
 
+    @Override
     public List<Tile> list() {
         return em.createQuery("SELECT t FROM Tile t", Tile.class).getResultList();
     }

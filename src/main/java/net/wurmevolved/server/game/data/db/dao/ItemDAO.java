@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Queue;
 
 @Transactional
-public class ItemDAO {
+public class ItemDAO extends AbstractDAO<AbstractItem> {
 
     @PersistenceContext
     private EntityManager em;
@@ -35,6 +35,7 @@ public class ItemDAO {
         }
     }
 
+    @Override
     public List<AbstractItem> list() {
         return em.createQuery("SELECT i FROM AbstractItem i", AbstractItem.class).getResultList();
     }

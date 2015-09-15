@@ -7,4 +7,8 @@ public class EntityType {
     public static final int PLAYER = 6;
     public static final int TILE_BORDER = 7;
 
+    public static boolean isIDOfType(long id, int type) {
+        return (id % 16) == type;
+    }
+
 }

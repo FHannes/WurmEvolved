@@ -43,7 +43,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<AbstractPacket> {
         movementHandler.getObservers().add(localHandler);
         logicHandlers.add(localHandler);
 
-        logicHandlers.add(new ActionHandler(player));
+        logicHandlers.add(new ActionHandler(world, player));
         logicHandlers.add(new InventoryHandler(player));
         logicHandlers.add(new ChatHandler(world, player));
         logicHandlers.add(new GUIHandler());

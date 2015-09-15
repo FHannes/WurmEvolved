@@ -4,8 +4,8 @@ import net.wurmevolved.common.constants.Layer;
 import net.wurmevolved.server.game.data.Position;
 import net.wurmevolved.server.game.data.Tile;
 import net.wurmevolved.server.game.data.TilePos;
-import net.wurmevolved.server.game.logic.PlayerList;
 import net.wurmevolved.server.game.logic.handlers.ObjectHandler;
+import net.wurmevolved.server.game.logic.list.PlayerList;
 import net.wurmevolved.server.game.map.Chunk;
 import net.wurmevolved.server.game.map.TerrainBuffer;
 

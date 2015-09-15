@@ -1,7 +1,11 @@
 package net.wurmevolved.server.game.data;
 
-import net.wurmevolved.common.constants.*;
+import net.wurmevolved.common.constants.BodyType;
+import net.wurmevolved.common.constants.ItemIcon;
+import net.wurmevolved.common.constants.Material;
+import net.wurmevolved.common.constants.Rarity;
 import net.wurmevolved.server.game.logic.GameEntity;
+import net.wurmevolved.server.game.logic.list.GlobalEntityList;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -12,6 +16,10 @@ import java.util.Map;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "items")
 public abstract class AbstractItem implements GameEntity {
+
+    public AbstractItem() {
+        GlobalEntityList.items.add(this);
+    }
 
     @Id
     @Column(name = "item_id", nullable = false)
@@ -64,6 +72,23 @@ public abstract class AbstractItem implements GameEntity {
 
     public void setParent(AbstractItem parent) {
         this.parent = parent;
+    }
+
+    /**
+     * Returns true if the item is stored by a parent item recursively.
+     *
+     * @param parent
+     * @return
+     */
+    public boolean hasParent(AbstractItem parent) {
+        AbstractItem item = getParent();
+        while (item != null) {
+            if (item.equals(parent)) {
+                return true;
+            }
+            item = item.getParent();
+        }
+        return false;
     }
 
     @Override
@@ -181,12 +206,27 @@ public abstract class AbstractItem implements GameEntity {
         item.setParent(this);
     }
 
+    public void removeItem(AbstractItem item) {
+        items.remove(item.getId());
+        item.setParent(null);
+    }
+
     public float calculateWeight() {
         float weight = getWeight();
         for (AbstractItem item : items.values()) {
             weight += item.calculateWeight();
         }
         return weight;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) getId();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof GameEntity && ((GameEntity) obj).getId() == getId();
     }
 
 }

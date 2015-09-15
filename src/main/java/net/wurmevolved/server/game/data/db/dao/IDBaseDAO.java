@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Transactional
-public class IDBaseDAO {
+public class IDBaseDAO extends AbstractDAO<IDBase> {
 
     @PersistenceContext
     private EntityManager em;
@@ -17,10 +17,6 @@ public class IDBaseDAO {
     public IDBase save(IDBase idBase) {
         em.merge(idBase);
         return idBase;
-    }
-
-    public List<IDBase> list() {
-        return em.createQuery("SELECT idb FROM id_bases idb", IDBase.class).getResultList();
     }
 
     public IDBase load(String name) {
@@ -31,6 +27,11 @@ public class IDBaseDAO {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public List<IDBase> list() {
+        return em.createQuery("SELECT idb FROM id_bases idb", IDBase.class).getResultList();
     }
 
 }

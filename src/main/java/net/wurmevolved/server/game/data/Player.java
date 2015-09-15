@@ -191,4 +191,14 @@ public class Player implements GameEntity {
         }
     }
 
+    @Override
+    public int hashCode() {
+        return (int) getId();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof GameEntity && ((GameEntity) obj).getId() == getId();
+    }
+
 }

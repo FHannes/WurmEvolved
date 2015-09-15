@@ -1,4 +1,4 @@
-package net.wurmevolved.server.game.logic;
+package net.wurmevolved.server.game.logic.list;
 
 import net.wurmevolved.server.game.data.Player;
 import net.wurmevolved.server.game.data.Position;

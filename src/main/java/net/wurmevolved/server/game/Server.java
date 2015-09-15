@@ -11,6 +11,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import net.wurmevolved.server.game.logic.actions.ActionQueue;
 import net.wurmevolved.server.game.map.LegacyLoader;
 import net.wurmevolved.server.game.net.ServerHandler;
 import net.wurmevolved.server.game.net.WurmDecoder;
@@ -20,7 +21,7 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 
-public class Server {
+public class Server implements Runnable {
 
     private String hostname;
     private int port;
@@ -31,6 +32,7 @@ public class Server {
     private Channel serverChannel;
 
     private World world;
+    private Thread tickThread;
 
     public Server(String hostname, int port) {
         this.hostname = hostname;
@@ -43,6 +45,7 @@ public class Server {
 
     public void start() {
         (world = new World()).load();
+        (tickThread = new Thread(this)).start();
 
         try {
             URL mapResource = Server.class.getResource("/surface.map");
@@ -72,7 +75,6 @@ public class Server {
                     });
 
             System.out.println("Started server");
-
             serverChannel = bootstrap.bind(hostname, port).sync().channel();
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,6 +82,7 @@ public class Server {
     }
 
     public void stop() {
+        tickThread.interrupt();
         if (channelGroup != null && serverChannel != null) {
             System.out.println("Stopping server");
 
@@ -92,6 +95,22 @@ public class Server {
                 e.printStackTrace();
             } finally {
                 channelGroup.close();
+            }
+        }
+    }
+
+    private void tick() {
+        ActionQueue.getInstance().process();
+    }
+
+    @Override
+    public void run() {
+        while (!Thread.interrupted()) {
+            tick();
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                break;
             }
         }
     }

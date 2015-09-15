@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Transactional
-public class PlayerDAO {
+public class PlayerDAO extends AbstractDAO<Player> {
 
     @PersistenceContext
     private EntityManager em;
@@ -17,10 +17,6 @@ public class PlayerDAO {
     public Player save(Player player) {
         em.merge(player);
         return player;
-    }
-
-    public List<Player> list() {
-        return em.createQuery("SELECT p FROM Player p", Player.class).getResultList();
     }
 
     public Player load(String username) {
@@ -31,6 +27,11 @@ public class PlayerDAO {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public List<Player> list() {
+        return em.createQuery("SELECT p FROM Player p", Player.class).getResultList();
     }
 
 }
