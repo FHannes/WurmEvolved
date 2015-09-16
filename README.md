@@ -1,7 +1,7 @@
 # WurmEvolved
 
 ## About
-WurmEvolved is a Java based private server built for the online role playing game WurmOnline. It was written for client version 3.54, as an alternative to the WurmEmu project. It uses the WurmEmu login server to establish a connection between the client and the server. The project is now abandoned as WurmOnline has announced that it will release it's own private server system on Steam in October 2015. As such, the source code to this server is made available as an educational resource for aspiring developers interested in game development or more basic aspects applied in the project.
+WurmEvolved is a Java based private server built for the online role playing game WurmOnline. It was written for client version 3.54, as an alternative to the WurmEmu project. It uses the WurmEmu login server to establish a connection between the client and the server. The project is now abandoned as WurmOnline has announced that it will release its own private server system on Steam in October 2015. As such, the source code to this server is made available as an educational resource for aspiring developers interested in game development or more basic aspects applied in the project.
 
 ## License
 This project is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/). You are allowed to resume working on this project, without the need to release your source code. Under no circumstances are you allowed to distribute this project or a derivative work in source code or binary form, as well as operate a private game server based on this project, for any form of monetary or other compensation.
