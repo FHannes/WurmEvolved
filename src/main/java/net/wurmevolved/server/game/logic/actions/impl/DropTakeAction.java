@@ -31,7 +31,7 @@ public class DropTakeAction extends AbstractAction {
             if (target != null) {
                 if (target.getPos().getLayer().equals(Layer.NONE)) {
                     if (target.hasParent(player.getInventory())) {
-                        player.send(new RemoveItemPacket(target.getParent().getId(), target.getId()));
+                        player.send(new RemoveItemPacket(-1L, target.getId()));
                         target.getParent().removeItem(target);
                         target.setPos(player.getPos());
                         getWorld().getTerrainBuffer().getTile(player.getPos()).addItem(target);
@@ -45,7 +45,7 @@ public class DropTakeAction extends AbstractAction {
                         // TODO: Dropping item from foreign container?
                     }
                 } else {
-
+                    // TODO: Take item from ground?
                 }
             }
         }

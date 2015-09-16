@@ -12,6 +12,7 @@ public abstract class AbstractAction {
     private long startTime;
 
     public AbstractAction(World world, long duration) {
+        this.world = world;
         this.duration = duration;
         this.startTime = System.currentTimeMillis();
     }
